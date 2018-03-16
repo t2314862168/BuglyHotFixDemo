@@ -30,13 +30,13 @@ import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.activity.BaseActivity;
 import com.tangxb.pay.hero.adapter.ChatAdapterForRv;
-import com.tangxb.pay.hero.api.DefaultConsumer;
-import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import mehdi.sakout.dynamicbox.DynamicBox;
 
 /**
@@ -46,8 +46,11 @@ import mehdi.sakout.dynamicbox.DynamicBox;
  * @date 2015-9-21
  */
 public class RecyclerViewActivity2 extends BaseActivity {
+    @BindView(R.id.test_recycler_view_frame)
     PtrClassicFrameLayoutEx ptrClassicFrameLayout;
+    @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
+
     private List<String> mData = new ArrayList<String>();
     private RecyclerAdapterWithHF mAdapter;
     Handler handler = new Handler();
@@ -61,8 +64,6 @@ public class RecyclerViewActivity2 extends BaseActivity {
 
     @Override
     protected void initData() {
-        ptrClassicFrameLayout = (PtrClassicFrameLayoutEx) this.findViewById(R.id.test_recycler_view_frame);
-        mRecyclerView = (RecyclerView) this.findViewById(R.id.test_recycler_view);
         init_2();
 
         //使用下面的方法,获取网络数据
@@ -91,7 +92,7 @@ public class RecyclerViewActivity2 extends BaseActivity {
         mAdapter.setOnItemClickListener(new RecyclerAdapterWithHF.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerAdapterWithHF adapter, ViewHolder vh, int position) {
-                System.out.println();
+                ToastUtils.t(mApplication, "点击的位置是==" + position);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
