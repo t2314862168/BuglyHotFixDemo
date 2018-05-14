@@ -152,6 +152,7 @@ dependencies {
     compile('me.zhanghai.android.materialprogressbar:library:1.4.1', {
         exclude group: 'com.android.support'
     })
+    compile 'com.mylhyl:zxingscanner:2.1.1'
 }
 
 apply plugin: 'org.greenrobot.greendao'

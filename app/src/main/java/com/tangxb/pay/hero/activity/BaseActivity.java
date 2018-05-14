@@ -71,9 +71,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         mClassName = getClass().getSimpleName();
         mResources = getResources();
         bindButterKnife();
+        receivePassDataIfNeed(getIntent());
         initData();
         initListener();
-        receivePassDataIfNeed(getIntent());
         if (isNeedOnCreateRegister) {
             mApplication.registerEventBus(this);
         }
