@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/main_color">
+
+    <TextView
+        android:id="@+id/btn_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/bg_btn_left"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="@android:color/white"
+        tools:text="已付款" />
+
+    <TextView
+        android:id="@+id/tv_middle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/ib_right"
+        android:layout_toRightOf="@+id/btn_left"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_big"
+        tools:text="所有订单" />
+
+    <ImageButton
+        android:id="@+id/ib_right"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_search"
+        android:scaleType="centerCrop" />
+
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/ib_right"
+        android:layout_toRightOf="@+id/btn_left"
+        android:background="@drawable/search_edit"
+        android:imeOptions="actionSearch"
+        android:padding="8dp"
+        android:singleLine="true"
+        tools:text="所有订单" />
+</RelativeLayout>

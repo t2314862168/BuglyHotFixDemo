@@ -1,5 +1,6 @@
 package com.tangxb.pay.hero.activity;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -11,6 +12,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -19,24 +21,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tangxb.pay.hero.R;
+import com.tangxb.pay.hero.controller.AppUpdateController;
 import com.tangxb.pay.hero.controller.LoginController;
 import com.tangxb.pay.hero.entity.UserEntity;
 import com.tangxb.pay.hero.help.KeyboardWatcher;
 import com.tangxb.pay.hero.util.ConstUtils;
+import com.tangxb.pay.hero.util.MPermissionUtils;
 import com.tangxb.pay.hero.util.SPUtils;
 import com.tangxb.pay.hero.util.ToastUtils;
 import com.tangxb.pay.hero.view.AlertProgressDialog;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import qiu.niorgai.StatusBarCompat;
 
 /**
  * Created by Taxngb on 2017/12/25.
  */
 
-public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftKeyboardStateListener {
+public class LoginActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, KeyboardWatcher.SoftKeyboardStateListener {
     @BindView(R.id.btn_login)
     Button btn_login;
     @BindView(R.id.til_account)
@@ -62,7 +71,13 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
      * 是否显示密码
      */
     private boolean flag = false;
+    private AppUpdateController updateController;
     private LoginController controller;
+    final String TAG = getClass().getSimpleName();
+    /**
+     * 是否已经获取到权限
+     */
+    private boolean hasPer;
 
     @Override
     protected int getLayoutResId() {
@@ -94,7 +109,14 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
         if (!TextUtils.isEmpty(account)) {
             til_account.getEditText().setSelection(account.length());
         }
+        updateController = new AppUpdateController((BaseActivity) mActivity, new AppUpdateController.AppUpdateListener() {
+            @Override
+            public void notUpdate() {
+                handleLogin();
+            }
+        });
         controller = new LoginController();
+        applyNeedPermissions();
     }
 
     public void buildListener() {
@@ -204,11 +226,21 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
         //验证用户名和密码
         if (validateAccount(account) && validatePassword(password)) {
             saveAccountLoginInfo(account, password);
-            showDialog();
-            doLogin();
+            updateController.checkAppUpdate();
         }
     }
 
+    /**
+     * 登录开始
+     */
+    private void handleLogin() {
+        showDialog();
+        doLogin();
+    }
+
+    /**
+     * 登录网络请求
+     */
     private void doLogin() {
         addSubscription(controller.login(), new Consumer<UserEntity>() {
             @Override
@@ -362,5 +394,58 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
         mAnimatorTranslateY.setDuration(300);
         mAnimatorTranslateY.setInterpolator(new AccelerateDecelerateInterpolator());
         mAnimatorTranslateY.start();
+    }
+
+    public boolean isHasPer() {
+        return hasPer;
+    }
+
+    @AfterPermissionGranted(MPermissionUtils.RC_STORAGE_CAMERA_PERM)
+    public void applyNeedPermissions() {
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            Log.d(TAG, "hasPermissions true");
+            hasPer = true;
+        } else {
+            EasyPermissions.requestPermissions(this, "Apply CAMERA Permissions", MPermissionUtils.RC_STORAGE_CAMERA_PERM, perms);
+        }
+    }
+
+    /**
+     * 参照 https://github.com/googlesamples/easypermissions/blob/master/app/src/main/java/pub/devrel/easypermissions/sample/MainActivity.java
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // 将结果转发给EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size());
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        Log.d(TAG, "onPermissionsDenied:" + requestCode + ":" + perms.size());
+        // (Optional) Check whether the user denied any permissions and checked "NEVER ASK AGAIN."
+        // This will display a dialog directing them to enable the permission in app settings.
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+            // Do something after user returned from app settings screen, like showing a Toast.
+
+        }
     }
 }

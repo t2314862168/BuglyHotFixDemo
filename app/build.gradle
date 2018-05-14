@@ -71,15 +71,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.tinker
-            buildConfigField("boolean", "LOG_DEBUG", "false")
-            buildConfigField("boolean", "IS_DEBUG", "false")
+            buildConfigField("boolean", "LOG_DEBUG", "true")
+            buildConfigField("boolean", "IS_DEBUG", "true")
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.tinker
-            buildConfigField("boolean", "LOG_DEBUG", "true")
-            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("boolean", "LOG_DEBUG", "false")
+            buildConfigField("boolean", "IS_DEBUG", "false")
         }
     }
 }
@@ -153,6 +153,7 @@ dependencies {
         exclude group: 'com.android.support'
     })
     compile 'com.mylhyl:zxingscanner:2.1.1'
+    compile 'com.qianwen:update-app:3.5.1'
 }
 
 apply plugin: 'org.greenrobot.greendao'

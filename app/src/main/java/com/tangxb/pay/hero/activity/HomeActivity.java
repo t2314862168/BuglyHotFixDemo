@@ -1,35 +1,38 @@
 package com.tangxb.pay.hero.activity;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.content.Intent;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
+import com.chanven.lib.cptr.PtrClassicFrameLayoutEx;
+import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
-import com.tangxb.pay.hero.fragment.Tab_0_Fragment;
-import com.tangxb.pay.hero.util.ToastUtils;
+import com.tangxb.pay.hero.decoration.MDividerGridItemDecoration;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
+ * 主页界面<br>
  * Created by tangxuebing on 2018/5/8.
  */
 
 public class HomeActivity extends BaseActivity {
-    @BindView(R.id.fragment_container)
-    FrameLayout mFrameLayout;
-    @BindView(R.id.tv_tab_0)
-    TextView mTabTv0;
-    @BindView(R.id.tv_tab_1)
-    TextView mTabTv1;
-    @BindView(R.id.tv_tab_2)
-    TextView mTabTv2;
+    @BindView(R.id.test_recycler_view_frame)
+    PtrClassicFrameLayoutEx ptrClassicFrameLayout;
+    @BindView(R.id.test_recycler_view)
+    RecyclerView mRecyclerView;
 
-    private FragmentManager supportFragmentManager;
-    private Tab_0_Fragment tab_0_fragment;
-    private String tag_tab_0_fragment;
+    private int[] mDataResIds = new int[]{R.string.user_manger, R.string.order_manger
+            , R.string.goods_manger, R.string.deliver_goods_manger, R.string.data_statistics
+            , R.string.permission_manger};
+    private List<String> mData = new ArrayList<>();
+    private RecyclerAdapterWithHF mAdapter;
 
     @Override
     protected int getLayoutResId() {
@@ -38,31 +41,50 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        supportFragmentManager = getSupportFragmentManager();
-        tag_tab_0_fragment = Tab_0_Fragment.class.getSimpleName();
-        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        if (supportFragmentManager.findFragmentByTag(tag_tab_0_fragment) == null) {
-            tab_0_fragment = Tab_0_Fragment.getInstance(tag_tab_0_fragment);
-            fragmentTransaction.add(R.id.fragment_container, tab_0_fragment, tag_tab_0_fragment);
-        } else {
-            tab_0_fragment = (Tab_0_Fragment) supportFragmentManager.findFragmentByTag(tag_tab_0_fragment);
+        for (int i = 0; i < mDataResIds.length; i++) {
+            mData.add(mResources.getString(mDataResIds[i]));
         }
-        fragmentTransaction.show(tab_0_fragment);
-        fragmentTransaction.commit();
+        CommonAdapter<String> commonAdapter = new CommonAdapter<String>(mActivity, R.layout.item_home, mData) {
+            @Override
+            protected void convert(ViewHolder holder, String s, int position) {
+                holder.setText(R.id.tv, s);
+            }
+        };
+        mAdapter = new RecyclerAdapterWithHF((MultiItemTypeAdapter) commonAdapter);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2));
+        // 请去修改styles.xml里面注释掉的android:listDivider代码
+        mRecyclerView.addItemDecoration(new MDividerGridItemDecoration(mActivity));
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new RecyclerAdapterWithHF.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerAdapterWithHF adapter, RecyclerView.ViewHolder vh, int position) {
+                handleItemClick(mData.get(position));
+            }
+        });
+        ptrClassicFrameLayout.setEnabled(false);
     }
 
-    @OnClick(R.id.tv_tab_0)
-    public void clickTab0(View view) {
-
+    public void handleItemClick(String itemStr) {
+        Intent intent = null;
+        if (itemStr.equals(mResources.getString(R.string.user_manger))) {
+            intent = getIntentWithPublicParams(UserMangerActivity.class);
+        } else if (itemStr.equals(mResources.getString(R.string.order_manger))) {
+            intent = getIntentWithPublicParams(UserMangerActivity.class);
+        } else if (itemStr.equals(mResources.getString(R.string.goods_manger))) {
+            intent = getIntentWithPublicParams(UserMangerActivity.class);
+        } else if (itemStr.equals(mResources.getString(R.string.deliver_goods_manger))) {
+            intent = getIntentWithPublicParams(UserMangerActivity.class);
+        } else if (itemStr.equals(mResources.getString(R.string.data_statistics))) {
+            intent = getIntentWithPublicParams(UserMangerActivity.class);
+        } else if (itemStr.equals(mResources.getString(R.string.dispatch_manger))) {
+            intent = getIntentWithPublicParams(UserMangerActivity.class);
+        } else if (itemStr.equals(mResources.getString(R.string.permission_manger))) {
+            intent = getIntentWithPublicParams(UserMangerActivity.class);
+        }
+        if (intent != null) {
+            startCustomActivity(intent);
+        }
     }
 
-    @OnClick(R.id.tv_tab_1)
-    public void clickTab1(View view) {
-        ToastUtils.t(mApplication, "暂时还不支持微信收款");
-    }
 
-    @OnClick(R.id.tv_tab_2)
-    public void clickTab2(View view) {
-        ToastUtils.t(mApplication, "待定功能还未确定,敬请期待");
-    }
 }

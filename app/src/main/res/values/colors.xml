@@ -7,4 +7,7 @@
     <color name="colorAccent_2">#DD2C00</color>
     <color name="material_red_400">#EF5350</color>
     <color name="tint">#f44336</color>
+
+    <!--下面开始是项目资源 -->
+    <color name="main_color">#9CCB39</color>
 </resources>

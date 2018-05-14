@@ -9,4 +9,14 @@
     <string name="login">登录</string>
     <string name="apply_permission_tips">应用正在申请访问内存和打电话权限</string>
     <string name="please_input_limit_pwd">请输入数字或字母</string>
+
+    <!-- 下面开始项目资源 -->
+    <string name="user_manger">用户管理</string>
+    <string name="order_manger">订单管理</string>
+    <string name="goods_manger">商品管理</string>
+    <string name="deliver_goods_manger">发货管理</string>
+    <string name="data_statistics">数据统计</string>
+    <string name="dispatch_manger">配送管理</string>
+    <string name="permission_manger">权限管理</string>
+    <string name="add_user">添加用户</string>
 </resources>

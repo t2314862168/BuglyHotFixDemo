@@ -49,7 +49,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         super.onCreate();
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-        Bugly.init(getApplication(), "5659c6166f", true);
+        Bugly.init(getApplication(), "41a6b76fab", true);
 
         initDebugSth();
         init();
