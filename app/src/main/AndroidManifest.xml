@@ -47,6 +47,7 @@
         </activity>
         <activity android:name=".activity.HomeActivity" />
         <!--<activity android:name=".activity.UserMangerActivity" />-->
+        <activity android:name=".activity.EditUserInfoActivity" />
 
         <!-- 相机和安装包权限都需要改配置 -->
         <provider

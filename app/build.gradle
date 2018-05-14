@@ -153,7 +153,7 @@ dependencies {
         exclude group: 'com.android.support'
     })
     compile 'com.mylhyl:zxingscanner:2.1.1'
-    compile 'com.qianwen:update-app:3.5.1'
+    // compile 'com.qianwen:update-app:3.5.1'
 }
 
 apply plugin: 'org.greenrobot.greendao'

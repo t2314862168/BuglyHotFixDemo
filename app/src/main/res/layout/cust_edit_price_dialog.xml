@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:textSize="@dimen/middle"
+        android:text="修改内容"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:id="@+id/option_layout"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp">
+
+
+        <EditText
+            android:id="@+id/num_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-1px"
+            android:layout_marginRight="-1px"
+            android:layout_weight="1"
+            android:background="@drawable/edit_btn"
+            android:gravity="center"
+            android:textSize="@dimen/middle"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:text="1" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sure_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/option_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@color/color_red"
+        android:onClick="EditLayoutOptioin"
+        android:text="确   认"
+        android:textSize="@dimen/middle"
+        android:textColor="@color/white" />
+</LinearLayout>

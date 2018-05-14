@@ -12,4 +12,9 @@
     <dimen name="font_small">14sp</dimen>
     <dimen name="font_middle">16sp</dimen>
     <dimen name="font_big">18sp</dimen>
+
+    <dimen name="mini">12sp</dimen>
+    <dimen name="small">14sp</dimen>
+    <dimen name="middle">16sp</dimen>
+    <dimen name="big">18sp</dimen>
 </resources>

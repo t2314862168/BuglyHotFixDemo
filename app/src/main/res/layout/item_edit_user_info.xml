@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@android:color/white"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tv_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="30dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/font_small"
+        tools:text="用户名" />
+
+    <TextView
+        android:id="@+id/tv_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="right"
+        android:maxLines="1"
+        android:textSize="@dimen/font_small" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text=">"
+        android:textSize="@dimen/font_small" />
+
+</LinearLayout>
+

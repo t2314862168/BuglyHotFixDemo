@@ -1,5 +1,6 @@
 package com.tangxb.pay.hero.activity;
 
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,7 +12,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tangxb.pay.hero.R;
+import com.tangxb.pay.hero.event.SearchKeyEvent;
 import com.tangxb.pay.hero.util.DensityUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by tangxuebing on 2018/5/14.
@@ -25,6 +29,8 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
     protected EditText mSearchEt;
     protected Animation showAnim;
     protected Animation hiddenAnim;
+    protected String mOriginMiddleText;
+    protected String mSearchKeyword;
 
     public void handleSearchTitle() {
         mSearchTitleView = View.inflate(mActivity, R.layout.layout_common_title_with_search, null);
@@ -89,11 +95,13 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
     }
 
     public void setMiddleText(int resId) {
-        middleTv.setText(mResources.getText(resId));
+        mOriginMiddleText = mResources.getText(resId).toString();
+        middleTv.setText(mOriginMiddleText);
     }
 
     public void setMiddleText(String text) {
-        middleTv.setText(text);
+        mOriginMiddleText = text;
+        middleTv.setText(mOriginMiddleText);
     }
 
     /**
@@ -110,7 +118,14 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
             hideSoftInput(mActivity, mSearchEt);
             String content = mSearchEt.getText().toString();
             mSearchEt.startAnimation(hiddenAnim);
-            middleTv.setText(content);
+            if (TextUtils.isEmpty(content)) {
+                mSearchKeyword = null;
+                middleTv.setText(mOriginMiddleText);
+            } else {
+                mSearchKeyword = content;
+                middleTv.setText(content);
+            }
+            EventBus.getDefault().post(new SearchKeyEvent(mSearchKeyword));
         }
     }
 
@@ -121,7 +136,14 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
         hideSoftInput(mActivity, mSearchEt);
         String content = mSearchEt.getText().toString();
         mSearchEt.startAnimation(hiddenAnim);
-        middleTv.setText(content);
+        if (TextUtils.isEmpty(content)) {
+            mSearchKeyword = null;
+            middleTv.setText(mOriginMiddleText);
+        } else {
+            mSearchKeyword = content;
+            middleTv.setText(content);
+        }
+        EventBus.getDefault().post(new SearchKeyEvent(mSearchKeyword));
     }
 
     /**
@@ -146,5 +168,32 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
 
             }
         });
+    }
+
+    /**
+     * 当前界面搜索的关键字
+     *
+     * @return
+     */
+    public String getSearchKeyword() {
+        return mSearchKeyword;
+    }
+
+    /**
+     * 监听返回键,如果搜索框可见,或者有搜索内容
+     */
+    @Override
+    public void onBackPressed() {
+        if (mSearchEt.getVisibility() == View.VISIBLE) {
+            mSearchEt.startAnimation(hiddenAnim);
+            return;
+        }
+        if (!TextUtils.isEmpty(mSearchKeyword)) {
+            mSearchKeyword = null;
+            middleTv.setText(mOriginMiddleText);
+            EventBus.getDefault().post(new SearchKeyEvent(mSearchKeyword));
+            return;
+        }
+        super.onBackPressed();
     }
 }

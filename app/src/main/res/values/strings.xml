@@ -19,4 +19,5 @@
     <string name="dispatch_manger">配送管理</string>
     <string name="permission_manger">权限管理</string>
     <string name="add_user">添加用户</string>
+    <string name="personal_info">个人信息</string>
 </resources>
