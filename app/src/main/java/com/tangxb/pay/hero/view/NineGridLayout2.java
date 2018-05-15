@@ -263,7 +263,7 @@ public abstract class NineGridLayout2 extends ViewGroup {
                 textView.getBackground().setAlpha(120);
 
                 textView.layout(left, top, right, bottom);
-                addView(textView);
+//                addView(textView);
             }
         }
         displayImage(imageView, url);
