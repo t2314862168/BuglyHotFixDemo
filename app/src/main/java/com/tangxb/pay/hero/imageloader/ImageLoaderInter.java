@@ -13,6 +13,15 @@ public interface ImageLoaderInter {
      * 加载普通的图片
      *
      * @param activity
+     * @param imageResId
+     * @param imageView
+     */
+    void loadCommonImgByUrl(Activity activity, int imageResId, ImageView imageView);
+
+    /**
+     * 加载普通的图片
+     *
+     * @param activity
      * @param imageUrl
      * @param imageView
      */

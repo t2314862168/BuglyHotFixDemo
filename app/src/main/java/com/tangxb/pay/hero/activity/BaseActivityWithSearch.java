@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tangxb.pay.hero.R;
@@ -38,7 +39,7 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
         FrameLayout contentView = (FrameLayout) findViewById(android.R.id.content);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
                 , dip50);
-        View rootView = contentView.findViewById(R.id.root_container);
+        View rootView = contentView.getChildAt(0);
         contentView.addView(mSearchTitleView, 0, layoutParams);
         FrameLayout.LayoutParams layoutParams2 = (FrameLayout.LayoutParams) rootView.getLayoutParams();
         layoutParams2.topMargin = dip50;
@@ -73,6 +74,15 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
      * 点击左边的按钮处理
      */
     public abstract void clickLeftBtn();
+
+    public void setLeftBtnTextVisible(boolean visible) {
+        mLeftBtn.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        if (!visible) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) middleTv.getLayoutParams();
+            layoutParams.leftMargin += DensityUtils.dip2px(mActivity, 25f);
+            middleTv.setLayoutParams(layoutParams);
+        }
+    }
 
     public void setLeftBtnText(int resId) {
         mLeftBtn.setText(mResources.getText(resId));

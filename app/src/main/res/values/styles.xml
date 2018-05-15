@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-       <!-- <item name="android:listDivider">@drawable/divider_bg</item>-->
+        <!-- <item name="android:listDivider">@drawable/divider_bg</item>-->
     </style>
 
     <!-- https://isming.me/2015/08/31/modify-alert-style/ -->
@@ -17,5 +17,31 @@
     <style name="MyAnimation">
         <item name="android:windowEnterAnimation">@anim/modal_in</item>
         <item name="android:windowExitAnimation">@anim/modal_out</item>
+    </style>
+
+    <!-- 下面开始项目 -->
+    <style name="edit_product_leanLayout_style">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/bottom_line</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="text_edit_product">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">70dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="edit_edit_product">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@null</item>
     </style>
 </resources>

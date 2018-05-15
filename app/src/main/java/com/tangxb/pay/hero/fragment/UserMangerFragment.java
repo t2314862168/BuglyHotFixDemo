@@ -97,8 +97,6 @@ public class UserMangerFragment extends BaseFragment {
         mAdapter = new RecyclerAdapterWithHF((MultiItemTypeAdapter) commonAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerView.addItemDecoration(new MDividerItemDecoration(mActivity, LinearLayoutManager.VERTICAL));
-        View headerView = View.inflate(mActivity, R.layout.customer_manager_fragment_layout_head, null);
-        mAdapter.addHeader(headerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new RecyclerAdapterWithHF.OnItemClickListener() {
             @Override

@@ -17,6 +17,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.tangxb.pay.hero.util.DensityUtils;
+
 
 /**
  * This class is from the v7 samples of the Android SDK. It's not by me!
@@ -36,6 +38,8 @@ public class MDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 
     private int mOrientation;
+    private int mDividerHeight;
+    private int mDividerWidth;
 
     public MDividerItemDecoration(Context context, int orientation, int drawableResId) {
         mDivider = ContextCompat.getDrawable(context, drawableResId);
@@ -47,6 +51,23 @@ public class MDividerItemDecoration extends RecyclerView.ItemDecoration {
         mDivider = a.getDrawable(0);
         a.recycle();
         setOrientation(orientation);
+    }
+
+    public MDividerItemDecoration(Context context, int orientation, float dpH) {
+        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        mDivider = a.getDrawable(0);
+        a.recycle();
+        setOrientation(orientation);
+        mDividerHeight = DensityUtils.dip2px(context, dpH);
+    }
+
+    public MDividerItemDecoration(Context context, int orientation, float dpW, float dpH) {
+        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        mDivider = a.getDrawable(0);
+        a.recycle();
+        setOrientation(orientation);
+        mDividerWidth = DensityUtils.dip2px(context, dpW);
+        mDividerHeight = DensityUtils.dip2px(context, dpH);
     }
 
     public void setOrientation(int orientation) {
@@ -77,7 +98,11 @@ public class MDividerItemDecoration extends RecyclerView.ItemDecoration {
                     .getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin;
             final int bottom = top + mDivider.getIntrinsicHeight();
-            mDivider.setBounds(left, top, right, bottom);
+            if (mDividerHeight > 0) {
+                mDivider.setBounds(left, top, right, top + mDividerHeight);
+            } else {
+                mDivider.setBounds(left, top, right, bottom);
+            }
             mDivider.draw(c);
         }
     }
@@ -93,7 +118,11 @@ public class MDividerItemDecoration extends RecyclerView.ItemDecoration {
                     .getLayoutParams();
             final int left = child.getRight() + params.rightMargin;
             final int right = left + mDivider.getIntrinsicHeight();
-            mDivider.setBounds(left, top, right, bottom);
+            if (mDividerHeight > 0) {
+                mDivider.setBounds(left, top, left + mDividerHeight, bottom);
+            } else {
+                mDivider.setBounds(left, top, right, bottom);
+            }
             mDivider.draw(c);
         }
     }
@@ -101,9 +130,17 @@ public class MDividerItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
         if (mOrientation == VERTICAL_LIST) {
-            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+            if (mDividerHeight > 0) {
+                outRect.set(0, 0, 0, mDividerHeight);
+            } else {
+                outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+            }
         } else {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+            if (mDividerWidth > 0) {
+                outRect.set(0, 0, mDividerWidth, 0);
+            } else {
+                outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+            }
         }
     }
 }

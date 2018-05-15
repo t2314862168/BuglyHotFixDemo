@@ -25,6 +25,24 @@ public class GlideLoaderInterImpl implements ImageLoaderInter {
      * 加载普通的图片
      *
      * @param activity
+     * @param imageResId
+     * @param imageView
+     */
+    @Override
+    public void loadCommonImgByUrl(Activity activity, int imageResId, ImageView imageView) {
+        Glide.with(activity).load(imageResId)
+                .placeholder(placeholderResId)
+                .error(errorResId)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade()
+                .into(imageView);
+    }
+
+    /**
+     * 加载普通的图片
+     *
+     * @param activity
      * @param imageUrl
      * @param imageView
      */

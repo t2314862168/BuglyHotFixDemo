@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <paths>
-        <external-path path="" name="App_Download"/>
+        <!--下载apk-->
+        <external-path
+            name="App_Download"
+            path="" />
     </paths>
 </resources>

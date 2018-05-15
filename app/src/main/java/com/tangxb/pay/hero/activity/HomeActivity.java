@@ -71,7 +71,7 @@ public class HomeActivity extends BaseActivity {
         } else if (itemStr.equals(mResources.getString(R.string.order_manger))) {
             intent = getIntentWithPublicParams(UserMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.goods_manger))) {
-            intent = getIntentWithPublicParams(UserMangerActivity.class);
+            intent = getIntentWithPublicParams(GoodsMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.deliver_goods_manger))) {
             intent = getIntentWithPublicParams(UserMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.data_statistics))) {

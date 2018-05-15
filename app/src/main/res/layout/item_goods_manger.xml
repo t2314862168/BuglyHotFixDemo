@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="124dp"
+    android:background="@drawable/bg_selector_goods_manger_item">
+
+    <ImageView
+        android:id="@+id/iv_network"
+        android:layout_width="120dp"
+        android:layout_height="114dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_index_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/color_red"
+        android:gravity="center"
+        android:minWidth="20dp"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/middle" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11.4dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12.7dp"
+        android:layout_toRightOf="@+id/iv_network"
+        android:text="商品"
+        android:textColor="@color/black"
+        android:textSize="@dimen/middle" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_network"
+        android:layout_marginLeft="11.4dp"
+        android:layout_marginRight="12dp"
+        android:layout_toRightOf="@+id/iv_network"
+        android:text="400元"
+        android:textColor="@color/black"
+        android:textSize="@dimen/middle" />
+
+    <ImageView
+        android:id="@+id/iv_red_edit"
+        android:layout_width="42dp"
+        android:layout_height="32dp"
+        android:layout_alignBottom="@+id/iv_network"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/ic_red_edit"
+        android:textSize="@dimen/small" />
+</RelativeLayout>

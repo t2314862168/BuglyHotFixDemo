@@ -13,6 +13,17 @@ public class GlideLoaderFactory extends ImageLoaderFactory {
     ImageLoaderInter getImageLoaderInter() {
         return new GlideLoaderInterImpl();
     }
+    /**
+     * 加载普通的图片
+     *
+     * @param activity
+     * @param imageResId
+     * @param imageView
+     */
+    @Override
+    public void loadCommonImgByUrl(Activity activity, int imageResId, ImageView imageView) {
+        getImageLoaderInter().loadCommonImgByUrl(activity, imageResId, imageView);
+    }
 
     /**
      * 加载普通的图片

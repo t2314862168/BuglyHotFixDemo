@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:layout_gravity="bottom"
+    android:orientation="horizontal"
+    tools:showIn="@layout/activity_goods_manger">
+
+    <Button
+        android:id="@+id/btn_switch_goods"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/color_red"
+        android:text="切换"
+        android:textColor="@color/white"
+        android:textSize="@dimen/middle"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_category_manger"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/color_red"
+        android:text="分类管理"
+        android:textColor="@color/white"
+        android:textSize="@dimen/middle"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_create_goods"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/color_red"
+        android:text="上传商品"
+        android:textColor="@color/white"
+        android:textSize="@dimen/middle"
+        android:textStyle="bold" />
+</LinearLayout>

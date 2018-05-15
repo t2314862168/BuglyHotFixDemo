@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    style="@style/edit_product_leanLayout_style"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_edit_product"
+                        android:gravity="bottom"
+                        android:paddingBottom="2dp"
+                        android:text="商品名称：" />
+
+                    <EditText
+                        android:id="@+id/et_goods_name"
+                        style="@style/edit_edit_product"
+                        android:gravity="bottom"
+                        android:hint="名称"
+                        android:paddingBottom="2dp"
+                        android:textSize="@dimen/small" />
+
+                    <TextView
+                        android:id="@+id/tv_on_sale"
+                        style="@style/text_edit_product"
+                        android:layout_width="60dp"
+                        android:background="@drawable/border_main"
+                        android:gravity="center"
+                        android:text="上架"
+                        android:textColor="@color/main_color"
+                        android:textSize="@dimen/small" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/edit_product_leanLayout_style"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_edit_product"
+                        android:text="商品描述 :" />
+
+                    <EditText
+                        android:id="@+id/et_goods_describe"
+                        style="@style/edit_edit_product"
+                        android:hint="例如：汉源花椒"
+                        android:inputType="textCapCharacters"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/edit_product_leanLayout_style"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_edit_product"
+                        android:gravity="bottom"
+                        android:paddingBottom="2dp"
+                        android:text="库  存:" />
+
+                    <EditText
+                        android:id="@+id/et_stock"
+                        style="@style/edit_edit_product"
+                        android:gravity="bottom"
+                        android:hint="无限"
+                        android:inputType="numberDecimal"
+                        android:paddingBottom="2dp"
+                        android:textSize="@dimen/small" />
+
+                    <TextView
+                        android:id="@+id/tv_no_limit"
+                        style="@style/text_edit_product"
+                        android:layout_width="60dp"
+                        android:background="@drawable/border_main"
+                        android:gravity="center"
+                        android:text="无限"
+                        android:textColor="@color/main_color"
+                        android:textSize="@dimen/small" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/edit_product_leanLayout_style"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_edit_product"
+                        android:text="促  销:" />
+
+                    <TextView
+                        android:id="@+id/tv_promotion"
+                        style="@style/edit_edit_product"
+                        android:text="正常"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/edit_product_leanLayout_style"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_edit_product"
+                        android:text="订购单位" />
+
+                    <TextView
+                        android:id="@+id/tv_buy_unit"
+                        style="@style/edit_edit_product"
+                        android:gravity="center"
+                        android:hint="例如一件"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small" />
+
+                    <EditText
+                        android:id="@+id/et_unit_num"
+                        style="@style/edit_edit_product"
+                        android:gravity="center"
+                        android:hint="35"
+                        android:inputType="phone"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small" />
+
+                    <TextView
+                        android:id="@+id/tv_unit_detail"
+                        style="@style/edit_edit_product"
+                        android:gravity="center"
+                        android:hint="公斤"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/edit_product_leanLayout_style"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_edit_product"
+                        android:text="价    格：" />
+
+                    <EditText
+                        android:id="@+id/tv_price"
+                        style="@style/edit_edit_product"
+                        android:hint="和结算单位挂钩"
+                        android:inputType="numberDecimal"
+                        android:textSize="@dimen/small" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="选择商品头图:" />
+
+                <com.tangxb.pay.hero.view.MNineGridLayout2 xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/layout_nine_grid2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:sapcing="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="选择商品详情图:" />
+
+                <com.tangxb.pay.hero.view.MNineGridLayout3 xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/layout_nine_grid3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:sapcing="5dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
