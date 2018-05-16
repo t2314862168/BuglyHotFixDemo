@@ -10,6 +10,7 @@ public class ApiContants {
      */
     public static final int PAGE_SIZE = 12;
     public static final String standard1 = "http://47.96.17.116/vegetable/";
-    public static final String standard = "http://47.98.18.193/vegetable/";
+//    public static final String standard = "http://47.98.18.193/vegetable/";
+    public static final String standard = "http://47.96.97.84/lichuan/";
     public static String BASEURL = standard;
 }

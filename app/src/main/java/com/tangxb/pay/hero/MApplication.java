@@ -35,6 +35,15 @@ public class MApplication extends TinkerApplication {
     private ImageLoaderFactory imageLoaderFactory;
     private UserLoginResultBean mUserLoginResultBean;
     protected Stack<WeakReference<BaseActivity>> mActivityStack;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public MApplication() {
         super(ShareConstants.TINKER_ENABLE_ALL, MyApplicationLike.class.getCanonicalName(),

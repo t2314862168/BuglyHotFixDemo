@@ -5,10 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 
 import com.tangxb.pay.hero.RetrofitRxClient;
@@ -18,6 +15,7 @@ import com.tangxb.pay.hero.api.AppUpdateRxAPI;
 import com.tangxb.pay.hero.bean.AppUpdateBean;
 import com.tangxb.pay.hero.okhttp.OkHttpUtils;
 import com.tangxb.pay.hero.okhttp.callback.FileCallBack;
+import com.tangxb.pay.hero.util.FileProvider7;
 import com.tangxb.pay.hero.util.MPackageUtils;
 import com.tangxb.pay.hero.util.NetworkUtils;
 
@@ -73,10 +71,10 @@ public class AppUpdateController {
         mActivity.addSubscription(getAppUpdate(), new Consumer<AppUpdateBean>() {
             @Override
             public void accept(AppUpdateBean appUpdateBean) throws Exception {
-//                appUpdateBean.setUrl(mApkFileUrl);
-//                appUpdateBean.setDescription("强制升级应用咯。。。。");
-//                showAppUpdateTipDialog(appUpdateBean);
-                updateListener.notUpdate();
+                appUpdateBean.setUrl(mApkFileUrl);
+                appUpdateBean.setDescription("强制升级应用咯。。。。");
+                showAppUpdateTipDialog(appUpdateBean);
+//                updateListener.notUpdate();
             }
         });
     }
@@ -177,22 +175,9 @@ public class AppUpdateController {
      * @param apkFile
      */
     public void installApk(File apkFile) {
-        //判读版本是否在7.0以上
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //在AndroidManifest中的android:authorities值
-            Uri apkUri = FileProvider.getUriForFile(mActivity, mActivity.getPackageName() + ".fileprovider", apkFile);
-            Intent install = new Intent(Intent.ACTION_VIEW);
-            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //添加这一句表示对目标应用临时授权该Uri所代表的文件
-            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            install.setDataAndType(apkUri, "application/vnd.android.package-archive");
-            mActivity.startActivity(install);
-        } else {
-            Intent install = new Intent(Intent.ACTION_VIEW);
-            install.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
-            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mActivity.startActivity(install);
-        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        FileProvider7.setIntentDataAndType(mActivity, intent, "application/vnd.android.package-archive", apkFile, true);
+        mActivity.startActivity(intent);
         mApkDownloadDialog.dismiss();
         mActivity.finish();
     }

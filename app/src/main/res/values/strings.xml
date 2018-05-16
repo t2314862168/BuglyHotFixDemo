@@ -10,6 +10,8 @@
     <string name="apply_permission_tips">应用正在申请访问内存和打电话权限</string>
     <string name="please_input_limit_pwd">请输入数字或字母</string>
 
+    <!-- xml里面空格的使用 -->
+    <!-- https://blog.csdn.net/u012917700/article/details/55510741?fps=1&locationNum=8 -->
     <!-- 下面开始项目资源 -->
     <string name="user_manger">用户管理</string>
     <string name="order_manger">订单管理</string>
@@ -23,4 +25,16 @@
     <string name="add_goods">添加商品</string>
     <string name="upload_goods">上传商品</string>
     <string name="infinite">无限</string>
+    <string name="register_user">注册用户</string>
+    <string name="commit_two_blank">提&#160;&#160;交</string>
+    <string name="name_two_blank">姓&#160;&#160;名</string>
+    <string name="please_set_pwd">请设置密码</string>
+    <string name="please_re_set_pwd">请确认密码</string>
+    <string name="please_set_city_a_blank">&#160;地址(省/市/县)</string>
+    <string name="please_set_detail_address">详细地址</string>
+    <string name="phone_number">电话号码</string>
+    <string name="verify_code">验证码</string>
+    <string name="get_verify_code">获取验证码</string>
+    <string name="get_verify_code_2">获取验证码(%1$ds)</string>
+    <string name="choose_area">选择省市县</string>
 </resources>

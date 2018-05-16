@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.event.ChooseDetailImgEvent;
 import com.tangxb.pay.hero.event.ChooseHeadImgEvent;
+import com.tangxb.pay.hero.util.FileProvider7;
 import com.tangxb.pay.hero.util.ImgUtil;
 import com.tangxb.pay.hero.util.MDialogUtils;
 import com.tangxb.pay.hero.util.SDCardFileUtils;
@@ -127,19 +127,13 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
      */
     public void takePhotos() {
         String fileDir = SDCardFileUtils.getSDCardPath() + "DCIM/Camera/";
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         SDCardFileUtils.creatDir2SDCard(fileDir);
         String fileName = DateFormat.format("yyyy_MM_dd_hh_mm_ss", new Date()) + ".jpg";
         File file = new File(fileDir, fileName);
         mPhotoPathQueue.offer(file.getAbsolutePath());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri imageUri = FileProvider.getUriForFile(mActivity, mApplication.getPackageName() + ".provider", file);
-            intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        } else {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        }
+        Uri fileUri = FileProvider7.getUriForFile(this, file);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(intent, RC_CAMERA);
     }
 

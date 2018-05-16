@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/name_two_blank"
+            android:text="唐小兵v1"
+            android:textSize="@dimen/small" />
+
+        <EditText
+            android:id="@+id/et_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/please_set_pwd"
+            android:inputType="textPassword"
+            android:text="qq"
+            android:textSize="@dimen/small" />
+
+        <EditText
+            android:id="@+id/et_sure_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/please_re_set_pwd"
+            android:inputType="textPassword"
+            android:text="qq"
+            android:textSize="@dimen/small" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bottom_line_gray"
+            android:hint="@string/please_set_city_a_blank"
+            android:paddingBottom="5dp"
+            android:text="四川省成都市温江区"
+            android:textColor="@color/black"
+            android:textSize="@dimen/small" />
+
+
+        <EditText
+            android:id="@+id/et_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/please_set_detail_address"
+            android:text="学府北路"
+            android:textSize="@dimen/small" />
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/phone_number"
+            android:inputType="phone"
+            android:text="18782963990"
+            android:textSize="@dimen/small" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:text="qqqq"
+                android:id="@+id/et_verify_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/verify_code"
+                android:textSize="@dimen/small" />
+
+            <Button
+                android:id="@+id/btn_get_verify_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="@string/get_verify_code"
+                android:textSize="@dimen/middle" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="50dp"
+            android:background="@color/color_red"
+            android:text="@string/commit_two_blank"
+            android:textColor="@color/white"
+            android:textSize="@dimen/middle" />
+    </LinearLayout>
+</ScrollView>
