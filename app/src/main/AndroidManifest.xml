@@ -38,18 +38,20 @@
             android:name="UMENG_CHANNEL_VALUE"
             android:value="${UMENG_CHANNEL_VALUE}" />
 
-        <activity android:name=".activity.RegisterUserActivity">
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.RegisterUserActivity" />
+        <activity android:name=".activity.HomeActivity" />
         <activity android:name=".activity.UserMangerActivity" />
         <activity android:name=".activity.EditUserInfoActivity" />
         <activity android:name=".activity.GoodsMangerActivity" />
         <activity android:name=".activity.GoodsEditorActivity" />
+        <activity android:name=".activity.PermissionMangerActivity" />
 
         <!-- 相机和安装包权限都需要改配置 -->
         <provider

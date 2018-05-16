@@ -37,6 +37,14 @@ public class MApplication extends TinkerApplication {
     protected Stack<WeakReference<BaseActivity>> mActivityStack;
     private String token;
 
+    public UserLoginResultBean getUserLoginResultBean() {
+        return mUserLoginResultBean;
+    }
+
+    public void setUserLoginResultBean(UserLoginResultBean mUserLoginResultBean) {
+        this.mUserLoginResultBean = mUserLoginResultBean;
+    }
+
     public String getToken() {
         return token;
     }

@@ -185,7 +185,7 @@ public class UserMangerFragment extends BaseFragment {
             UserBean bean = userList.get(realPosition);
             bean.setId(userBean.getId());
             bean.setMobile(userBean.getMobile());
-            bean.setRole_name(userBean.getRole_name());
+//            bean.setRole_name(userBean.getRole_name());
 //            bean.setCity(userBean.getCity());
 //            bean.setAddress(userBean.getAddress());
 //            bean.setEnable(userBean.isEnable());

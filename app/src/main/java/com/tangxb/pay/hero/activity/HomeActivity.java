@@ -79,7 +79,7 @@ public class HomeActivity extends BaseActivity {
         } else if (itemStr.equals(mResources.getString(R.string.dispatch_manger))) {
             intent = getIntentWithPublicParams(UserMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.permission_manger))) {
-            intent = getIntentWithPublicParams(UserMangerActivity.class);
+            intent = getIntentWithPublicParams(PermissionMangerActivity.class);
         }
         if (intent != null) {
             startCustomActivity(intent);

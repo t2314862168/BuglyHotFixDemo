@@ -18,7 +18,10 @@ import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -144,11 +147,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             mCompositeDisposable = new CompositeDisposable();
         }
         try {
-            BaseObserver bb = new BaseObserver<T>(mActivity, true) {
-                @Override
-                public void onSuccess(T t) {
-                }
-            };
+//            BaseObserver bb = new BaseObserver<T>(mActivity, true) {
+//                @Override
+//                public void onSuccess(T t) {
+//                }
+//            };
             mCompositeDisposable.add(observable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

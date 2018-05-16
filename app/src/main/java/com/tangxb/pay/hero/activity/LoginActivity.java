@@ -23,8 +23,9 @@ import android.widget.TextView;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.controller.AppUpdateController;
 import com.tangxb.pay.hero.controller.LoginController;
-import com.tangxb.pay.hero.entity.UserEntity;
 import com.tangxb.pay.hero.help.KeyboardWatcher;
+import com.tangxb.pay.hero.listener.SimpleResultErrorListener;
+import com.tangxb.pay.hero.listener.SimpleResultListener;
 import com.tangxb.pay.hero.util.ConstUtils;
 import com.tangxb.pay.hero.util.MPermissionUtils;
 import com.tangxb.pay.hero.util.SPUtils;
@@ -35,7 +36,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -54,6 +54,8 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
     TextInputLayout til_password;
     @BindView(R.id.tv_remember_password)
     TextView mRememberPwdTv;
+    @BindView(R.id.tv_register_user)
+    TextView mRegisterTv;
     @BindView(R.id.iv_clean_phone)
     ImageView iv_clean_phone;
     @BindView(R.id.clean_password)
@@ -115,7 +117,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
                 handleLogin();
             }
         });
-        controller = new LoginController();
+        controller = new LoginController(this);
         applyNeedPermissions();
     }
 
@@ -168,6 +170,17 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
                 }
             }
         });
+    }
+
+    /**
+     * 注册用户
+     *
+     * @param view
+     */
+    @OnClick(R.id.tv_register_user)
+    public void clickRegisterAccount(View view) {
+        Intent intent = getIntentWithPublicParams(RegisterUserActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -242,14 +255,16 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      * 登录网络请求
      */
     private void doLogin() {
-        addSubscription(controller.login(), new Consumer<UserEntity>() {
+        String account = til_account.getEditText().getText().toString();
+        String password = til_password.getEditText().getText().toString();
+        controller.loginUser(account, password, new SimpleResultListener() {
             @Override
-            public void accept(UserEntity userEntity) throws Exception {
+            public void doSuccess() {
                 loginSuccess();
             }
-        }, new Consumer<Throwable>() {
+        }, new SimpleResultErrorListener() {
             @Override
-            public void accept(Throwable throwable) throws Exception {
+            public void doError(String errorMsg) {
                 loginError();
             }
         });
@@ -299,7 +314,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      */
     public void loginError() {
         hiddenDialog();
-        ToastUtils.t(mApplication, mResources.getString(R.string.login_error));
+//        ToastUtils.t(mApplication, mResources.getString(R.string.login_error));
     }
 
     /**
@@ -307,7 +322,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      */
     public void loginSuccess() {
         hiddenDialog();
-        ToastUtils.t(mApplication, mResources.getString(R.string.login_success));
+//        ToastUtils.t(mApplication, mResources.getString(R.string.login_success));
         Intent intent = new Intent(mActivity, HomeActivity.class);
         startActivity(intent);
         finish();

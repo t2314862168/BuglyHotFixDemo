@@ -30,6 +30,9 @@
     <string name="name_two_blank">姓&#160;&#160;名</string>
     <string name="please_set_pwd">请设置密码</string>
     <string name="please_re_set_pwd">请确认密码</string>
+    <string name="please_set_sex">请选择性别</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
     <string name="please_set_city_a_blank">&#160;地址(省/市/县)</string>
     <string name="please_set_detail_address">详细地址</string>
     <string name="phone_number">电话号码</string>

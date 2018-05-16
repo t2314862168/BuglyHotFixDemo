@@ -6,11 +6,13 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Taxngb on 2017/12/22.
  */
-
 public class UserBean {
     @Expose
     @SerializedName("id")
-    private Long id;
+    private long id;
+    @Expose
+    @SerializedName("icon")
+    private String icon;
     @Expose
     @SerializedName("username")
     private String username;
@@ -27,27 +29,44 @@ public class UserBean {
     @SerializedName("token")
     private String token;
     @Expose
-    @SerializedName("enable")
-    private Integer enable;
+    @SerializedName("realname")
+    private String realName;
+    @Expose
+    @SerializedName("sex")
+    private int sex;
+    @Expose
+    @SerializedName("status")
+    private int status;
     @Expose
     @SerializedName("parent_id")
-    private Long parent_id;
+    private long parentId;
     @Expose
     @SerializedName("address_id")
-    private Long address_id;
+    private long addressId;
     @Expose
     @SerializedName("role_id")
-    private Long role_id;
+    private long roleId;
     @Expose
     @SerializedName("role_name")
-    private String role_name;
+    private String roleName;
+    @Expose
+    @SerializedName("is_multi")
+    private int isMulti;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getUsername() {
@@ -90,43 +109,67 @@ public class UserBean {
         this.token = token;
     }
 
-    public Integer getEnable() {
-        return enable;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setEnable(Integer enable) {
-        this.enable = enable;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
-    public Long getParent_id() {
-        return parent_id;
+    public int getSex() {
+        return sex;
     }
 
-    public void setParent_id(Long parent_id) {
-        this.parent_id = parent_id;
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 
-    public Long getAddress_id() {
-        return address_id;
+    public int getStatus() {
+        return status;
     }
 
-    public void setAddress_id(Long address_id) {
-        this.address_id = address_id;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public Long getRole_id() {
-        return role_id;
+    public long getParentId() {
+        return parentId;
     }
 
-    public void setRole_id(Long role_id) {
-        this.role_id = role_id;
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
     }
 
-    public String getRole_name() {
-        return role_name;
+    public long getAddressId() {
+        return addressId;
     }
 
-    public void setRole_name(String role_name) {
-        this.role_name = role_name;
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
+    }
+
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public int getIsMulti() {
+        return isMulti;
+    }
+
+    public void setIsMulti(int isMulti) {
+        this.isMulti = isMulti;
     }
 }

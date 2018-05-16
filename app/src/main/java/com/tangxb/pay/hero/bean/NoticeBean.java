@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class NoticeBean {
     @Expose
     @SerializedName("id")
-    private Long id;
+    private long id;
     @Expose
     @SerializedName("title")
     private String title;
@@ -22,13 +22,13 @@ public class NoticeBean {
     private String create_time;
     @Expose
     @SerializedName("isShow")
-    private Integer isShow;
+    private int isShow;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -56,15 +56,11 @@ public class NoticeBean {
         this.create_time = create_time;
     }
 
-    public Integer getIsShow() {
+    public int getIsShow() {
         return isShow;
     }
 
-    public boolean isNeedShow() {
-        return isShow == 1;
-    }
-
-    public void setIsShow(Integer isShow) {
+    public void setIsShow(int isShow) {
         this.isShow = isShow;
     }
 }

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.controller.ChooseCityController;
+import com.tangxb.pay.hero.controller.ChooseSexController;
 import com.tangxb.pay.hero.controller.RegisterUserController;
 import com.tangxb.pay.hero.controller.VerifyCodeController;
 import com.tangxb.pay.hero.listener.SimpleResultListener;
@@ -31,6 +32,8 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
     EditText mPwdEt;
     @BindView(R.id.et_sure_pwd)
     EditText mSurePwdEt;
+    @BindView(R.id.tv_sex)
+    TextView mSexTv;
     @BindView(R.id.tv_city)
     TextView mCityTv;
     @BindView(R.id.et_address)
@@ -44,11 +47,13 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
     @BindView(R.id.btn_commit)
     Button mCommitBtn;
     VerCodeTimer verCodeTimer;
+    ChooseSexController sexController;
     ChooseCityController cityController;
     VerifyCodeController codeController;
     RegisterUserController userController;
     String areaId;
     String areaName;
+    int chooseSex = -1;
 
     /**
      * 获取验证码
@@ -80,6 +85,13 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
     protected void initData() {
         handleTitle();
         setMiddleText(R.string.register_user);
+        sexController = new ChooseSexController(this, new ChooseSexController.ChooseListener() {
+            @Override
+            public void chooseArea(int sexIndex, String str) {
+                chooseSex = sexIndex;
+                mSexTv.setText(str);
+            }
+        });
         cityController = new ChooseCityController(this, new ChooseCityController.ChooseListener() {
             @Override
             public void chooseArea(String parentId, String parentName) {
@@ -90,6 +102,16 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
         });
         codeController = new VerifyCodeController(this);
         userController = new RegisterUserController(this);
+    }
+
+    /**
+     * 选择性别
+     *
+     * @param view
+     */
+    @OnClick(R.id.tv_sex)
+    public void clickSex(View view) {
+        sexController.chooseSex();
     }
 
     /**
@@ -139,7 +161,7 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
         userController.registerUser(map, new SimpleResultListener() {
             @Override
             public void doSuccess() {
-//                mActivity.finish();
+                mActivity.finish();
             }
         });
     }
@@ -182,6 +204,10 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
             ToastUtils.t(mApplication, "请输入真实姓名");
             return null;
         }
+        if (chooseSex == -1) {
+            ToastUtils.t(mApplication, "性别不能为空");
+            return null;
+        }
         if (area.trim().length() < 3) {
             ToastUtils.t(mApplication, "省市县不能为空");
             return null;
@@ -192,12 +218,13 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
         }
 
         Map<String, String> data = new HashMap<String, String>();
-        data.put("username", phone);
-        data.put("nickname", nickName);
+        data.put("realname", nickName);
+        data.put("mobile", phone);
         data.put("password", passNew);
         data.put("mobile", phone);
         data.put("city", area);
         data.put("address", address);
+        data.put("sex", chooseSex + "");
         return data;
     }
 }

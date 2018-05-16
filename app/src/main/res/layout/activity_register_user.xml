@@ -38,6 +38,17 @@
             android:textSize="@dimen/small" />
 
         <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bottom_line_gray"
+            android:hint="@string/please_set_sex"
+            android:paddingBottom="5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/small" />
+
+        <TextView
             android:id="@+id/tv_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,12 +88,12 @@
             android:orientation="horizontal">
 
             <EditText
-                android:text="qqqq"
                 android:id="@+id/et_verify_code"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/verify_code"
+                android:text="qqqq"
                 android:textSize="@dimen/small" />
 
             <Button
@@ -98,7 +109,6 @@
             android:id="@+id/btn_commit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginTop="50dp"
             android:background="@color/color_red"
             android:text="@string/commit_two_blank"
