@@ -10,16 +10,19 @@ import com.google.gson.annotations.SerializedName;
 public class RoleBean {
     @Expose
     @SerializedName("id")
-    private Long id;
+    private long id;
     @Expose
     @SerializedName("name")
     private String name;
+    @Expose
+    @SerializedName("level")
+    private long level;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -29,5 +32,13 @@ public class RoleBean {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getLevel() {
+        return level;
+    }
+
+    public void setLevel(long level) {
+        this.level = level;
     }
 }

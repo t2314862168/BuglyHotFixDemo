@@ -1,5 +1,7 @@
 package com.tangxb.pay.hero.util;
 
+import com.tangxb.pay.hero.bean.PermissionBean;
+
 /**
  * Created by Taxngb on 2017/12/25.
  */
@@ -17,4 +19,49 @@ public class ConstUtils {
      * 每一页的页数大小
      */
     public static final int PAGE_SIZE = 12;
+    /**
+     * 商品管理权限
+     */
+    public static final PermissionBean PM_100 = new PermissionBean(100, "商品管理");
+    /**
+     * 数据统计权限
+     */
+    public static final PermissionBean PM_200 = new PermissionBean(200, "数据统计");
+    /**
+     * 查看所有统计权限
+     */
+    public static final PermissionBean PM_201 = new PermissionBean(201, "查看所有统计", 200);
+    /**
+     * 发货管理权限
+     */
+    public static final PermissionBean PM_300 = new PermissionBean(300, "发货管理");
+    /**
+     * 配送管理权限
+     */
+    public static final PermissionBean PM_400 = new PermissionBean(400, "配送管理");
+    /**
+     * 权限管理权限
+     */
+    public static final PermissionBean PM_500 = new PermissionBean(500, "权限管理");
+    /**
+     * 用户管理权限
+     */
+    public static final PermissionBean PM_600 = new PermissionBean(600, "用户管理");
+
+    /**
+     * 消息管理权限
+     */
+    public static final PermissionBean PM_700 = new PermissionBean(700, "消息管理");
+    /**
+     * 审批权限权限
+     */
+    public static final PermissionBean PM_701 = new PermissionBean(701, "审批权限", 700);
+    /**
+     * 订单管理权限
+     */
+    public static final PermissionBean PM_800 = new PermissionBean(800, "订单管理");
+    /**
+     * 管理所有订单权限
+     */
+    public static final PermissionBean PM_801 = new PermissionBean(801, "管理所有订单", 800);
 }

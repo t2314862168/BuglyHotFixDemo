@@ -36,6 +36,8 @@ public class MApplication extends TinkerApplication {
     private UserLoginResultBean mUserLoginResultBean;
     protected Stack<WeakReference<BaseActivity>> mActivityStack;
     private String token;
+    private long currentLoginUserId;
+    private long currentLoginRoleId;
 
     public UserLoginResultBean getUserLoginResultBean() {
         return mUserLoginResultBean;
@@ -43,6 +45,26 @@ public class MApplication extends TinkerApplication {
 
     public void setUserLoginResultBean(UserLoginResultBean mUserLoginResultBean) {
         this.mUserLoginResultBean = mUserLoginResultBean;
+        currentLoginUserId = mUserLoginResultBean == null ? 0 : mUserLoginResultBean.getUser().getId();
+        currentLoginRoleId = mUserLoginResultBean == null ? 0 : mUserLoginResultBean.getUser().getRoleId();
+    }
+
+    /**
+     * 获取当前登录用户的用户id
+     *
+     * @return
+     */
+    public long getUserId() {
+        return currentLoginUserId;
+    }
+
+    /**
+     * 获取当前登录用户的角色id
+     *
+     * @return
+     */
+    public long getRoleId() {
+        return currentLoginRoleId;
     }
 
     public String getToken() {
@@ -51,6 +73,10 @@ public class MApplication extends TinkerApplication {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public RefWatcher getmRefWatcher() {
+        return mRefWatcher;
     }
 
     public MApplication() {

@@ -1,5 +1,6 @@
 package com.tangxb.pay.hero.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +9,12 @@ import com.chanven.lib.cptr.PtrClassicFrameLayoutEx;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.KeyValueBean;
+import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.RoleBean;
+import com.tangxb.pay.hero.controller.EditUserInfoController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
 import com.tangxb.pay.hero.util.MDialogUtils;
+import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -17,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by Administrator on 2018/5/14 0014.
@@ -30,6 +36,8 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
 
     private List<KeyValueBean> mData = new ArrayList<>();
     private RecyclerAdapterWithHF mAdapter;
+    EditUserInfoController editUserInfoController;
+    long currentUserId;
 
     @Override
     protected int getLayoutResId() {
@@ -52,10 +60,15 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
     }
 
     @Override
+    protected void receivePassDataIfNeed(Intent intent) {
+        currentUserId = intent.getLongExtra("currentUserId", 0);
+    }
+
+    @Override
     protected void initData() {
         handleTitle();
         setMiddleText(R.string.personal_info);
-
+        editUserInfoController = new EditUserInfoController(this);
         mockData();
 
         CommonAdapter commonAdapter = new CommonAdapter<KeyValueBean>(mActivity, R.layout.item_edit_user_info, mData) {
@@ -82,6 +95,53 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
         });
     }
 
+
+    /**
+     * 获取角色列表
+     */
+    public void getRoleList() {
+        addSubscription(editUserInfoController.getRoleList(), new Consumer<MBaseBean<List<RoleBean>>>() {
+            @Override
+            public void accept(MBaseBean<List<RoleBean>> baseBean) throws Exception {
+                showRoleListDialog(baseBean.getData());
+            }
+        });
+    }
+
+    /**
+     * 显示角色列表对话框
+     *
+     * @param roleBeanList
+     */
+    public void showRoleListDialog(final List<RoleBean> roleBeanList) {
+        if (roleBeanList == null || roleBeanList.size() == 0) return;
+        String title = mResources.getString(R.string.choose_role_to_user);
+        int size = roleBeanList.size();
+        final long[] roleIds = new long[size];
+        final String[] items = new String[size];
+        for (int i = 0; i < size; i++) {
+            roleIds[i] = roleBeanList.get(i).getId();
+            items[i] = roleBeanList.get(i).getName();
+        }
+        MDialogUtils.showSingleChoiceDialog(mActivity, title, items, new MDialogUtils.OnCheckListener() {
+            @Override
+            public void onSure(int which, AlertDialog dialog) {
+                dialog.dismiss();
+                updateRoleToUser(currentUserId, roleIds[which]);
+            }
+        });
+    }
+
+    public void updateRoleToUser(long userId, long roleId) {
+        addSubscription(editUserInfoController.updateRoleToUser(userId, roleId), new Consumer<MBaseBean<String>>() {
+            @Override
+            public void accept(MBaseBean<String> baseBean) throws Exception {
+                ToastUtils.t(mApplication, baseBean.getMessage());
+            }
+        });
+    }
+
+
     /**
      * 点击item
      *
@@ -90,12 +150,7 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
     private void handleItemClick(int position) {
         switch (position) {
             case 0:
-                MDialogUtils.showNumberDialog(mActivity, "商品上浮比例", 0, 0, 100, true, new MDialogUtils.OnSureListener() {
-                    @Override
-                    public void onSure(final int number, int offset, AlertDialog dialog) {
-                        dialog.dismiss();
-                    }
-                });
+                getRoleList();
                 break;
             case 1:
                 MDialogUtils.showEditTextDialog(mActivity, "Title", "Teext", new MDialogUtils.OnSureTextListener() {

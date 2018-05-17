@@ -52,6 +52,7 @@
         <activity android:name=".activity.GoodsMangerActivity" />
         <activity android:name=".activity.GoodsEditorActivity" />
         <activity android:name=".activity.PermissionMangerActivity" />
+        <activity android:name=".activity.PermissionMangerDistributeActivity" />
 
         <!-- 相机和安装包权限都需要改配置 -->
         <provider

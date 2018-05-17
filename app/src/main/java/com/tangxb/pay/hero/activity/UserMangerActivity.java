@@ -7,7 +7,6 @@ import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.adapter.UserManagerActivityFragmentAdapter;
 import com.tangxb.pay.hero.bean.RoleBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,14 +46,9 @@ public class UserMangerActivity extends BaseActivityWithSearch {
      * 加载需要的数据
      */
     private void loadNeedData() {
-        List<RoleBean> parserList = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            RoleBean roleBean = new RoleBean();
-            roleBean.setId(100L);
-            roleBean.setName("RoleBean-" + i);
-            parserList.add(roleBean);
-        }
-        fragmentAdapter.setList(parserList);
+        if (mApplication.getUserLoginResultBean() == null) return;
+        List<RoleBean> roleList = mApplication.getUserLoginResultBean().getRoleList();
+        fragmentAdapter.setList(roleList);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 

@@ -130,11 +130,14 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
             mSearchEt.startAnimation(hiddenAnim);
             if (TextUtils.isEmpty(content)) {
                 mSearchKeyword = null;
+                mSearchEt.setText("");
                 middleTv.setText(mOriginMiddleText);
             } else {
                 mSearchKeyword = content;
                 middleTv.setText(content);
             }
+            handleSearchKeyword(mSearchKeyword);
+            // 发送给Fragment使用
             EventBus.getDefault().post(new SearchKeyEvent(mSearchKeyword));
         }
     }
@@ -148,11 +151,14 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
         mSearchEt.startAnimation(hiddenAnim);
         if (TextUtils.isEmpty(content)) {
             mSearchKeyword = null;
+            mSearchEt.setText("");
             middleTv.setText(mOriginMiddleText);
         } else {
             mSearchKeyword = content;
             middleTv.setText(content);
         }
+        handleSearchKeyword(mSearchKeyword);
+        // 发送给Fragment使用
         EventBus.getDefault().post(new SearchKeyEvent(mSearchKeyword));
     }
 
@@ -190,6 +196,15 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
     }
 
     /**
+     * 处理搜索事件
+     *
+     * @param searchKeyword
+     */
+    public void handleSearchKeyword(String searchKeyword) {
+
+    }
+
+    /**
      * 监听返回键,如果搜索框可见,或者有搜索内容
      */
     @Override
@@ -200,7 +215,10 @@ public abstract class BaseActivityWithSearch extends BaseActivity {
         }
         if (!TextUtils.isEmpty(mSearchKeyword)) {
             mSearchKeyword = null;
+            mSearchEt.setText("");
             middleTv.setText(mOriginMiddleText);
+            handleSearchKeyword(mSearchKeyword);
+            // 发送给Fragment使用
             EventBus.getDefault().post(new SearchKeyEvent(mSearchKeyword));
             return;
         }

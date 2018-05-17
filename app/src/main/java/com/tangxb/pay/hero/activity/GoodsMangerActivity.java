@@ -17,12 +17,9 @@ import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.GoodsBean;
 import com.tangxb.pay.hero.controller.GoodsMangerController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
-import com.tangxb.pay.hero.event.SearchKeyEvent;
 import com.tangxb.pay.hero.util.ConstUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +62,6 @@ public class GoodsMangerActivity extends BaseActivityWithSearch {
 
     @Override
     protected void initData() {
-        setNeedOnCreateRegister();
         handleSearchTitle();
         setLeftBtnTextVisible(false);
         setMiddleText(R.string.goods_manger);
@@ -180,12 +176,12 @@ public class GoodsMangerActivity extends BaseActivityWithSearch {
     }
 
     /**
-     * 搜索事件
+     * 处理搜索事件
      *
-     * @param event
+     * @param searchKeyword
      */
-    @Subscribe
-    public void onSearchKeyEvent(SearchKeyEvent event) {
+    @Override
+    public void handleSearchKeyword(String searchKeyword) {
         ptrClassicFrameLayout.autoRefresh();
     }
 

@@ -20,6 +20,7 @@
     <string name="data_statistics">数据统计</string>
     <string name="dispatch_manger">配送管理</string>
     <string name="permission_manger">权限管理</string>
+    <string name="distribute_permission">分配权限</string>
     <string name="add_user">添加用户</string>
     <string name="personal_info">个人信息</string>
     <string name="add_goods">添加商品</string>
@@ -40,4 +41,5 @@
     <string name="get_verify_code">获取验证码</string>
     <string name="get_verify_code_2">获取验证码(%1$ds)</string>
     <string name="choose_area">选择省市县</string>
+    <string name="choose_role_to_user">选择用户角色</string>
 </resources>
