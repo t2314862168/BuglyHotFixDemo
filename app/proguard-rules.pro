@@ -128,3 +128,7 @@ public static java.lang.String TABLENAME;
 -keep class cn.pedant.SweetAlert.Rotate3dAnimation {
     public <init>(...);
  }
+
+# oss
+-keep class com.alibaba.sdk.android.oss.** { *; }
+-dontwarn org.apache.commons.codec.binary.**

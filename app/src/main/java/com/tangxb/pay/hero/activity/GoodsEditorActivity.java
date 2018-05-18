@@ -14,12 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tangxb.pay.hero.R;
+import com.tangxb.pay.hero.controller.UploadPictureController;
 import com.tangxb.pay.hero.event.ChooseDetailImgEvent;
 import com.tangxb.pay.hero.event.ChooseHeadImgEvent;
 import com.tangxb.pay.hero.util.FileProvider7;
 import com.tangxb.pay.hero.util.ImgUtil;
 import com.tangxb.pay.hero.util.MDialogUtils;
 import com.tangxb.pay.hero.util.SDCardFileUtils;
+import com.tangxb.pay.hero.view.AlertProgressDialog;
 import com.tangxb.pay.hero.view.MNineGridLayout2;
 import com.tangxb.pay.hero.view.MNineGridLayout3;
 
@@ -33,6 +35,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by tangxuebing on 2018/5/15.
@@ -67,6 +70,7 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
     List<String> mDetailImgs = new ArrayList<>();
     int mChooseImgIndex = -1;
     LinkedBlockingQueue<String> mPhotoPathQueue = new LinkedBlockingQueue<>();
+    UploadPictureController uploadPictureController;
 
     @Override
     protected int getLayoutResId() {
@@ -87,6 +91,7 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
         gridLayout3.setUrlList(mDetailImgs);
         gridLayout2.setIsShowAll(false);
         gridLayout3.setIsShowAll(false);
+        uploadPictureController = new UploadPictureController(this);
     }
 
     private final int RC_CAMERA = 0;
@@ -164,8 +169,43 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
             } else if (mChooseImgIndex == 1) {
                 gridLayout3.addImgUrl(imgUrl);
             }
-            mChooseImgIndex = -1;
+            final String fuckUrl = imgUrl;
+            gridLayout3.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    testUploadImg(fuckUrl);
+                }
+            }, 500L);
         }
+        mChooseImgIndex = -1;
+    }
+
+    /**
+     * 测试数据
+     *
+     * @param imgUrl
+     */
+    public void testUploadImg(String imgUrl) {
+        List<String> filePaths = new ArrayList<>();
+        filePaths.add(imgUrl);
+        final AlertDialog alertDialog = new AlertProgressDialog.Builder(mActivity)
+                .setView(R.layout.layout_alert_dialog)
+                .setCancelable(false)
+                .setMessage(R.string.commit_data_ing)
+                .show();
+        addSubscription(uploadPictureController.uploadPicturesSync(filePaths, true), new Consumer<List<String>>() {
+            @Override
+            public void accept(List<String> strings) throws Exception {
+                System.out.println();
+                alertDialog.dismiss();
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                System.out.println();
+                alertDialog.dismiss();
+            }
+        });
     }
 
     /**

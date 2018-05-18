@@ -3,6 +3,10 @@ package com.tangxb.pay.hero;
 import android.app.Application;
 import android.content.Context;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
@@ -12,6 +16,7 @@ import com.tangxb.pay.hero.bean.UserLoginResultBean;
 import com.tangxb.pay.hero.imageloader.GlideLoaderFactory;
 import com.tangxb.pay.hero.imageloader.ImageLoaderFactory;
 import com.tangxb.pay.hero.okhttp.OkHttpUtils;
+import com.tangxb.pay.hero.util.ConstUtils;
 import com.tencent.tinker.loader.app.TinkerApplication;
 import com.tencent.tinker.loader.shareutil.ShareConstants;
 import com.umeng.analytics.MobclickAgent;
@@ -38,6 +43,7 @@ public class MApplication extends TinkerApplication {
     private String token;
     private long currentLoginUserId;
     private long currentLoginRoleId;
+    private OSSClient ossClient;
 
     public UserLoginResultBean getUserLoginResultBean() {
         return mUserLoginResultBean;
@@ -47,6 +53,10 @@ public class MApplication extends TinkerApplication {
         this.mUserLoginResultBean = mUserLoginResultBean;
         currentLoginUserId = mUserLoginResultBean == null ? 0 : mUserLoginResultBean.getUser().getId();
         currentLoginRoleId = mUserLoginResultBean == null ? 0 : mUserLoginResultBean.getUser().getRoleId();
+    }
+
+    public OSSClient getOssClient() {
+        return ossClient;
     }
 
     /**
@@ -93,6 +103,25 @@ public class MApplication extends TinkerApplication {
         initUMeng();
         initImageLoaderFactory();
         Logger.addLogAdapter(new AndroidLogAdapter());
+    }
+
+    /**
+     * 注意请不要使用Application
+     *
+     * @param context
+     */
+    public void initOSS(Context context) {
+        synchronized (this) {
+            if (ossClient == null) {
+                OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider(ConstUtils.ACCESS_ID, ConstUtils.ACCESS_KEY);
+                ClientConfiguration conf = new ClientConfiguration();
+                conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+                conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
+                conf.setMaxConcurrentRequest(8); // 最大并发请求数，默认5个
+                conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+                ossClient = new OSSClient(context, ConstUtils.OSS_ENDPOINT, credentialProvider, conf);
+            }
+        }
     }
 
     private void initOkHttpUtils() {

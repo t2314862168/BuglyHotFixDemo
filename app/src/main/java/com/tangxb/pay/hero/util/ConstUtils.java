@@ -8,6 +8,26 @@ import com.tangxb.pay.hero.bean.PermissionBean;
 
 public class ConstUtils {
     /**
+     * ACCESS_ID,ACCESS_KEY是在阿里云申请的
+     */
+    public static final String ACCESS_ID = "LTAIbHl7YNNih800";
+    /**
+     * ACCESS_ID,ACCESS_KEY是在阿里云申请的
+     */
+    public static final String ACCESS_KEY = "SSZxlQ3Ko7iYFvQGuuJAwT70IMex1V";
+    /**
+     * OSS_ENDPOINT是一个OSS区域地址
+     */
+    public static final String OSS_ENDPOINT = "http://oss-cn-hangzhou.aliyuncs.com";
+    /**
+     * BUCKET
+     */
+    public static final String BUCKET = "lichuanshipin";
+    /**
+     * BUCKET_PATH
+     */
+    public static String BUCKET_PATH = "http://" + BUCKET + ".oss-cn-hangzhou.aliyuncs.com/";
+    /**
      * 保存登录的用户名key
      */
     public static final String ACCOUNT_KEY = "account";

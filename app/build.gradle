@@ -152,6 +152,8 @@ dependencies {
     compile('me.zhanghai.android.materialprogressbar:library:1.4.1', {
         exclude group: 'com.android.support'
     })
+    compile 'me.xiaosai:image_compress:1.0.1'
+    compile 'com.aliyun.dpa:oss-android-sdk:+'
 }
 
 apply plugin: 'org.greenrobot.greendao'
