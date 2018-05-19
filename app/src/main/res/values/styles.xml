@@ -53,4 +53,34 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
+    <style name="text_red_small">
+        <item name="android:textSize">@dimen/small</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="text_red_middle">
+        <item name="android:textSize">@dimen/middle</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="text_red_big">
+        <item name="android:textSize">@dimen/big</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="text_black_small">
+        <item name="android:textSize">@dimen/small</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="text_black_middle">
+        <item name="android:textSize">@dimen/middle</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="text_black_big">
+        <item name="android:textSize">@dimen/big</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

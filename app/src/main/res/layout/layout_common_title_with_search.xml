@@ -14,6 +14,8 @@
         android:background="@drawable/bg_btn_left"
         android:clickable="true"
         android:gravity="center"
+        android:minHeight="30dp"
+        android:minWidth="60dp"
         android:padding="5dp"
         android:textColor="@android:color/white"
         tools:text="已付款" />

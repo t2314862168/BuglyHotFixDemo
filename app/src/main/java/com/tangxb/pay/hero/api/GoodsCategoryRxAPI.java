@@ -1,6 +1,6 @@
 package com.tangxb.pay.hero.api;
 
-import com.tangxb.pay.hero.bean.GoodsBean;
+import com.tangxb.pay.hero.bean.GoodsCategoryBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
 
 import java.util.List;
@@ -15,9 +15,9 @@ import retrofit2.http.QueryMap;
  * Created by Taxngb on 2017/12/22.
  */
 
-public interface GoodsRxAPI {
+public interface GoodsCategoryRxAPI {
     /**
-     * 获取商品列表
+     * 获取商品种类列表
      *
      * @param token
      * @param signatrue
@@ -25,7 +25,7 @@ public interface GoodsRxAPI {
      * @param data
      * @return
      */
-    @GET("product/getProducts")
-    Observable<MBaseBean<List<GoodsBean>>> getGoodsList(@Header("token") String token, @Header("signatrue") String signatrue
+    @GET("product/getCategories")
+    Observable<MBaseBean<List<GoodsCategoryBean>>> getCategoryList(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
 }

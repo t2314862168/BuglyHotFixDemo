@@ -43,6 +43,7 @@ public class MApplication extends TinkerApplication {
     private String token;
     private long currentLoginUserId;
     private long currentLoginRoleId;
+    private String currentLoginUserName;
     private OSSClient ossClient;
 
     public UserLoginResultBean getUserLoginResultBean() {
@@ -53,10 +54,20 @@ public class MApplication extends TinkerApplication {
         this.mUserLoginResultBean = mUserLoginResultBean;
         currentLoginUserId = mUserLoginResultBean == null ? 0 : mUserLoginResultBean.getUser().getId();
         currentLoginRoleId = mUserLoginResultBean == null ? 0 : mUserLoginResultBean.getUser().getRoleId();
+        currentLoginUserName = mUserLoginResultBean == null ? null : mUserLoginResultBean.getUser().getRealName();
     }
 
     public OSSClient getOssClient() {
         return ossClient;
+    }
+
+    /**
+     * 获取当前登录用户的用户名
+     *
+     * @return
+     */
+    public String getUserName() {
+        return currentLoginUserName;
     }
 
     /**

@@ -154,6 +154,8 @@ dependencies {
     })
     compile 'me.xiaosai:image_compress:1.0.1'
     compile 'com.aliyun.dpa:oss-android-sdk:+'
+    compile 'com.github.promeg:tinypinyin:2.0.3'
+    compile 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'
 }
 
 apply plugin: 'org.greenrobot.greendao'

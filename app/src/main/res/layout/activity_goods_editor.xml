@@ -56,6 +56,23 @@
 
                     <TextView
                         style="@style/text_edit_product"
+                        android:text="商品种类" />
+
+                    <TextView
+                        android:id="@+id/tv_goods_category"
+                        style="@style/edit_edit_product"
+                        android:hint="例如豆腐干"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/edit_product_leanLayout_style"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_edit_product"
                         android:text="商品描述 :" />
 
                     <EditText
@@ -69,36 +86,73 @@
 
                 <LinearLayout
                     style="@style/edit_product_leanLayout_style"
-                    android:layout_height="40dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="0dp"
                     android:orientation="horizontal">
 
                     <TextView
                         style="@style/text_edit_product"
-                        android:gravity="bottom"
-                        android:paddingBottom="2dp"
-                        android:text="库  存:" />
+                        android:onClick="checkUnit"
+                        android:text="订购单位" />
+
+                    <TextView
+                        android:id="@+id/tv_buy_unit"
+                        style="@style/edit_edit_product"
+                        android:gravity="center"
+                        android:hint="例如一件"
+                        android:onClick="checkBuyUnit"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small" />
 
                     <EditText
-                        android:id="@+id/et_stock"
+                        android:id="@+id/et_weight"
                         style="@style/edit_edit_product"
-                        android:gravity="bottom"
-                        android:hint="无限"
-                        android:inputType="numberDecimal"
-                        android:paddingBottom="2dp"
+                        android:gravity="center"
+                        android:hint="35"
+                        android:inputType="phone"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/small" />
 
                     <TextView
-                        android:id="@+id/tv_no_limit"
-                        style="@style/text_edit_product"
-                        android:layout_width="60dp"
-                        android:background="@drawable/border_main"
+                        android:id="@+id/unit"
+                        style="@style/edit_edit_product"
                         android:gravity="center"
-                        android:text="无限"
-                        android:textColor="@color/main_color"
+                        android:hint="公斤"
+                        android:onClick="checkUnit"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/small" />
                 </LinearLayout>
+                <!-- <LinearLayout
+                     style="@style/edit_product_leanLayout_style"
+                     android:layout_height="40dp"
+                     android:layout_gravity="bottom"
+                     android:layout_marginTop="0dp"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         style="@style/text_edit_product"
+                         android:gravity="bottom"
+                         android:paddingBottom="2dp"
+                         android:text="库  存:" />
+
+                     <EditText
+                         android:id="@+id/et_stock"
+                         style="@style/edit_edit_product"
+                         android:gravity="bottom"
+                         android:hint="无限"
+                         android:inputType="numberDecimal"
+                         android:paddingBottom="2dp"
+                         android:textSize="@dimen/small" />
+
+                     <TextView
+                         android:id="@+id/tv_no_limit"
+                         style="@style/text_edit_product"
+                         android:layout_width="60dp"
+                         android:background="@drawable/border_main"
+                         android:gravity="center"
+                         android:text="无限"
+                         android:textColor="@color/main_color"
+                         android:textSize="@dimen/small" />
+                 </LinearLayout>-->
+
 
                 <LinearLayout
                     style="@style/edit_product_leanLayout_style"
@@ -111,41 +165,7 @@
                     <TextView
                         android:id="@+id/tv_promotion"
                         style="@style/edit_edit_product"
-                        android:text="正常"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/small" />
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/edit_product_leanLayout_style"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/text_edit_product"
-                        android:text="订购单位" />
-
-                    <TextView
-                        android:id="@+id/tv_buy_unit"
-                        style="@style/edit_edit_product"
-                        android:gravity="center"
-                        android:hint="例如一件"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/small" />
-
-                    <EditText
-                        android:id="@+id/et_unit_num"
-                        style="@style/edit_edit_product"
-                        android:gravity="center"
-                        android:hint="35"
-                        android:inputType="phone"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/small" />
-
-                    <TextView
-                        android:id="@+id/tv_unit_detail"
-                        style="@style/edit_edit_product"
-                        android:gravity="center"
-                        android:hint="公斤"
+                        android:hint="正常"
                         android:textColor="@color/black"
                         android:textSize="@dimen/small" />
                 </LinearLayout>
@@ -159,10 +179,28 @@
                         android:text="价    格：" />
 
                     <EditText
-                        android:id="@+id/tv_price"
+                        android:id="@+id/et_price"
                         style="@style/edit_edit_product"
                         android:hint="和结算单位挂钩"
                         android:inputType="numberDecimal"
+                        android:textSize="@dimen/small" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/edit_product_leanLayout_style"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_edit_product"
+                        android:text="运  费:" />
+
+                    <EditText
+                        android:id="@+id/et_freight"
+                        style="@style/edit_edit_product"
+                        android:gravity="bottom"
+                        android:hint="运费"
+                        android:inputType="numberDecimal"
+                        android:paddingBottom="2dp"
                         android:textSize="@dimen/small" />
                 </LinearLayout>
 

@@ -115,14 +115,19 @@ public class UploadPictureController extends BaseControllerWithActivity {
      * @param needDeletePicture 上传之后是否需要删除本地压缩保存的图片
      * @return
      */
-    public Observable<List<String>> uploadPicturesSync(List<String> filePaths, final boolean needDeletePicture) {
+    public Observable<String> uploadPicturesSync(final String categoryName, final String productName, final String userName, List<String> filePaths, final boolean needDeletePicture) {
         return compressPictures(filePaths)
                 .concatMap(new Function<List<String>, ObservableSource<List<String>>>() {
                     @Override
                     public ObservableSource<List<String>> apply(@NonNull List<String> list) throws Exception {
                         List<String> tempList = new ArrayList<>();
                         for (String str : list) {
-                            String uploadPictureSync = uploadPictureSync(str);
+                            // 如果已经是阿里云图片地址
+                            if (str.contains("http://")) {
+                                tempList.add(str);
+                                continue;
+                            }
+                            String uploadPictureSync = uploadPictureSync(categoryName, productName, userName, str);
                             if (uploadPictureSync != null) {
                                 tempList.add(uploadPictureSync);
                             }
@@ -137,12 +142,32 @@ public class UploadPictureController extends BaseControllerWithActivity {
                         }
                         return Observable.just(tempList);
                     }
+                })
+                .concatMap(new Function<List<String>, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(@NonNull List<String> list) throws Exception {
+                        StringBuilder sb = new StringBuilder();
+                        int size = list.size();
+                        for (int i = 0; i < size; i++) {
+                            if (i != 0) {
+                                sb.append(",");
+                            }
+                            // 如果已经是阿里云图片地址
+                            String str = list.get(i);
+                            if (str.contains("http://")) {
+                                sb.append(str);
+                            } else {
+                                sb.append(ConstUtils.BUCKET_PATH + str);
+                            }
+                        }
+                        return Observable.just(sb.toString());
+                    }
                 });
     }
 
-    public String getServicePath(String category, String productName, String imageName) {
-        return "product_image" + File.separator + category + File.separator + productName +
-                File.separator + "唐小兵v1" + imageName;
+    public String getServicePath(String categoryName, String productName, String userName, String imageName) {
+        return "product_image" + File.separator + categoryName + File.separator + productName +
+                File.separator + userName + "_" + imageName;
     }
 
     /**
@@ -152,7 +177,7 @@ public class UploadPictureController extends BaseControllerWithActivity {
      * @return
      */
     public String uploadPictureASync(String filePaths) {
-        String serviceImgPath = getServicePath("豆干", "豆腐干", FileNameUtils.getName(filePaths));
+        String serviceImgPath = getServicePath("dougan", "doufugan", "tangxiaobingv1", FileNameUtils.getName(filePaths));
         try {
             ObjectMetadata objectMeta = new ObjectMetadata();
             objectMeta.setContentType("image/jpeg");
@@ -183,9 +208,9 @@ public class UploadPictureController extends BaseControllerWithActivity {
      * @param filePaths
      * @return
      */
-    public String uploadPictureSync(String filePaths) {
+    public String uploadPictureSync(String categoryName, String productName, String userName, String filePaths) {
         try {
-            String serviceImgPath = getServicePath("豆干", "豆腐干", FileNameUtils.getName(filePaths));
+            String serviceImgPath = getServicePath(categoryName, productName, userName, FileNameUtils.getName(filePaths));
             ObjectMetadata objectMeta = new ObjectMetadata();
             objectMeta.setContentType("image/jpeg");
             // bucketName objectKey  uploadFilePath
@@ -211,6 +236,13 @@ public class UploadPictureController extends BaseControllerWithActivity {
     private List<String> compressPicturesSync(List<String> filePaths) {
         List<String> list = new ArrayList<>();
         for (String filePath : filePaths) {
+            // 图片地址为null或者"",不进行压缩和添加
+            if (TextUtils.isEmpty(filePath)) continue;
+            // 如果路径是网络数据则不压缩
+            if (filePath.contains("http://")) {
+                list.add(filePath);
+                continue;
+            }
             String picture = compressPictureSync(filePath);
             if (picture != null) {
                 list.add(picture);

@@ -1,12 +1,15 @@
 package com.tangxb.pay.hero.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Taxngb on 2017/12/22.
  */
-public class UserBean {
+public class UserBean implements Parcelable {
     @Expose
     @SerializedName("id")
     private long id;
@@ -194,4 +197,65 @@ public class UserBean {
     public void setIsMulti(int isMulti) {
         this.isMulti = isMulti;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.icon);
+        dest.writeString(this.username);
+        dest.writeString(this.password);
+        dest.writeString(this.nickname);
+        dest.writeString(this.mobile);
+        dest.writeString(this.token);
+        dest.writeString(this.realName);
+        dest.writeInt(this.sex);
+        dest.writeInt(this.status);
+        dest.writeLong(this.parentId);
+        dest.writeLong(this.addressId);
+        dest.writeLong(this.roleId);
+        dest.writeString(this.roleName);
+        dest.writeInt(this.isMulti);
+        dest.writeString(this.city);
+        dest.writeString(this.address);
+    }
+
+    public UserBean() {
+    }
+
+    protected UserBean(Parcel in) {
+        this.id = in.readLong();
+        this.icon = in.readString();
+        this.username = in.readString();
+        this.password = in.readString();
+        this.nickname = in.readString();
+        this.mobile = in.readString();
+        this.token = in.readString();
+        this.realName = in.readString();
+        this.sex = in.readInt();
+        this.status = in.readInt();
+        this.parentId = in.readLong();
+        this.addressId = in.readLong();
+        this.roleId = in.readLong();
+        this.roleName = in.readString();
+        this.isMulti = in.readInt();
+        this.city = in.readString();
+        this.address = in.readString();
+    }
+
+    public static final Parcelable.Creator<UserBean> CREATOR = new Parcelable.Creator<UserBean>() {
+        @Override
+        public UserBean createFromParcel(Parcel source) {
+            return new UserBean(source);
+        }
+
+        @Override
+        public UserBean[] newArray(int size) {
+            return new UserBean[size];
+        }
+    };
 }

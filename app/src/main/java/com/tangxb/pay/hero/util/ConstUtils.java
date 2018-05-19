@@ -40,6 +40,26 @@ public class ConstUtils {
      */
     public static final int PAGE_SIZE = 12;
     /**
+     * 1、在售 0、已下架、-1、删除
+     */
+    public static final int GOOD_ON_SALE = 1;
+    /**
+     * 1、在售 0、已下架、-1、删除
+     */
+    public static final int GOOD_NOT_SALE = 0;
+    /**
+     * 1、在售 0、已下架、-1、删除
+     */
+    public static final int GOOD_UN_ENABLE_SALE = -1;
+    /**
+     * 默认为0表示非促销  1 表示促销
+     */
+    public static final int GOOD_PROMOTION = 1;
+    /**
+     * 默认为0表示非促销  1 表示促销
+     */
+    public static final int GOOD_UN_PROMOTION = 0;
+    /**
      * 商品管理权限
      */
     public static final PermissionBean PM_100 = new PermissionBean(100, "商品管理");

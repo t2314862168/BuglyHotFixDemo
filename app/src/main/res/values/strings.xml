@@ -43,4 +43,11 @@
     <string name="get_verify_code_2">获取验证码(%1$ds)</string>
     <string name="choose_area">选择省市县</string>
     <string name="choose_role_to_user">选择用户角色</string>
+    <string name="category">分类</string>
+    <string name="now_stats_is">当前是(%1$s)</string>
+    <string name="on_sale">上架</string>
+    <string name="not_on_sale">下架</string>
+    <string name="promotion">促销</string>
+    <string name="normal">正常</string>
+    <string name="all">全部</string>
 </resources>
