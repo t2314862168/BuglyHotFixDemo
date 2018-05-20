@@ -49,6 +49,10 @@ public class LoginController extends BaseControllerWithActivity {
                 if (bean == null || bean.getUser() == null) {
                     mApplication.setUserLoginResultBean(null);
                     mApplication.setToken(null);
+                    if (baseActivity.get() == null) return;
+                    if (errorListener != null) {
+                        errorListener.doError(baseBean.getMessage());
+                    }
                     return;
                 }
                 mApplication.setUserLoginResultBean(bean);

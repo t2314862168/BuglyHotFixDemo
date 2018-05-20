@@ -612,4 +612,19 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        MDialogUtils.showMessage(mActivity, "保存商品信息", "确定", "取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickRightBtn();
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
 }

@@ -26,6 +26,9 @@ public class PermissionBean {
     @Expose
     @SerializedName("parent_id")
     private int parentId;
+    @Expose
+    @SerializedName("check")
+    private String check;
 
     public PermissionBean(int id, String name) {
         this.id = id;
@@ -87,5 +90,13 @@ public class PermissionBean {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getCheck() {
+        return check;
+    }
+
+    public void setCheck(String check) {
+        this.check = check;
     }
 }

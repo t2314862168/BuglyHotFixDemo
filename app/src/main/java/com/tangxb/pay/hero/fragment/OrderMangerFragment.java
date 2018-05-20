@@ -15,11 +15,9 @@ import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.activity.BaseActivity;
 import com.tangxb.pay.hero.activity.BaseActivityWithSearch;
-import com.tangxb.pay.hero.activity.EditUserInfoActivity;
-import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.bean.UserBean;
-import com.tangxb.pay.hero.controller.CopyBeanController;
-import com.tangxb.pay.hero.controller.UserMangerFragmentController;
+import com.tangxb.pay.hero.activity.OrderInfoActivity;
+import com.tangxb.pay.hero.bean.OrderBean;
+import com.tangxb.pay.hero.controller.OrderMangerFragmentController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
 import com.tangxb.pay.hero.event.SearchKeyEvent;
 import com.tangxb.pay.hero.util.ConstUtils;
@@ -33,20 +31,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 /**
  * 用户列表界面<br>
  * Created by zll on 2018/1/12.
  */
-public class UserMangerFragment extends BaseFragment {
+public class OrderMangerFragment extends BaseFragment {
     private int page = 1, rows = ConstUtils.PAGE_SIZE;
-    private List<UserBean> dataList = new ArrayList<>();
+    private List<OrderBean> dataList = new ArrayList<>();
     private static final String FRAGMENT_NAME = "fragmentName";
     private static final String ROLE_ID = "currentRoleId";
     private String fragmentName;
     private long currentRoleId;
-    private CommonAdapter<UserBean> commonAdapter;
+    private CommonAdapter<OrderBean> commonAdapter;
     private static final int TO_EDIT_USER_CODE = 666;
 
     @BindView(R.id.test_recycler_view_frame)
@@ -55,15 +52,15 @@ public class UserMangerFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     private RecyclerAdapterWithHF mAdapter;
     private String searchKey;
-    UserMangerFragmentController fragmentController;
+    OrderMangerFragmentController fragmentController;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.customer_manager_fragment_layout;
+        return R.layout.fragment_order_manager;
     }
 
-    public static UserMangerFragment getInstance(String name, long roleId) {
-        UserMangerFragment fragment = new UserMangerFragment();
+    public static OrderMangerFragment getInstance(String name, long roleId) {
+        OrderMangerFragment fragment = new OrderMangerFragment();
         Bundle args = new Bundle();
         args.putString(FRAGMENT_NAME, name);
         args.putLong(ROLE_ID, roleId);
@@ -80,18 +77,16 @@ public class UserMangerFragment extends BaseFragment {
     @Override
     protected void initData() {
         setNeedOnCreateRegister();
-        fragmentController = new UserMangerFragmentController((BaseActivity) mActivity);
+        fragmentController = new OrderMangerFragmentController((BaseActivity) mActivity);
         // 获取Activity界面里面的搜索关键字
         if (mActivity instanceof BaseActivityWithSearch) {
             String sk = ((BaseActivityWithSearch) mActivity).getSearchKeyword();
             searchKey = TextUtils.isEmpty(sk) ? null : sk;
         }
-        commonAdapter = new CommonAdapter<UserBean>(mActivity, R.layout.customer_manager_adapter_item, dataList) {
+        commonAdapter = new CommonAdapter<OrderBean>(mActivity, R.layout.item_fragment_order_manager, dataList) {
             @Override
-            protected void convert(ViewHolder viewHolder, UserBean item, int position) {
-                viewHolder.setText(R.id.tv_nickname, item.getRealName());
-                viewHolder.setText(R.id.tv_address, item.getCity() + item.getAddress());
-                viewHolder.setText(R.id.tv_status, item.getStatus() == 1 ? "正常" : "冻结");
+            protected void convert(ViewHolder viewHolder, OrderBean item, int position) {
+
             }
         };
         mAdapter = new RecyclerAdapterWithHF((MultiItemTypeAdapter) commonAdapter);
@@ -143,22 +138,31 @@ public class UserMangerFragment extends BaseFragment {
     private void getDataByRefresh() {
         // 开始网络请求
         page = 1;
-        addSubscription(fragmentController.getUserListByRoleId(page, rows, currentRoleId, searchKey, 1), new Consumer<MBaseBean<List<UserBean>>>() {
-            @Override
-            public void accept(MBaseBean<List<UserBean>> baseBean) throws Exception {
-                dataList.clear();
-                if (baseBean.getData() != null) {
-                    dataList.addAll(baseBean.getData());
-                }
-                mAdapter.notifyDataSetChangedHF();
-                ptrClassicFrameLayout.refreshComplete();
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                ptrClassicFrameLayout.refreshComplete();
-            }
-        });
+
+        List<OrderBean> itemBeanList = new ArrayList<>();
+        itemBeanList.add(new OrderBean());
+        itemBeanList.add(new OrderBean());
+        itemBeanList.add(new OrderBean());
+        itemBeanList.add(new OrderBean());
+        dataList.addAll(itemBeanList);
+        mAdapter.notifyDataSetChangedHF();
+        ptrClassicFrameLayout.refreshComplete();
+//        addSubscription(fragmentController.getUserListByRoleId(page, rows, currentRoleId, searchKey, 1), new Consumer<MBaseBean<List<UserBean>>>() {
+//            @Override
+//            public void accept(MBaseBean<List<UserBean>> baseBean) throws Exception {
+//                dataList.clear();
+//                if (baseBean.getData() != null) {
+//                    dataList.addAll(baseBean.getData());
+//                }
+//                mAdapter.notifyDataSetChangedHF();
+//                ptrClassicFrameLayout.refreshComplete();
+//            }
+//        }, new Consumer<Throwable>() {
+//            @Override
+//            public void accept(Throwable throwable) throws Exception {
+//                ptrClassicFrameLayout.refreshComplete();
+//            }
+//        });
 
     }
 
@@ -168,21 +172,21 @@ public class UserMangerFragment extends BaseFragment {
     private void getDataByLoadMore() {
         // 开始网络请求
         page++;
-        addSubscription(fragmentController.getUserListByRoleId(page, rows, currentRoleId, searchKey, 1), new Consumer<MBaseBean<List<UserBean>>>() {
-            @Override
-            public void accept(MBaseBean<List<UserBean>> baseBean) throws Exception {
-                if (baseBean.getData() != null) {
-                    dataList.addAll(baseBean.getData());
-                }
-                mAdapter.notifyDataSetChangedHF();
-                ptrClassicFrameLayout.loadMoreComplete(true);
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                ptrClassicFrameLayout.loadMoreComplete(true);
-            }
-        });
+//        addSubscription(fragmentController.getUserListByRoleId(page, rows, currentRoleId, searchKey, 1), new Consumer<MBaseBean<List<UserBean>>>() {
+//            @Override
+//            public void accept(MBaseBean<List<UserBean>> baseBean) throws Exception {
+//                if (baseBean.getData() != null) {
+//                    dataList.addAll(baseBean.getData());
+//                }
+//                mAdapter.notifyDataSetChangedHF();
+//                ptrClassicFrameLayout.loadMoreComplete(true);
+//            }
+//        }, new Consumer<Throwable>() {
+//            @Override
+//            public void accept(Throwable throwable) throws Exception {
+//                ptrClassicFrameLayout.loadMoreComplete(true);
+//            }
+//        });
     }
 
     /**
@@ -190,12 +194,12 @@ public class UserMangerFragment extends BaseFragment {
      *
      * @param userBean
      */
-    private void handleItemClick(int position, UserBean userBean) {
-        Intent intent = ((BaseActivity) mActivity).getIntentWithPublicParams(EditUserInfoActivity.class);
+    private void handleItemClick(int position, OrderBean userBean) {
+        Intent intent = ((BaseActivity) mActivity).getIntentWithPublicParams(OrderInfoActivity.class);
         int headerViewsCount = mAdapter.getHeadSize();
-        int realPosition = position - headerViewsCount;
-        intent.putExtra("realPosition", realPosition);
-        intent.putExtra("userBean", userBean);
+//        int realPosition = position - headerViewsCount;
+//        intent.putExtra("realPosition", realPosition);
+//        intent.putExtra("userBean", userBean);
         startActivityForResult(intent, TO_EDIT_USER_CODE);
     }
 
@@ -203,19 +207,19 @@ public class UserMangerFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TO_EDIT_USER_CODE && resultCode == Activity.RESULT_OK) {
             int realPosition = data.getIntExtra("realPosition", -1);
-            UserBean userBean = data.getParcelableExtra("userBean");
+            OrderBean userBean = data.getParcelableExtra("orderBean");
             copyNeedInfo(realPosition, userBean);
             commonAdapter.notifyDataSetChanged();
         }
     }
 
-    public void copyNeedInfo(int realPosition, UserBean tempBean) {
+    public void copyNeedInfo(int realPosition, OrderBean tempBean) {
         if (realPosition != -1 && tempBean != null) {
-            UserBean bean = dataList.get(realPosition);
+            OrderBean bean = dataList.get(realPosition);
             int headerViewsCount = mAdapter.getHeadSize();
             int position = realPosition + headerViewsCount;
-            CopyBeanController.copyUserBean(tempBean, bean);
-            mAdapter.notifyItemChanged(position);
+//            CopyBeanController.copyUserBean(tempBean, bean);
+//            mAdapter.notifyItemChanged(position);
         }
     }
 

@@ -47,5 +47,61 @@ public interface RoleRxAPI {
     Observable<MBaseBean<String>> updateRoleToUser(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 
+    /**
+     * 更改用户状态
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/updateState")
+    Observable<MBaseBean<String>> updateUserState(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
+
+    /**
+     * 更改城市
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/updateUserCity")
+    Observable<MBaseBean<String>> updateUserCity(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
+
+    /**
+     * 更改地址
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/updateAddress")
+    Observable<MBaseBean<String>> updateUserAddress(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
+
+    /**
+     * 更改用户密码
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/updatePwd")
+    Observable<MBaseBean<String>> updateUserPwd(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
+
 
 }

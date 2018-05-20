@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/user_info_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="收货人：                   联系电话： "
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
+
+    <TextView
+        android:id="@+id/address_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="地  址： "
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/pay_price"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已付款：0.00"
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
+
+    <TextView
+        android:id="@+id/other_free"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="运费: 待核实"
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
+
+
+    <EditText
+        android:id="@+id/mark_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_main"
+        android:gravity="top"
+        android:hint="备注"
+        android:lines="3"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
+
+
+</LinearLayout>

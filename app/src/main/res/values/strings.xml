@@ -21,6 +21,7 @@
     <string name="data_statistics">数据统计</string>
     <string name="dispatch_manger">配送管理</string>
     <string name="permission_manger">权限管理</string>
+    <string name="personal_center">个人中心</string>
     <string name="distribute_permission">分配权限</string>
     <string name="add_user">添加用户</string>
     <string name="personal_info">个人信息</string>
@@ -49,5 +50,10 @@
     <string name="not_on_sale">下架</string>
     <string name="promotion">促销</string>
     <string name="normal">正常</string>
+    <string name="un_normal">冻结</string>
+    <string name="can_do">允许</string>
+    <string name="no_can_do">不允许</string>
     <string name="all">全部</string>
+    <string name="increase">新增</string>
+    <string name="update_pwd">修改密码</string>
 </resources>

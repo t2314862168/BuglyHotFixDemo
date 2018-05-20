@@ -1,5 +1,6 @@
 package com.tangxb.pay.hero.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import com.chanven.lib.cptr.PtrClassicFrameLayoutEx;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
+import com.tangxb.pay.hero.bean.UserBean;
+import com.tangxb.pay.hero.controller.CopyBeanController;
 import com.tangxb.pay.hero.decoration.MDividerGridItemDecoration;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -30,9 +33,10 @@ public class HomeActivity extends BaseActivity {
 
     private int[] mDataResIds = new int[]{R.string.user_manger, R.string.order_manger
             , R.string.goods_manger, R.string.deliver_goods_manger, R.string.data_statistics
-            , R.string.permission_manger};
+            , R.string.permission_manger, R.string.personal_center};
     private List<String> mData = new ArrayList<>();
     private RecyclerAdapterWithHF mAdapter;
+    int PERSON_CENTER = 444;
 
     @Override
     protected int getLayoutResId() {
@@ -80,11 +84,23 @@ public class HomeActivity extends BaseActivity {
             intent = getIntentWithPublicParams(UserMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.permission_manger))) {
             intent = getIntentWithPublicParams(PermissionMangerActivity.class);
+        } else if (itemStr.equals(mResources.getString(R.string.personal_center))) {
+            intent = getIntentWithPublicParams(UserCenterActivity.class);
+            intent.putExtra("userBean", mApplication.getUserLoginResultBean().getUser());
+            startActivityForResult(intent, PERSON_CENTER);
+            return;
         }
         if (intent != null) {
             startCustomActivity(intent);
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) return;
+        if (requestCode == PERSON_CENTER) {
+            UserBean tempBean = data.getParcelableExtra("userBean");
+            CopyBeanController.copyUserBean(tempBean, mApplication.getUserLoginResultBean().getUser());
+        }
+    }
 }

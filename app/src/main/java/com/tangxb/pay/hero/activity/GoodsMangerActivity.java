@@ -65,7 +65,7 @@ public class GoodsMangerActivity extends BaseActivityWithSearch {
     /**
      * 默认为0表示非促销  1 表示促销
      */
-    int promotion = ConstUtils.GOOD_PROMOTION;
+    int promotion = ConstUtils.GOOD_UN_PROMOTION;
     GoodsMangerController controller;
     /**
      * 完全编辑请求码
@@ -280,7 +280,8 @@ public class GoodsMangerActivity extends BaseActivityWithSearch {
      */
     @OnClick(R.id.btn_category_manger)
     public void categoryManger(View view) {
-
+        Intent intent = getIntentWithPublicParams(GoodsCategoryMangerActivity.class);
+        startActivity(intent);
     }
 
     /**

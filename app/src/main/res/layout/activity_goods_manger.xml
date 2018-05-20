@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".activity.GoodsMangerActivity">
 
-    <include layout="@layout/recyclerview_layout" />
+    <include
+        layout="@layout/recyclerview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <include layout="@layout/layout_goods_manger_bottom" />
 
-</FrameLayout>
+</LinearLayout>

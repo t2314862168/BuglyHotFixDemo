@@ -62,4 +62,18 @@ public interface UserRxAPI {
     @GET("user/getUserList")
     Observable<MBaseBean<List<UserBean>>> getUserListByRoleId(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
+
+    /**
+     * 更改多设备登录
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/updateMultiLogin")
+    Observable<MBaseBean<String>> updateMultiLogin(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 }

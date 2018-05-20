@@ -32,7 +32,7 @@ import io.reactivex.functions.Consumer;
  * Created by Administrator on 2018/5/14 0014.
  */
 
-public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
+public class UserCenterActivity extends BaseActivityWithTitleOnly {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
 
@@ -47,7 +47,7 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
     final String cityKey = "城市：";
     final String addressKey = "地址：";
     final String roleKey = "角色：";
-    final String statusKey = "状态：";
+    final String isMultiKey = "多设备登录：";
     int realPosition;
     long currentUserId;
 
@@ -62,8 +62,8 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
         dataList.add(new KeyValueBean(pwdKey, "点击修改"));
         dataList.add(new KeyValueBean(cityKey, userBean.getCity()));
         dataList.add(new KeyValueBean(addressKey, userBean.getAddress()));
-        dataList.add(new KeyValueBean(roleKey, userBean.getRoleName()));
-        dataList.add(new KeyValueBean(statusKey, userBean.getStatus() == 1 ? "正常" : "冻结"));
+//        dataList.add(new KeyValueBean(roleKey, userBean.getRoleName()));
+        dataList.add(new KeyValueBean(isMultiKey, userBean.getIsMulti() == 1 ? "允许" : "不允许"));
     }
 
     @Override
@@ -213,19 +213,19 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
     }
 
     /**
-     * 更改用户状态
+     * 更改用户多设备登录
      */
-    private void updateUserStatus(final int position) {
-        final String[] items = {mResources.getString(R.string.un_normal), mResources.getString(R.string.normal)};
-        MDialogUtils.showSingleChoiceDialog(mActivity, "选择角色状态", items, new MDialogUtils.OnCheckListener() {
+    private void updateMultiLogin(final int position) {
+        final String[] items = {mResources.getString(R.string.no_can_do), mResources.getString(R.string.can_do)};
+        MDialogUtils.showSingleChoiceDialog(mActivity, "多设备登录", items, new MDialogUtils.OnCheckListener() {
             @Override
             public void onSure(final int which, AlertDialog dialog) {
                 dialog.dismiss();
-                addSubscription(editUserInfoController.updateUserState(currentUserId, which), new Consumer<MBaseBean<String>>() {
+                addSubscription(editUserInfoController.updateMultiLogin(currentUserId, which), new Consumer<MBaseBean<String>>() {
                     @Override
                     public void accept(MBaseBean<String> baseBean) throws Exception {
                         ToastUtils.t(mApplication, baseBean.getMessage());
-                        userBean.setStatus(which);
+                        userBean.setIsMulti(which);
                         dataList.get(position).setValue(items[which]);
                         mAdapter.notifyItemChangedHF(position);
                     }
@@ -267,8 +267,8 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
             updateAddress(position);
         } else if (dataList.get(position).getKey().equals(roleKey)) {
             getRoleList(position);
-        } else if (dataList.get(position).getKey().equals(statusKey)) {
-            updateUserStatus(position);
+        } else if (dataList.get(position).getKey().equals(isMultiKey)) {
+            updateMultiLogin(position);
         }
     }
 

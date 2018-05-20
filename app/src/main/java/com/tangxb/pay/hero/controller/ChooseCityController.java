@@ -28,9 +28,15 @@ public class ChooseCityController extends BaseControllerWithActivity {
         void chooseArea(String parentId, String parentName);
     }
 
+    public interface ChoosePositionListener {
+        void chooseArea(int position, String parentId, String parentName);
+    }
+
     String titleName;
     ChooseListener listener;
+    ChoosePositionListener positionListener;
     StringBuilder stringBuilder;
+    int position;
 
     public ChooseCityController(BaseActivity baseActivity, ChooseListener listener) {
         super(baseActivity);
@@ -38,6 +44,18 @@ public class ChooseCityController extends BaseControllerWithActivity {
         this.listener = listener;
         stringBuilder = new StringBuilder();
     }
+
+    public ChooseCityController(BaseActivity baseActivity, ChoosePositionListener listener) {
+        super(baseActivity);
+        titleName = baseActivity.getString(R.string.choose_area);
+        this.positionListener = listener;
+        stringBuilder = new StringBuilder();
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
 
     /**
      * 选择区域
@@ -94,6 +112,9 @@ public class ChooseCityController extends BaseControllerWithActivity {
         if (baseBean == null || baseBean.size() == 0) {
             if (listener != null) {
                 listener.chooseArea(parentId, stringBuilder.toString());
+            }
+            if (positionListener != null) {
+                positionListener.chooseArea(position, parentId, stringBuilder.toString());
             }
             return;
         }
