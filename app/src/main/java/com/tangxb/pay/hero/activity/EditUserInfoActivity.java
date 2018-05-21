@@ -88,7 +88,7 @@ public class EditUserInfoActivity extends BaseActivityWithTitleOnly {
                         ToastUtils.t(mApplication, baseBean.getMessage());
                         try {
                             userBean.setAddressId(Long.parseLong(parentId));
-                            userBean.setAddress(parentName);
+                            userBean.setCity(parentName);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

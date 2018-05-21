@@ -38,7 +38,7 @@
             android:name="UMENG_CHANNEL_VALUE"
             android:value="${UMENG_CHANNEL_VALUE}" />
 
-        <activity android:name=".activity.OrderManagerActivity">
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,6 +56,7 @@
         <activity android:name=".activity.GoodsCategoryMangerActivity" />
         <activity android:name=".activity.EditUserPwdActivity" />
         <activity android:name=".activity.UserCenterActivity" />
+        <activity android:name=".activity.OrderManagerActivity" />
         <activity android:name=".activity.OrderInfoActivity" />
         <activity
             android:name=".activity.GoodsCategoryActivity"

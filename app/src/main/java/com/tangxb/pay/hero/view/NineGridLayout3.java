@@ -102,6 +102,12 @@ public abstract class NineGridLayout3 extends ViewGroup {
         notifyDataSetChanged();
     }
 
+    public void addUrlList(List<String> urlList) {
+        int index = mUrlList.size() - 1;
+        mUrlList.addAll(index, urlList);
+        notifyDataSetChanged();
+    }
+
     public List<String> getUrlList() {
         return mUrlList;
     }

@@ -14,6 +14,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.BuyUnitBean;
 import com.tangxb.pay.hero.bean.GoodsBean;
@@ -24,6 +27,7 @@ import com.tangxb.pay.hero.controller.GoodsEditorController;
 import com.tangxb.pay.hero.controller.UploadPictureController;
 import com.tangxb.pay.hero.event.ChooseDetailImgEvent;
 import com.tangxb.pay.hero.event.ChooseHeadImgEvent;
+import com.tangxb.pay.hero.imageloader.GlideImageLoader;
 import com.tangxb.pay.hero.util.ConstUtils;
 import com.tangxb.pay.hero.util.FileProvider7;
 import com.tangxb.pay.hero.util.ImgUtil;
@@ -135,22 +139,18 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
         uploadPictureController = new UploadPictureController(this);
         categoryController = new GoodsCategoryController(this);
         showBeanInUI();
+
+        ImagePicker imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
+        imagePicker.setShowCamera(false);  //显示拍照按钮
+        imagePicker.setCrop(false);        //允许裁剪（单选才有效）
+        imagePicker.setSelectLimit(9);    //选中数量限制
     }
 
     /**
      * 编辑商品
      */
     private void showBeanInUI() {
-        String goodsName = mGoodsNameEt.getText().toString();
-        String goodsCategory = mGoodsCategoryTv.getText().toString();
-        String desc = mGoodsDescEt.getText().toString();
-        String buyUnit = mBuyUnitTv.getText().toString();
-        String weight = mWeightEt.getText().toString();
-        String unitDetail = mUnitDetailTv.getText().toString();
-        String prom = mPromTv.getText().toString();
-        String freight = mFreightEt.getText().toString();
-        List<String> headList = gridLayout2.getUrlList();
-        List<String> detailList = gridLayout3.getUrlList();
         if (goodsBean == null) {
             setMiddleText(R.string.add_goods);
             return;
@@ -190,7 +190,7 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
         }
         gridLayout2.setUrlList(subImageList);
         if (TextUtils.isEmpty(detailImages)) return;
-        if (subImages.contains(",")) {
+        if (detailImages.contains(",")) {
             String[] split = detailImages.split(",");
             for (String s : split) {
                 detailImageList.add(s);
@@ -223,10 +223,7 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
                         takePhotos();
                         break;
                     case RC_ALBUM:
-                        //相册
-                        Intent intent_album = new Intent(Intent.ACTION_PICK);
-                        intent_album.setType("image/*");
-                        startActivityForResult(intent_album, RC_ALBUM);
+                        chooseAlbum();
                         break;
                 }
             }
@@ -249,8 +246,41 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
         startActivityForResult(intent, RC_CAMERA);
     }
 
+    /**
+     * 选择相册
+     */
+    private void chooseAlbum() {
+        Intent intent = new Intent(mActivity, ImageGridActivity.class);
+        startActivityForResult(intent, RC_ALBUM);
+        //相册
+//        Intent intent_album = new Intent(Intent.ACTION_PICK);
+//        intent_album.setType("image/*");
+//        startActivityForResult(intent_album, RC_ALBUM);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            ArrayList<ImageItem> images = null;
+            if (data != null && requestCode == RC_ALBUM) {
+                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+            }
+            if (images == null || images.size() == 0) {
+                mChooseImgIndex = -1;
+                return;
+            }
+            List<String> urlList = new ArrayList<>();
+            for (ImageItem item : images) {
+                urlList.add(item.path);
+            }
+            if (mChooseImgIndex == 0) {
+                gridLayout2.addUrlList(urlList);
+            } else if (mChooseImgIndex == 1) {
+                gridLayout3.addUrlList(urlList);
+            }
+            mChooseImgIndex = -1;
+            return;
+        }
         if (resultCode != Activity.RESULT_OK) {
             mPhotoPathQueue.poll();
             return;
@@ -259,7 +289,15 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
         switch (requestCode) {
             case RC_CAMERA:
                 imgUrl = mPhotoPathQueue.poll();
-                break;
+                if (!TextUtils.isEmpty(imgUrl)) {
+                    if (mChooseImgIndex == 0) {
+                        gridLayout2.addImgUrl(imgUrl);
+                    } else if (mChooseImgIndex == 1) {
+                        gridLayout3.addImgUrl(imgUrl);
+                    }
+                }
+                mChooseImgIndex = -1;
+                return;
             case RC_ALBUM:
                 if (data != null) {
                     if (Build.VERSION.SDK_INT >= 19) {
@@ -299,10 +337,7 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
                         takePhotos();
                         break;
                     case RC_ALBUM:
-                        //相册
-                        Intent intent_album = new Intent(Intent.ACTION_PICK);
-                        intent_album.setType("image/*");
-                        startActivityForResult(intent_album, RC_ALBUM);
+                        chooseAlbum();
                         break;
                 }
             }

@@ -182,7 +182,7 @@ public class EditUserInfoController extends BaseControllerWithActivity {
         String timestamp = System.currentTimeMillis() + "";
         Map<String, String> data = new HashMap<>();
         data.put("user_id", changeUserId + "");
-        data.put("city", city);
+        data.put("address", city);
         String signatrue = MSignUtils.getSign(data, token, timestamp);
         return updateUserAddress(token, signatrue, timestamp, data);
     }
@@ -229,8 +229,8 @@ public class EditUserInfoController extends BaseControllerWithActivity {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         Map<String, String> data = new HashMap<>();
-        data.put("user_id", userId + "");
-        data.put("status", status + "");
+//        data.put("user_id", userId + "");
+        data.put("multi", status + "");
         String signatrue = MSignUtils.getSign(data, token, timestamp);
         return updateMultiLogin(token, signatrue, timestamp, data);
     }
