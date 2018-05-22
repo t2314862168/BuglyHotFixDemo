@@ -8,6 +8,7 @@ import com.tangxb.pay.hero.api.GoodsRxAPI;
 import com.tangxb.pay.hero.bean.GoodsBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.encrypt.MSignUtils;
+import com.tangxb.pay.hero.util.ConstUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +64,9 @@ public class GoodsMangerController extends BaseControllerWithActivity {
             data.put("searchKeyword", searchKeyword);
         }
         data.put("status", status + "");
-        data.put("promotion", promotion + "");
+        if (promotion == ConstUtils.GOOD_PROMOTION) {
+            data.put("promotion", promotion + "");
+        }
         String timestamp = System.currentTimeMillis() + "";
         String signatrue = MSignUtils.getSign(data, token, timestamp);
         return getGoodsList(token, signatrue, timestamp, data);

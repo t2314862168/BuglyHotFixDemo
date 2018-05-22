@@ -10,13 +10,10 @@ import com.google.gson.annotations.SerializedName;
 public class AddressBean {
     @Expose
     @SerializedName("id")
-    private Long id;
+    private long id;
     @Expose
     @SerializedName("city")
     private String city;
-    @Expose
-    @SerializedName("nickname")
-    private String nickname;
     @Expose
     @SerializedName("mobile")
     private String mobile;
@@ -24,11 +21,11 @@ public class AddressBean {
     @SerializedName("address")
     private String address;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -38,14 +35,6 @@ public class AddressBean {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public String getMobile() {

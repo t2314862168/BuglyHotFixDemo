@@ -10,6 +10,7 @@ import android.text.TextUtils;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
+import com.tangxb.pay.hero.bean.AddressBean;
 import com.tangxb.pay.hero.bean.KeyValueBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.RoleBean;
@@ -50,18 +51,19 @@ public class UserCenterActivity extends BaseActivityWithTitleOnly {
     final String isMultiKey = "多设备登录：";
     int realPosition;
     long currentUserId;
-
+    AddressBean addressBean;
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_edit_user_info;
     }
 
     private void showDataUI() {
+        addressBean = mApplication.getUserLoginResultBean().getAddress();
         dataList.add(new KeyValueBean(nameKey, userBean.getRealName()));
         dataList.add(new KeyValueBean(mobileKey, userBean.getMobile()));
         dataList.add(new KeyValueBean(pwdKey, "点击修改"));
-        dataList.add(new KeyValueBean(cityKey, userBean.getCity()));
-        dataList.add(new KeyValueBean(addressKey, userBean.getAddress()));
+        dataList.add(new KeyValueBean(cityKey, addressBean.getCity()));
+        dataList.add(new KeyValueBean(addressKey, addressBean.getAddress()));
 //        dataList.add(new KeyValueBean(roleKey, userBean.getRoleName()));
         dataList.add(new KeyValueBean(isMultiKey, userBean.getIsMulti() == 1 ? "允许" : "不允许"));
     }
@@ -88,7 +90,7 @@ public class UserCenterActivity extends BaseActivityWithTitleOnly {
                         ToastUtils.t(mApplication, baseBean.getMessage());
                         try {
                             userBean.setAddressId(Long.parseLong(parentId));
-                            userBean.setCity(parentName);
+                            addressBean.setCity(parentName);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -203,7 +205,7 @@ public class UserCenterActivity extends BaseActivityWithTitleOnly {
                             @Override
                             public void accept(MBaseBean<String> baseBean) throws Exception {
                                 ToastUtils.t(mApplication, baseBean.getMessage());
-                                userBean.setAddress(text);
+                                addressBean.setAddress(text);
                                 dataList.get(position).setValue(text);
                                 mAdapter.notifyItemChangedHF(position);
                             }

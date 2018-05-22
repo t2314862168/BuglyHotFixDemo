@@ -94,7 +94,7 @@ public class GoodsMangerActivity extends BaseActivityWithSearch {
     protected void receivePassDataIfNeed(Intent intent) {
         categoryId = intent.getLongExtra("categoryId", 0);
         categoryName = intent.getStringExtra("categoryName");
-        promotion = intent.getIntExtra("promotion", ConstUtils.GOOD_PROMOTION);
+        promotion = intent.getIntExtra("promotion", ConstUtils.GOOD_UN_PROMOTION);
     }
 
     @Override
