@@ -50,4 +50,38 @@ public class TextFontStyleController {
         styledText.setSpan(new TextAppearanceSpan(context, R.style.text_black_small), totalPrice.length(), sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return styledText;
     }
+
+    /**
+     * 返回黑小黑大,黑小的是¥
+     *
+     * @param context
+     * @param smallStr
+     * @param bigStr
+     * @return
+     */
+    public static SpannableString blackSmallBig(Context context, String smallStr, String bigStr) {
+        StringBuffer sb = new StringBuffer(smallStr);
+        sb.append(bigStr);
+        SpannableString styledText = new SpannableString(sb);
+        styledText.setSpan(new TextAppearanceSpan(context, R.style.text_black_small), smallStr.length() - 1, smallStr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        styledText.setSpan(new TextAppearanceSpan(context, R.style.text_black_big), smallStr.length(), smallStr.length() + bigStr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return styledText;
+    }
+
+    /**
+     * 返回黑中黑小
+     *
+     * @param context
+     * @param smallStr
+     * @param middleStr
+     * @return
+     */
+    public static SpannableString blackMiddleSmall(Context context, String middleStr, String smallStr) {
+        StringBuffer sb = new StringBuffer(middleStr);
+        sb.append(smallStr);
+        SpannableString styledText = new SpannableString(sb);
+        styledText.setSpan(new TextAppearanceSpan(context, R.style.text_black_middle), 0, middleStr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        styledText.setSpan(new TextAppearanceSpan(context, R.style.text_black_small), middleStr.length(), sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return styledText;
+    }
 }

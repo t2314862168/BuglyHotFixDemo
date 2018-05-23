@@ -61,7 +61,8 @@
         <activity
             android:name=".activity.GoodsCategoryActivity"
             android:launchMode="singleTask" />
-
+        <activity android:name=".activity.DispatchMangerActivity" />
+        <activity android:name=".activity.DeliverGoodsMangerActivity" />
         <!-- 相机和安装包权限都需要改配置 -->
         <provider
             android:name="android.support.v4.content.FileProvider"

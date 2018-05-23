@@ -33,7 +33,7 @@ public class HomeActivity extends BaseActivity {
 
     private int[] mDataResIds = new int[]{R.string.user_manger, R.string.order_manger
             , R.string.goods_manger, R.string.deliver_goods_manger, R.string.data_statistics
-            , R.string.permission_manger, R.string.personal_center};
+            , R.string.dispatch_manger,R.string.permission_manger, R.string.personal_center};
     private List<String> mData = new ArrayList<>();
     private RecyclerAdapterWithHF mAdapter;
     int PERSON_CENTER = 444;
@@ -73,15 +73,15 @@ public class HomeActivity extends BaseActivity {
         if (itemStr.equals(mResources.getString(R.string.user_manger))) {
             intent = getIntentWithPublicParams(UserMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.order_manger))) {
-            intent = getIntentWithPublicParams(UserMangerActivity.class);
+            intent = getIntentWithPublicParams(OrderManagerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.goods_manger))) {
             intent = getIntentWithPublicParams(GoodsMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.deliver_goods_manger))) {
-            intent = getIntentWithPublicParams(UserMangerActivity.class);
+            intent = getIntentWithPublicParams(DeliverGoodsMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.data_statistics))) {
             intent = getIntentWithPublicParams(UserMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.dispatch_manger))) {
-            intent = getIntentWithPublicParams(UserMangerActivity.class);
+            intent = getIntentWithPublicParams(DispatchMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.permission_manger))) {
             intent = getIntentWithPublicParams(PermissionMangerActivity.class);
         } else if (itemStr.equals(mResources.getString(R.string.personal_center))) {

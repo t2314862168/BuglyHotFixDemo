@@ -1,61 +1,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_layout"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="wrap_content"
+    android:background="@color/color_gray"
+    android:minHeight="48dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_gray"
-        android:minHeight="48dp">
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="1dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="客户名"
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
 
-        <TextView
-            android:id="@+id/order_name_tv"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="客户名"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small" />
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="90dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="1dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="下单时间"
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
 
-        <TextView
-            android:id="@+id/order_time_tv"
-            android:layout_width="90dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="下单时间"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small" />
-
-        <TextView
-            android:id="@+id/tv_city"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:layout_weight="3"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="商品总价 + 运费"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small" />
+    <TextView
+        android:id="@+id/tv_total_freight"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="1dp"
+        android:layout_weight="3"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="商品总价 + 运费"
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
 
 
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="件数"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small" />
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/tv_buy_num"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="1dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="件数"
+        android:textColor="@color/black"
+        android:textSize="@dimen/small" />
 </LinearLayout>

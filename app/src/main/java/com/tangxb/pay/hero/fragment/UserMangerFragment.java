@@ -3,6 +3,7 @@ package com.tangxb.pay.hero.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -91,7 +92,13 @@ public class UserMangerFragment extends BaseFragment {
             protected void convert(ViewHolder viewHolder, UserBean item, int position) {
                 viewHolder.setText(R.id.tv_nickname, item.getRealName());
                 viewHolder.setText(R.id.tv_address, item.getCity() + item.getAddress());
-                viewHolder.setText(R.id.tv_status, item.getStatus() == 1 ? "正常" : "冻结");
+                if (item.getStatus() == 1) {
+                    viewHolder.setText(R.id.tv_status, "正常");
+                    viewHolder.setTextColor(R.id.tv_status, ContextCompat.getColor(mActivity, R.color.main_color));
+                } else {
+                    viewHolder.setText(R.id.tv_status, "冻结");
+                    viewHolder.setTextColor(R.id.tv_status, ContextCompat.getColor(mActivity, R.color.color_red));
+                }
             }
         };
         mAdapter = new RecyclerAdapterWithHF((MultiItemTypeAdapter) commonAdapter);

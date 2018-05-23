@@ -6,12 +6,14 @@ import android.support.v4.view.ViewPager;
 
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.adapter.OrderManagerActivityFragmentAdapter;
-import com.tangxb.pay.hero.bean.OrderBean;
+import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.OrderStatusBean;
+import com.tangxb.pay.hero.controller.OrderMangerController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 /**
  * 订单管理界面<br>
@@ -24,6 +26,7 @@ public class OrderManagerActivity extends BaseActivityWithSearch {
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
     OrderManagerActivityFragmentAdapter fragmentAdapter;
+    OrderMangerController controller;
 
     @Override
     protected int getLayoutResId() {
@@ -33,7 +36,8 @@ public class OrderManagerActivity extends BaseActivityWithSearch {
     @Override
     protected void initData() {
         handleSearchTitle();
-        setLeftBtnText(R.string.add_user);
+//        setLeftBtnText(R.string.add_user);
+        setLeftBtnTextVisible(false);
         setMiddleText(R.string.order_manger);
         fragmentAdapter = new OrderManagerActivityFragmentAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(fragmentAdapter);
@@ -41,6 +45,8 @@ public class OrderManagerActivity extends BaseActivityWithSearch {
 //        if (manager.hasPermission(Permission.P_AddUser)) {
 //            findViewById(R.id.add_user).setVisibility(View.VISIBLE);
 //        }
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        controller = new OrderMangerController(this);
         loadNeedData();
     }
 
@@ -48,18 +54,18 @@ public class OrderManagerActivity extends BaseActivityWithSearch {
      * 加载需要的数据
      */
     private void loadNeedData() {
-//        if (mApplication.getUserLoginResultBean() == null) return;
-        List<OrderBean> roleList = new ArrayList<>();
-        OrderBean orderBean = new OrderBean();
-        orderBean.setId(100);
-        orderBean.setName("待付款");
-        OrderBean orderBean2 = new OrderBean();
-        orderBean2.setId(200);
-        orderBean2.setName("已付款");
-        roleList.add(orderBean);
-        roleList.add(orderBean2);
-        fragmentAdapter.setList(roleList);
-        mTabLayout.setupWithViewPager(mViewPager);
+        addSubscription(controller.getOrderStatusList(), new Consumer<MBaseBean<List<OrderStatusBean>>>() {
+            @Override
+            public void accept(MBaseBean<List<OrderStatusBean>> baseBean) throws Exception {
+                fragmentAdapter.setList(baseBean.getData());
+                mTabLayout.setupWithViewPager(mViewPager);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                System.out.println();
+            }
+        });
     }
 
     @Override

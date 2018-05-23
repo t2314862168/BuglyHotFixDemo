@@ -6,6 +6,19 @@
     android:background="@color/main_color">
 
     <TextView
+        android:id="@+id/btn_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/bg_btn_left"
+        android:gravity="center"
+        android:minWidth="60dp"
+        android:padding="5dp"
+        android:textColor="@android:color/white"
+        tools:text="付款" />
+
+    <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -16,6 +16,7 @@ import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.activity.BaseActivity;
 import com.tangxb.pay.hero.activity.BaseActivityWithSearch;
 import com.tangxb.pay.hero.activity.OrderInfoActivity;
+import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.OrderBean;
 import com.tangxb.pay.hero.controller.OrderMangerFragmentController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 /**
  * 用户列表界面<br>
@@ -42,7 +44,7 @@ public class OrderMangerFragment extends BaseFragment {
     private static final String FRAGMENT_NAME = "fragmentName";
     private static final String ROLE_ID = "currentRoleId";
     private String fragmentName;
-    private long currentRoleId;
+    private int currentRoleId;
     private CommonAdapter<OrderBean> commonAdapter;
     private static final int TO_EDIT_USER_CODE = 666;
 
@@ -59,11 +61,11 @@ public class OrderMangerFragment extends BaseFragment {
         return R.layout.fragment_order_manager;
     }
 
-    public static OrderMangerFragment getInstance(String name, long roleId) {
+    public static OrderMangerFragment getInstance(String name, int roleId) {
         OrderMangerFragment fragment = new OrderMangerFragment();
         Bundle args = new Bundle();
         args.putString(FRAGMENT_NAME, name);
-        args.putLong(ROLE_ID, roleId);
+        args.putInt(ROLE_ID, roleId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,7 +73,7 @@ public class OrderMangerFragment extends BaseFragment {
     @Override
     protected void receiveBundleFromActivity(Bundle arg) {
         fragmentName = arg.getString(FRAGMENT_NAME);
-        currentRoleId = arg.getLong(ROLE_ID);
+        currentRoleId = arg.getInt(ROLE_ID);
     }
 
     @Override
@@ -86,7 +88,10 @@ public class OrderMangerFragment extends BaseFragment {
         commonAdapter = new CommonAdapter<OrderBean>(mActivity, R.layout.item_fragment_order_manager, dataList) {
             @Override
             protected void convert(ViewHolder viewHolder, OrderBean item, int position) {
-
+                viewHolder.setText(R.id.tv_name, item.getRealname());
+                viewHolder.setText(R.id.tv_time, item.getCreateTime());
+                viewHolder.setText(R.id.tv_total_freight, "¥" + item.getProductTotalPrice() + "¥" + item.getTotalFreight());
+                viewHolder.setText(R.id.tv_buy_num, item.getBuyNum() + "");
             }
         };
         mAdapter = new RecyclerAdapterWithHF((MultiItemTypeAdapter) commonAdapter);
@@ -138,32 +143,22 @@ public class OrderMangerFragment extends BaseFragment {
     private void getDataByRefresh() {
         // 开始网络请求
         page = 1;
-
-        List<OrderBean> itemBeanList = new ArrayList<>();
-        itemBeanList.add(new OrderBean());
-        itemBeanList.add(new OrderBean());
-        itemBeanList.add(new OrderBean());
-        itemBeanList.add(new OrderBean());
-        dataList.addAll(itemBeanList);
-        mAdapter.notifyDataSetChangedHF();
-        ptrClassicFrameLayout.refreshComplete();
-//        addSubscription(fragmentController.getUserListByRoleId(page, rows, currentRoleId, searchKey, 1), new Consumer<MBaseBean<List<UserBean>>>() {
-//            @Override
-//            public void accept(MBaseBean<List<UserBean>> baseBean) throws Exception {
-//                dataList.clear();
-//                if (baseBean.getData() != null) {
-//                    dataList.addAll(baseBean.getData());
-//                }
-//                mAdapter.notifyDataSetChangedHF();
-//                ptrClassicFrameLayout.refreshComplete();
-//            }
-//        }, new Consumer<Throwable>() {
-//            @Override
-//            public void accept(Throwable throwable) throws Exception {
-//                ptrClassicFrameLayout.refreshComplete();
-//            }
-//        });
-
+        addSubscription(fragmentController.getOrderList(currentRoleId, page, rows, searchKey), new Consumer<MBaseBean<List<OrderBean>>>() {
+            @Override
+            public void accept(MBaseBean<List<OrderBean>> baseBean) throws Exception {
+                dataList.clear();
+                if (baseBean.getData() != null) {
+                    dataList.addAll(baseBean.getData());
+                }
+                mAdapter.notifyDataSetChangedHF();
+                ptrClassicFrameLayout.refreshComplete();
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                ptrClassicFrameLayout.refreshComplete();
+            }
+        });
     }
 
     /**
@@ -172,34 +167,34 @@ public class OrderMangerFragment extends BaseFragment {
     private void getDataByLoadMore() {
         // 开始网络请求
         page++;
-//        addSubscription(fragmentController.getUserListByRoleId(page, rows, currentRoleId, searchKey, 1), new Consumer<MBaseBean<List<UserBean>>>() {
-//            @Override
-//            public void accept(MBaseBean<List<UserBean>> baseBean) throws Exception {
-//                if (baseBean.getData() != null) {
-//                    dataList.addAll(baseBean.getData());
-//                }
-//                mAdapter.notifyDataSetChangedHF();
-//                ptrClassicFrameLayout.loadMoreComplete(true);
-//            }
-//        }, new Consumer<Throwable>() {
-//            @Override
-//            public void accept(Throwable throwable) throws Exception {
-//                ptrClassicFrameLayout.loadMoreComplete(true);
-//            }
-//        });
+        addSubscription(fragmentController.getOrderList(currentRoleId, page, rows, searchKey), new Consumer<MBaseBean<List<OrderBean>>>() {
+            @Override
+            public void accept(MBaseBean<List<OrderBean>> baseBean) throws Exception {
+                if (baseBean.getData() != null) {
+                    dataList.addAll(baseBean.getData());
+                }
+                mAdapter.notifyDataSetChangedHF();
+                ptrClassicFrameLayout.loadMoreComplete(true);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                ptrClassicFrameLayout.loadMoreComplete(true);
+            }
+        });
     }
 
     /**
      * 点击item
      *
-     * @param userBean
+     * @param orderBean
      */
-    private void handleItemClick(int position, OrderBean userBean) {
+    private void handleItemClick(int position, OrderBean orderBean) {
         Intent intent = ((BaseActivity) mActivity).getIntentWithPublicParams(OrderInfoActivity.class);
         int headerViewsCount = mAdapter.getHeadSize();
-//        int realPosition = position - headerViewsCount;
-//        intent.putExtra("realPosition", realPosition);
-//        intent.putExtra("userBean", userBean);
+        int realPosition = position - headerViewsCount;
+        intent.putExtra("realPosition", realPosition);
+        intent.putExtra("orderBean", orderBean);
         startActivityForResult(intent, TO_EDIT_USER_CODE);
     }
 

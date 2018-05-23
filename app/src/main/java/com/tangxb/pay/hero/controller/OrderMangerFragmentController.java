@@ -4,9 +4,9 @@ import android.text.TextUtils;
 
 import com.tangxb.pay.hero.RetrofitRxClient;
 import com.tangxb.pay.hero.activity.BaseActivity;
-import com.tangxb.pay.hero.api.UserRxAPI;
+import com.tangxb.pay.hero.api.OrderRxAPI;
 import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.bean.UserBean;
+import com.tangxb.pay.hero.bean.OrderBean;
 import com.tangxb.pay.hero.encrypt.MSignUtils;
 
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class OrderMangerFragmentController extends BaseControllerWithActivity {
     }
 
     /**
-     * 通过角色id来获取用户列表
+     * 获取订单列表
      *
      * @param token
      * @param signatrue
@@ -34,36 +34,34 @@ public class OrderMangerFragmentController extends BaseControllerWithActivity {
      * @param data
      * @return
      */
-    Observable<MBaseBean<List<UserBean>>> getUserListByRoleId(String token, String signatrue
+    Observable<MBaseBean<List<OrderBean>>> getOrderList(String token, String signatrue
             , String timestamp, Map<String, String> data) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
-                .create(UserRxAPI.class)
-                .getUserListByRoleId(token, signatrue, timestamp, data);
+                .create(OrderRxAPI.class)
+                .getOrderList(token, signatrue, timestamp, data);
     }
 
     /**
-     * 通过角色id来获取用户列表
+     * 获取订单列表
      *
      * @param page
      * @param rows
-     * @param roleId
+     * @param status
      * @param key
-     * @param enable
      * @return
      */
-    public Observable<MBaseBean<List<UserBean>>> getUserListByRoleId(int page, int rows, long roleId, String key, int enable) {
+    public Observable<MBaseBean<List<OrderBean>>> getOrderList(int status, int page, int rows, String key) {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         Map<String, String> data = new HashMap<>();
+        data.put("status", status + "");
         data.put("page", page + "");
         data.put("rows", rows + "");
-        data.put("role_id", roleId + "");
         if (!TextUtils.isEmpty(key)) {
             data.put("key", key);
         }
-        data.put("enable", enable + "");
         String signatrue = MSignUtils.getSign(data, token, timestamp);
-        return getUserListByRoleId(token, signatrue, timestamp, data);
+        return getOrderList(token, signatrue, timestamp, data);
     }
 }

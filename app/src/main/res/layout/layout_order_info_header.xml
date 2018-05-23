@@ -5,7 +5,7 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/user_info_view"
+        android:id="@+id/tv_user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -14,7 +14,7 @@
         android:textSize="@dimen/small" />
 
     <TextView
-        android:id="@+id/address_view"
+        android:id="@+id/tv_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -23,27 +23,16 @@
         android:textSize="@dimen/small" />
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:id="@+id/pay_price"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="已付款：0.00"
-        android:textColor="@color/black"
-        android:textSize="@dimen/small" />
-
-    <TextView
-        android:id="@+id/other_free"
+        android:id="@+id/tv_total_freight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="运费: 待核实"
+        android:text="商品总价:      运费: 待核实"
         android:textColor="@color/black"
         android:textSize="@dimen/small" />
-
 
     <EditText
-        android:id="@+id/mark_view"
+        android:id="@+id/tv_mark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -54,6 +43,4 @@
         android:padding="5dp"
         android:textColor="@color/black"
         android:textSize="@dimen/small" />
-
-
 </LinearLayout>

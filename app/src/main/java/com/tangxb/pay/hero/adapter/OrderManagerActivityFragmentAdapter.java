@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.tangxb.pay.hero.bean.OrderBean;
+import com.tangxb.pay.hero.bean.OrderStatusBean;
 import com.tangxb.pay.hero.fragment.OrderMangerFragment;
 
 import java.util.ArrayList;
@@ -15,14 +15,14 @@ import java.util.List;
  */
 
 public class OrderManagerActivityFragmentAdapter extends FragmentPagerAdapter {
-    private List<OrderBean> mList = new ArrayList<>();
+    private List<OrderStatusBean> mList = new ArrayList<>();
     private List<OrderMangerFragment> fragmentList = new ArrayList<>();
 
     public OrderManagerActivityFragmentAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public void setList(List<OrderBean> mList) {
+    public void setList(List<OrderStatusBean> mList) {
         this.mList.addAll(mList);
         int size = this.mList.size();
         for (int i = 0; i < size; i++) {
