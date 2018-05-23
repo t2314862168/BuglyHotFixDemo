@@ -83,4 +83,8 @@
         <item name="android:textSize">@dimen/big</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="text_main_color_small">
+        <item name="android:textSize">@dimen/small</item>
+        <item name="android:textColor">@color/main_color</item>
+    </style>
 </resources>

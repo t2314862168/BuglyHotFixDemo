@@ -69,6 +69,9 @@ public class OrderBean implements Parcelable {
     @Expose
     @SerializedName("oper_status")
     private String operStatus;
+    @Expose
+    @SerializedName("remark")
+    private String remark;
 
     public long getSubId() {
         return subId;
@@ -182,6 +185,14 @@ public class OrderBean implements Parcelable {
         this.operStatus = operStatus;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -203,6 +214,7 @@ public class OrderBean implements Parcelable {
         dest.writeString(this.totalFreight);
         dest.writeString(this.createTime);
         dest.writeString(this.operStatus);
+        dest.writeString(this.remark);
     }
 
     public OrderBean() {
@@ -223,6 +235,7 @@ public class OrderBean implements Parcelable {
         this.totalFreight = in.readString();
         this.createTime = in.readString();
         this.operStatus = in.readString();
+        this.remark = in.readString();
     }
 
     public static final Parcelable.Creator<OrderBean> CREATOR = new Parcelable.Creator<OrderBean>() {

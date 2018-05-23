@@ -20,6 +20,7 @@ import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.OrderBean;
 import com.tangxb.pay.hero.controller.OrderMangerFragmentController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
+import com.tangxb.pay.hero.event.ChangeOrderStatusEvent;
 import com.tangxb.pay.hero.event.SearchKeyEvent;
 import com.tangxb.pay.hero.util.ConstUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -134,6 +135,16 @@ public class OrderMangerFragment extends BaseFragment {
     @Subscribe
     public void onSearchKeyEvent(SearchKeyEvent event) {
         searchKey = event.getSearchKey();
+        ptrClassicFrameLayout.autoRefresh();
+    }
+
+    /**
+     * 改变订单状态事件
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onChangeOrderStatusEvent(ChangeOrderStatusEvent event) {
         ptrClassicFrameLayout.autoRefresh();
     }
 

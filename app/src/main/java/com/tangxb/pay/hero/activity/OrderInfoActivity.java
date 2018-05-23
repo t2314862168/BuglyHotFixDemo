@@ -1,9 +1,11 @@
 package com.tangxb.pay.hero.activity;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,9 +20,13 @@ import com.tangxb.pay.hero.bean.OrderItemBean;
 import com.tangxb.pay.hero.controller.OrderInfoController;
 import com.tangxb.pay.hero.controller.TextFontStyleController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
+import com.tangxb.pay.hero.event.ChangeOrderStatusEvent;
 import com.tangxb.pay.hero.util.PriceCalculator;
+import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +84,18 @@ public class OrderInfoActivity extends BaseActivityWithTitleOnly {
                 ImageView imageView = viewHolder.getView(R.id.iv);
                 mApplication.getImageLoaderFactory().loadCommonImgByUrl(mActivity, item.getProduct_image(), imageView);
                 viewHolder.setText(R.id.tv_name, item.getProduct_name());
-                String str = "订购：" + item.getBuy_num() + "件 ";
-                viewHolder.setText(R.id.tv_buy_num, str);
+
+                TextView tv_buy_num = viewHolder.getView(R.id.tv_buy_num);
+                String str = "订购：" + item.getBuy_num() + item.getProduct_unit();
+                int leaveNum = item.getBuy_num() - item.getGive_num();
+                if (leaveNum > 0) {
+                    String str2 = "(差" + leaveNum + item.getProduct_unit() + ")";
+                    SpannableString greenSmallRedSmall = TextFontStyleController.greenSmallRedSmall(mActivity, str, str2);
+                    tv_buy_num.setText(greenSmallRedSmall, TextView.BufferType.SPANNABLE);
+                } else {
+                    tv_buy_num.setTextColor(ContextCompat.getColor(mActivity, R.color.main_color));
+                    tv_buy_num.setText(str);
+                }
                 viewHolder.setText(R.id.tv_price, "¥" + item.getPiece_price());
                 TextView tv_total_price = viewHolder.getView(R.id.tv_total_price);
                 SpannableString blackSmallBig = TextFontStyleController.blackSmallBig(mActivity, "小计：¥", item.getSub_price());
@@ -107,8 +123,14 @@ public class OrderInfoActivity extends BaseActivityWithTitleOnly {
         if (orderBean == null) return;
         tv_user_info.setText("客户: " + orderBean.getRealname() + "       电话:" + orderBean.getMobile());
         tv_address.setText("地址: " + orderBean.getAddress());
-//        if (TextUtils.isEmpty(orderBean.getm))
-
+        if (TextUtils.isEmpty(orderBean.getRemark())) {
+            tv_mark.setText(orderBean.getRemark());
+        }
+        if (!TextUtils.isEmpty(orderBean.getOperStatus()) && orderBean.getOperStatus().equals("true")) {
+            btn_status.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.color_red));
+        } else {
+            btn_status.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main_color));
+        }
     }
 
     /**
@@ -131,15 +153,19 @@ public class OrderInfoActivity extends BaseActivityWithTitleOnly {
      */
     @OnClick(R.id.btn_status)
     public void clickStatusBtn(View view) {
+        if (TextUtils.isEmpty(orderBean.getOperStatus()) || !orderBean.getOperStatus().equals("true"))
+            return;
         addSubscription(controller.operateOrder(orderBean.getId(), orderBean.getStatus()), new Consumer<MBaseBean<String>>() {
             @Override
             public void accept(MBaseBean<String> baseBean) throws Exception {
-                System.out.println();
+                ToastUtils.t(mApplication, baseBean.getMessage());
+                EventBus.getDefault().post(new ChangeOrderStatusEvent());
+                finish();
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                System.out.println();
+                ToastUtils.t(mApplication, throwable.getMessage());
             }
         });
     }

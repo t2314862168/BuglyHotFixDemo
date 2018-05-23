@@ -84,4 +84,22 @@ public class TextFontStyleController {
         styledText.setSpan(new TextAppearanceSpan(context, R.style.text_black_small), middleStr.length(), sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return styledText;
     }
+
+    /**
+     * 返回绿小红小的字符串
+     *
+     * @param context
+     * @param blackStr
+     * @param redStr
+     * @return
+     */
+    public static SpannableString greenSmallRedSmall(Context context, String blackStr, String redStr) {
+        StringBuffer sb = new StringBuffer(blackStr);
+        int oneEnd = sb.length();
+        sb.append(redStr);
+        SpannableString styledText = new SpannableString(sb.toString());
+        styledText.setSpan(new TextAppearanceSpan(context, R.style.text_main_color_small), 0, oneEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        styledText.setSpan(new TextAppearanceSpan(context, R.style.text_red_small), oneEnd, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return styledText;
+    }
 }
