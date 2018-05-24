@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_dispatch_manger_head" />
+    <include layout="@layout/layout_dispatch_person_order_list_head" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/test_recycler_view"

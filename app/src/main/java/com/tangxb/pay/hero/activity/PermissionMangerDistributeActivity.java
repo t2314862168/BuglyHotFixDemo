@@ -54,7 +54,6 @@ public class PermissionMangerDistributeActivity extends BaseActivityWithTitleOnl
     TextView mCheckAllTv;
     private RecyclerAdapterWithHF mAdapter;
     private List<PermissionBean> dataList = new ArrayList<>();
-    AlertDialog mAlertDialog;
     PermissionMangerDistributeController permissionMangerDistributeController;
     long roleId;
 
@@ -201,28 +200,13 @@ public class PermissionMangerDistributeActivity extends BaseActivityWithTitleOnl
         mCheckAllTv.setText(hasCheckAll ? "全不选" : "全选");
     }
 
-    /**
-     * 显示进度框
-     */
-    private void showAlertDialog() {
-        if (mAlertDialog == null) {
-            mAlertDialog = new AlertProgressDialog.Builder(mActivity)
-                    .setView(R.layout.layout_alert_dialog)
-                    .setCancelable(false)
-                    .setMessage(R.string.commit_data_ing)
-                    .show();
-        }
-        mAlertDialog.show();
-    }
 
     /**
      * 隐藏进度框
      */
     private void hideAlertDialog(boolean success, String msg) {
         ToastUtils.t(mApplication, msg);
-        if (mAlertDialog != null) {
-            mAlertDialog.dismiss();
-        }
+        hideAlertDialog();
         if (success) {
             finish();
         }

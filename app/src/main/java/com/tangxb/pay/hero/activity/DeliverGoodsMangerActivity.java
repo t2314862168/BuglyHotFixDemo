@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
@@ -77,6 +78,7 @@ public class DeliverGoodsMangerActivity extends BaseActivityWithTitle {
             protected void convert(ViewHolder viewHolder, DeliverGoodsBean item, int position) {
                 LinearLayout itemLL = viewHolder.getView(R.id.ll_item);
                 itemLL.setDividerDrawable(divider);
+
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);

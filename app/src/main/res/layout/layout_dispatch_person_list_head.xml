@@ -15,10 +15,11 @@
         android:showDividers="middle">
 
         <TextView
-            android:layout_width="120dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="图片"
+            android:text="姓名"
             android:textColor="@color/black" />
 
         <TextView
@@ -26,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="名称"
+            android:text="地址"
             android:textColor="@color/black" />
 
         <TextView
@@ -34,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="订购数量"
+            android:text="日期"
             android:textColor="@color/black" />
 
         <TextView
@@ -42,7 +43,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="库存"
+            android:text="电话"
             android:textColor="@color/black" />
     </LinearLayout>
 

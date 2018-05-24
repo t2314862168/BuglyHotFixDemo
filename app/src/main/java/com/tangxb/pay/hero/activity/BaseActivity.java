@@ -6,24 +6,22 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.tangxb.pay.hero.MApplication;
+import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.api.DefaultConsumerThrowable;
-import com.tangxb.pay.hero.rxhttp.BaseObserver;
+import com.tangxb.pay.hero.view.AlertProgressDialog;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -241,5 +239,46 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean softInputIsOpen(Context context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         return imm.isActive();
+    }
+
+    AlertDialog mAlertDialog;
+
+    /**
+     * 显示进度框
+     */
+    public void showAlertDialog(String str) {
+        if (mAlertDialog == null) {
+            mAlertDialog = new AlertProgressDialog.Builder(mActivity)
+                    .setView(R.layout.layout_alert_dialog)
+                    .setCancelable(false)
+                    .setMessage(str)
+                    .show();
+        } else {
+            mAlertDialog.show();
+        }
+    }
+
+    /**
+     * 显示进度框
+     */
+    public void showAlertDialog() {
+        if (mAlertDialog == null) {
+            mAlertDialog = new AlertProgressDialog.Builder(mActivity)
+                    .setView(R.layout.layout_alert_dialog)
+                    .setCancelable(false)
+                    .setMessage(R.string.commit_data_ing)
+                    .show();
+        } else {
+            mAlertDialog.show();
+        }
+    }
+
+    /**
+     * 隐藏进度框
+     */
+    public void hideAlertDialog() {
+        if (mAlertDialog != null) {
+            mAlertDialog.dismiss();
+        }
     }
 }

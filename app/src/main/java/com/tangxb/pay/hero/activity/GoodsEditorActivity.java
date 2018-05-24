@@ -101,7 +101,6 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
     GoodsBean goodsBean;
     private final int RC_CAMERA = 0;
     private final int RC_ALBUM = 1;
-    AlertDialog alertDialog;
     String headUrls;
     String detailUrls;
     GoodsEditorController editorController;
@@ -485,9 +484,7 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
      */
     private void hideAlertDialog(boolean success, String msg) {
         ToastUtils.t(mApplication, msg);
-        if (alertDialog != null) {
-            alertDialog.dismiss();
-        }
+        hideAlertDialog();
         if (success) {
             Intent intent = new Intent();
             intent.putExtra("position", position);
@@ -495,20 +492,6 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
             setResult(Activity.RESULT_OK, intent);
             finish();
         }
-    }
-
-    /**
-     * 显示进度框
-     */
-    private void showAlertDialog() {
-        if (alertDialog == null) {
-            alertDialog = new AlertProgressDialog.Builder(mActivity)
-                    .setView(R.layout.layout_alert_dialog)
-                    .setCancelable(false)
-                    .setMessage(R.string.commit_data_ing)
-                    .show();
-        }
-        alertDialog.show();
     }
 
     /**

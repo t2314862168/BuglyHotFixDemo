@@ -2,17 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_item"
     android:layout_width="match_parent"
-    android:layout_height="124dp"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
     android:orientation="horizontal"
     android:showDividers="middle">
-
-    <ImageView
-        android:id="@+id/iv_network"
-        android:layout_width="120dp"
-        android:layout_height="114dp"
-        android:layout_gravity="center"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -24,7 +17,7 @@
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/tv_buy_num"
+        android:id="@+id/tv_address"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -33,11 +26,19 @@
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/tv_storage_num"
+        android:id="@+id/tv_date"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="200/箱"
+        android:text="100/箱"
         android:textColor="@color/black" />
+
+    <ImageView
+        android:id="@+id/iv_mobile"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_mobile" />
 </LinearLayout>

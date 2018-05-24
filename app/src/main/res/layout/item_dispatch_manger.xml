@@ -15,6 +15,7 @@
         android:src="@mipmap/ic_launcher" />
 
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -23,6 +24,7 @@
         android:textColor="@color/black" />
 
     <TextView
+        android:id="@+id/tv_buy_num"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -31,6 +33,7 @@
         android:textColor="@color/black" />
 
     <TextView
+        android:id="@+id/tv_storage_num"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
