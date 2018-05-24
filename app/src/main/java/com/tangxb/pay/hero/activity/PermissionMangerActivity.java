@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.chanven.lib.cptr.PtrClassicFrameLayoutEx;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.MBaseBean;
@@ -26,8 +25,6 @@ import io.reactivex.functions.Consumer;
  */
 
 public class PermissionMangerActivity extends BaseActivityWithTitleOnly {
-    @BindView(R.id.test_recycler_view_frame)
-    PtrClassicFrameLayoutEx ptrClassicFrameLayout;
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
     private RecyclerAdapterWithHF mAdapter;
@@ -60,7 +57,6 @@ public class PermissionMangerActivity extends BaseActivityWithTitleOnly {
             @Override
             protected void convert(ViewHolder viewHolder, RoleBean item, int position) {
                 viewHolder.setText(R.id.tv_name, item.getName());
-
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);
@@ -73,30 +69,6 @@ public class PermissionMangerActivity extends BaseActivityWithTitleOnly {
                 handleItemClick(position, dataList.get(position));
             }
         });
-        ptrClassicFrameLayout.setEnabled(false);
-//        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandlerEx() {
-//
-//            @Override
-//            public void onRefreshBegin(PtrFrameLayoutEx frame) {
-//                getDataByRefresh();
-//            }
-//        });
-//        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-//
-//            @Override
-//            public void loadMore() {
-//                getDataByLoadMore();
-//            }
-//        });
-//        // 登录的时候没有返回角色列表,则下拉获取
-//        if (dataList.size() == 0) {
-//            getWindow().getDecorView().post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    ptrClassicFrameLayout.autoRefresh();
-//                }
-//            });
-//        }
     }
 
 
@@ -114,13 +86,13 @@ public class PermissionMangerActivity extends BaseActivityWithTitleOnly {
                     dataList.addAll(baseBean.getData());
                 }
                 mAdapter.notifyDataSetChangedHF();
-                ptrClassicFrameLayout.refreshComplete();
+//                ptrClassicFrameLayout.refreshComplete();
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
                 mAdapter.notifyDataSetChangedHF();
-                ptrClassicFrameLayout.refreshComplete();
+//                ptrClassicFrameLayout.refreshComplete();
             }
         });
     }
@@ -139,12 +111,12 @@ public class PermissionMangerActivity extends BaseActivityWithTitleOnly {
                     dataList.addAll(baseBean.getData());
                 }
                 mAdapter.notifyDataSetChangedHF();
-                ptrClassicFrameLayout.loadMoreComplete(true);
+//                ptrClassicFrameLayout.loadMoreComplete(true);
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                ptrClassicFrameLayout.loadMoreComplete(true);
+//                ptrClassicFrameLayout.loadMoreComplete(true);
             }
         });
     }

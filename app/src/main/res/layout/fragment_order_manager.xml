@@ -3,17 +3,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.8dp"
-        android:background="@android:color/darker_gray" />
+    <include layout="@layout/layout_common_head_bottom_divider" />
 
     <include layout="@layout/layout_fragment_order_manager_head" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.8dp"
-        android:background="@android:color/darker_gray" />
+    <include layout="@layout/layout_common_head_bottom_divider" />
 
     <include layout="@layout/recyclerview_layout" />
 </LinearLayout>
