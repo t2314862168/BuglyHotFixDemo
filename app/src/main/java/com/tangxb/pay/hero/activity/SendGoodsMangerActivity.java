@@ -1,22 +1,19 @@
 package com.tangxb.pay.hero.activity;
 
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
-import com.tangxb.pay.hero.bean.DeliverProductBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.controller.DispatchGoodsMangerController;
+import com.tangxb.pay.hero.bean.StorageOrderBean;
+import com.tangxb.pay.hero.controller.SendGoodsMangerController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
-import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -28,65 +25,61 @@ import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 /**
- * 配送管理界面<br>
+ * 发货管理界面<br>
  * Created by tangxuebing on 2018/5/23.
  */
 
-public class DispatchMangerActivity extends BaseActivityWithTitle {
+public class SendGoodsMangerActivity extends BaseActivityWithTitle {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.ll_bottom)
     View mBottomLL;
     @BindView(R.id.btn_item)
-    Button mItemBtn1;
+    Button mItemBtn;
     @BindView(R.id.ll_head)
     LinearLayout mHeadLL;
 
-    List<DeliverProductBean> dataList = new ArrayList<>();
+    List<StorageOrderBean> dataList = new ArrayList<>();
     RecyclerAdapterWithHF mAdapter;
-    DispatchGoodsMangerController controller;
+    SendGoodsMangerController controller;
 
     @Override
     public void clickLeftBtn() {
-        Intent intent = getIntentWithPublicParams(SupplyWareHouseActivity.class);
-        startActivity(intent);
+
     }
 
     @Override
     public void clickRightBtn() {
-        Intent intent = getIntentWithPublicParams(ReceiveGoodsActivity.class);
-        startActivity(intent);
+
     }
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_dispatch_manger;
+        return R.layout.activity_deliver_goods;
     }
 
     @Override
     protected void initData() {
         handleTitle();
-        setLeftText("补仓");
-        setMiddleText(R.string.person_warehouse);
+        setLeftText("获取新订单");
+        setMiddleText(R.string.deliver_goods_manger);
         setRightText("收货");
-        mItemBtn1.setText("开始配送");
+        mItemBtn.setText("开始分配");
 
+        dataList.add(new StorageOrderBean());
+        dataList.add(new StorageOrderBean());
+        dataList.add(new StorageOrderBean());
 
-        controller = new DispatchGoodsMangerController(this);
         TypedArray typedArray = mActivity.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
         final Drawable divider = typedArray.getDrawable(0);
         typedArray.recycle();
         mHeadLL.setDividerDrawable(divider);
-        CommonAdapter commonAdapter = new CommonAdapter<DeliverProductBean>(mActivity, R.layout.item_dispatch_manger, dataList) {
+        CommonAdapter commonAdapter = new CommonAdapter<StorageOrderBean>(mActivity, R.layout.item_dispatch_manger, dataList) {
             @Override
-            protected void convert(ViewHolder viewHolder, DeliverProductBean item, int position) {
+            protected void convert(ViewHolder viewHolder, StorageOrderBean item, int position) {
                 LinearLayout itemLL = viewHolder.getView(R.id.ll_item);
                 itemLL.setDividerDrawable(divider);
-                ImageView imageView = viewHolder.getView(R.id.iv_network);
-                mApplication.getImageLoaderFactory().loadCommonImgByUrl(mActivity, item.getProductImage(), imageView);
-                viewHolder.setText(R.id.tv_name, item.getProductName());
-                viewHolder.setText(R.id.tv_buy_num, item.getBuyNum() + item.getProductUnit());
-                viewHolder.setText(R.id.tv_storage_num, item.getNum() + item.getProductUnit());
+
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);
@@ -99,33 +92,23 @@ public class DispatchMangerActivity extends BaseActivityWithTitle {
                 handleItemClick(position);
             }
         });
-        getNeedData();
     }
 
     /**
      * 网络获取数据
      */
     private void getNeedData() {
-        addSubscription(controller.getDeliverProductList(), new Consumer<MBaseBean<List<DeliverProductBean>>>() {
+        addSubscription(controller.getStorageOrderList(), new Consumer<MBaseBean<List<StorageOrderBean>>>() {
             @Override
-            public void accept(MBaseBean<List<DeliverProductBean>> baseBean) throws Exception {
-                if (baseBean.getData() != null && baseBean.getData().size() > 0) {
-                    dataList.addAll(baseBean.getData());
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                ToastUtils.t(mApplication, throwable.getMessage());
+            public void accept(MBaseBean<List<StorageOrderBean>> baseBean) throws Exception {
+
             }
         });
     }
 
     @OnClick(R.id.btn_item)
     public void item11Click(View view) {
-        Intent intent = getIntentWithPublicParams(DispatchPersonListActivity.class);
-        startActivity(intent);
+
     }
 
     /**
@@ -134,4 +117,5 @@ public class DispatchMangerActivity extends BaseActivityWithTitle {
     private void handleItemClick(int position) {
 
     }
+
 }

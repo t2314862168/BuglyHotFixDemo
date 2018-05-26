@@ -76,6 +76,11 @@ public class AppUpdateController {
                 showAppUpdateTipDialog(appUpdateBean);
 //                updateListener.notUpdate();
             }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                System.out.println();
+            }
         });
     }
 

@@ -42,6 +42,12 @@ public abstract class BaseActivityWithTitle extends BaseActivity {
         mLeftTv = findView(mTitleView, R.id.btn_left);
         mTitleTv = findView(mTitleView, R.id.tv_title);
         mRightTv = findView(mTitleView, R.id.btn_right);
+        mLeftTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickLeftBtn();
+            }
+        });
         mRightTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

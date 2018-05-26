@@ -64,7 +64,13 @@
         <activity android:name=".activity.DispatchMangerActivity" />
         <activity android:name=".activity.DispatchPersonListActivity" />
         <activity android:name=".activity.DispatchPersonOrderListActivity" />
-        <activity android:name=".activity.DeliverGoodsMangerActivity" />
+        <activity android:name=".activity.SendGoodsMangerActivity" />
+        <activity android:name=".activity.ReceiveGoodsActivity" />
+        <activity android:name=".activity.SupplyWareHouseActivity" />
+        <activity android:name=".activity.DataStatisticsActivity" />
+        <activity android:name=".activity.WarehouseMangerActivity" />
+        <activity android:name=".activity.WarehouseEditorActivity" />
+        <activity android:name=".activity.WarehouseAllInOneActivity" />
         <!-- 相机和安装包权限都需要改配置 -->
         <provider
             android:name="android.support.v4.content.FileProvider"

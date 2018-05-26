@@ -15,12 +15,11 @@
         android:showDividers="middle">
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="图片"
+            android:text="车票号"
             android:textColor="@color/black" />
 
         <TextView
@@ -28,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="名称"
+            android:text="发车时间"
             android:textColor="@color/black" />
 
         <TextView
@@ -36,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="订购数量"
+            android:text="发货人"
             android:textColor="@color/black" />
 
         <TextView
@@ -44,7 +43,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="库存"
+            android:text="请求人"
             android:textColor="@color/black" />
     </LinearLayout>
 

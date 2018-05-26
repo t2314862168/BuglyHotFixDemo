@@ -2,19 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_item"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="48dp"
     android:orientation="horizontal"
     android:showDividers="middle">
-
-    <ImageView
-        android:id="@+id/iv_network"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -22,24 +12,24 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="香辣豆200g20袋/箱"
+        android:text="简称"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/tv_buy_num"
+        android:id="@+id/tv_address"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="库房地址"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_operate"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="100/箱"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/tv_storage_num"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="200/箱"
+        android:text="操作"
         android:textColor="@color/black" />
 </LinearLayout>

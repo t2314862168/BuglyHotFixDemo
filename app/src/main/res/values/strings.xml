@@ -20,6 +20,8 @@
     <string name="deliver_goods_manger">发货管理</string>
     <string name="data_statistics">数据统计</string>
     <string name="dispatch_manger">配送管理</string>
+    <string name="person_warehouse">个人仓库</string>
+    <string name="warehouse_manger">仓库管理</string>
     <string name="permission_manger">权限管理</string>
     <string name="personal_center">个人中心</string>
     <string name="distribute_permission">分配权限</string>
@@ -56,4 +58,5 @@
     <string name="all">全部</string>
     <string name="increase">新增</string>
     <string name="update_pwd">修改密码</string>
+    <string name="save">保存</string>
 </resources>

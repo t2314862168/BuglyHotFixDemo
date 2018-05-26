@@ -18,6 +18,14 @@ public class RoleBean {
     @SerializedName("level")
     private long level;
 
+    public RoleBean() {
+    }
+
+    public RoleBean(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }

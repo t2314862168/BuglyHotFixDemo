@@ -6,13 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
-import com.tangxb.pay.hero.bean.DeliverGoodsBean;
-import com.tangxb.pay.hero.controller.DeliverGoodsMangerController;
+import com.tangxb.pay.hero.bean.StorageOrderBean;
+import com.tangxb.pay.hero.controller.SupplyWareHouseController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -24,11 +23,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 发货管理界面<br>
- * Created by tangxuebing on 2018/5/23.
+ * 补仓界面<br>
+ * Created by zll on 2018/5/26.
  */
 
-public class DeliverGoodsMangerActivity extends BaseActivityWithTitle {
+public class SupplyWareHouseActivity extends BaseActivityWithTitleOnly {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.ll_bottom)
@@ -38,44 +37,29 @@ public class DeliverGoodsMangerActivity extends BaseActivityWithTitle {
     @BindView(R.id.ll_head)
     LinearLayout mHeadLL;
 
-    List<DeliverGoodsBean> dataList = new ArrayList<>();
+    List<StorageOrderBean> dataList = new ArrayList<>();
     RecyclerAdapterWithHF mAdapter;
-    DeliverGoodsMangerController controller;
-
-    @Override
-    public void clickLeftBtn() {
-
-    }
-
-    @Override
-    public void clickRightBtn() {
-
-    }
+    SupplyWareHouseController controller;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_deliver_goods;
+        return R.layout.activity_supply_warehouse;
     }
 
     @Override
     protected void initData() {
         handleTitle();
-        setLeftText("获取新订单");
-        setMiddleText(R.string.deliver_goods_manger);
-        setRightText("收货");
-        mItemBtn.setText("开始分配");
+        setMiddleText("补仓");
+        mItemBtn.setText("发送订单");
 
-        dataList.add(new DeliverGoodsBean());
-        dataList.add(new DeliverGoodsBean());
-        dataList.add(new DeliverGoodsBean());
-
+        controller = new SupplyWareHouseController(this);
         TypedArray typedArray = mActivity.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
         final Drawable divider = typedArray.getDrawable(0);
         typedArray.recycle();
         mHeadLL.setDividerDrawable(divider);
-        CommonAdapter commonAdapter = new CommonAdapter<DeliverGoodsBean>(mActivity, R.layout.item_dispatch_manger, dataList) {
+        CommonAdapter commonAdapter = new CommonAdapter<StorageOrderBean>(mActivity, R.layout.item_supply_warehouse, dataList) {
             @Override
-            protected void convert(ViewHolder viewHolder, DeliverGoodsBean item, int position) {
+            protected void convert(ViewHolder viewHolder, StorageOrderBean item, int position) {
                 LinearLayout itemLL = viewHolder.getView(R.id.ll_item);
                 itemLL.setDividerDrawable(divider);
 
@@ -85,12 +69,7 @@ public class DeliverGoodsMangerActivity extends BaseActivityWithTitle {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerView.addItemDecoration(new MDividerItemDecoration(mActivity, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new RecyclerAdapterWithHF.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerAdapterWithHF adapter, RecyclerView.ViewHolder vh, int position) {
-                handleItemClick(position);
-            }
-        });
+        getNeedData();
     }
 
     /**
@@ -111,5 +90,4 @@ public class DeliverGoodsMangerActivity extends BaseActivityWithTitle {
     private void handleItemClick(int position) {
 
     }
-
 }

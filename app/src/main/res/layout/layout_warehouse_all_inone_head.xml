@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="订购数量"
+            android:text="待收货/待配送"
             android:textColor="@color/black" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="库存"
+            android:text="剩余"
             android:textColor="@color/black" />
     </LinearLayout>
 

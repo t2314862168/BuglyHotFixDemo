@@ -6,16 +6,6 @@
     android:orientation="horizontal"
     android:showDividers="middle">
 
-    <ImageView
-        android:id="@+id/iv_network"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher" />
-
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="0dp"
@@ -34,12 +24,17 @@
         android:text="100/箱"
         android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/tv_storage_num"
+    <FrameLayout
+        android:id="@+id/iv_mobile"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="200/箱"
-        android:textColor="@color/black" />
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_mobile"
+            android:scaleType="centerInside" />
+    </FrameLayout>
 </LinearLayout>

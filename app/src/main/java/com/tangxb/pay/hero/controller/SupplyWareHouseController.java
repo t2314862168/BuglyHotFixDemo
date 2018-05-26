@@ -4,11 +4,10 @@ import android.text.TextUtils;
 
 import com.tangxb.pay.hero.RetrofitRxClient;
 import com.tangxb.pay.hero.activity.BaseActivity;
-import com.tangxb.pay.hero.api.DispatchRxAPI;
-import com.tangxb.pay.hero.bean.DeliverPersonBean;
-import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
-import com.tangxb.pay.hero.bean.DeliverProductBean;
+import com.tangxb.pay.hero.api.SupplyWareHouseRxAPI;
 import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.StorageOrderBean;
+import com.tangxb.pay.hero.bean.StorageOrderItemBean;
 import com.tangxb.pay.hero.encrypt.MSignUtils;
 
 import java.util.HashMap;
@@ -18,32 +17,33 @@ import java.util.Map;
 import io.reactivex.Observable;
 
 /**
- * Created by tangxuebing on 2018/5/23.
+ * 补仓界面Controller<br>
+ * Created by zll on 2018/5/26.
  */
 
-public class DispatchMangerController extends BaseControllerWithActivity {
-    public DispatchMangerController(BaseActivity baseActivity) {
+public class SupplyWareHouseController extends BaseControllerWithActivity {
+    public SupplyWareHouseController(BaseActivity baseActivity) {
         super(baseActivity);
     }
 
     /**
-     * 获取配送产品列表
+     * 获取各地库房订单列表
      *
      * @param token
      * @param signatrue
      * @param timestamp
      * @return
      */
-    Observable<MBaseBean<List<DeliverProductBean>>> getDeliverProductList(String token, String signatrue
+    Observable<MBaseBean<List<StorageOrderBean>>> getStorageOrderList(String token, String signatrue
             , String timestamp) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
-                .create(DispatchRxAPI.class)
-                .getDeliverProductList(token, signatrue, timestamp);
+                .create(SupplyWareHouseRxAPI.class)
+                .getStorageOrderList(token, signatrue, timestamp);
     }
 
     /**
-     * 获取配送人列表
+     * 获取新订单
      *
      * @param token
      * @param signatrue
@@ -51,16 +51,16 @@ public class DispatchMangerController extends BaseControllerWithActivity {
      * @param data
      * @return
      */
-    Observable<MBaseBean<List<DeliverPersonBean>>> getDeliverOrderList(String token, String signatrue
+    Observable<MBaseBean<List<StorageOrderBean>>> getNewStorageOrderList(String token, String signatrue
             , String timestamp, Map<String, String> data) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
-                .create(DispatchRxAPI.class)
-                .getDeliverOrderList(token, signatrue, timestamp, data);
+                .create(SupplyWareHouseRxAPI.class)
+                .getNewStorageOrderList(token, signatrue, timestamp);
     }
 
     /**
-     * 获取配送订单详情
+     * 获取单个库房详细订单
      *
      * @param token
      * @param signatrue
@@ -68,12 +68,29 @@ public class DispatchMangerController extends BaseControllerWithActivity {
      * @param data
      * @return
      */
-    Observable<MBaseBean<List<DeliverPersonOrderBean>>> getUserOrderInfo(String token, String signatrue
+    Observable<MBaseBean<List<StorageOrderItemBean>>> getStorageOrderInfoList(String token, String signatrue
             , String timestamp, Map<String, String> data) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
-                .create(DispatchRxAPI.class)
-                .getUserOrderInfo(token, signatrue, timestamp, data);
+                .create(SupplyWareHouseRxAPI.class)
+                .getStorageOrderInfoList(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 分配完毕
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    Observable<MBaseBean<String>> dispatchOrder(String token, String signatrue
+            , String timestamp, Map<String, String> data) {
+        return RetrofitRxClient.INSTANCE
+                .getRetrofit()
+                .create(SupplyWareHouseRxAPI.class)
+                .dispatchOrder(token, signatrue, timestamp, data);
     }
 
     /**
@@ -89,29 +106,29 @@ public class DispatchMangerController extends BaseControllerWithActivity {
             , String timestamp, Map<String, String> data) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
-                .create(DispatchRxAPI.class)
+                .create(SupplyWareHouseRxAPI.class)
                 .deliverOk(token, signatrue, timestamp, data);
     }
 
     /**
-     * 获取配送产品列表
+     * 获取各地库房订单列表
      *
      * @return
      */
-    public Observable<MBaseBean<List<DeliverProductBean>>> getDeliverProductList() {
+    public Observable<MBaseBean<List<StorageOrderBean>>> getStorageOrderList() {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         String signatrue = MSignUtils.getSign(null, token, timestamp);
-        return getDeliverProductList(token, signatrue, timestamp);
+        return getStorageOrderList(token, signatrue, timestamp);
     }
 
     /**
-     * 获取配送人列表
+     * 获取新订单
      *
      * @param searchKey
      * @return
      */
-    public Observable<MBaseBean<List<DeliverPersonBean>>> getDeliverOrderList(String searchKey) {
+    public Observable<MBaseBean<List<StorageOrderBean>>> getNewStorageOrderList(String searchKey) {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         Map<String, String> data = new HashMap<>();
@@ -119,16 +136,16 @@ public class DispatchMangerController extends BaseControllerWithActivity {
             data.put("key", searchKey);
         }
         String signatrue = MSignUtils.getSign(data, token, timestamp);
-        return getDeliverOrderList(token, signatrue, timestamp, data);
+        return getNewStorageOrderList(token, signatrue, timestamp, data);
     }
 
     /**
-     * 获取配送订单详情
+     * 获取单个库房详细订单
      *
      * @param userId
      * @return
      */
-    public Observable<MBaseBean<List<DeliverPersonOrderBean>>> getUserOrderInfo(long userId) {
+    public Observable<MBaseBean<List<StorageOrderItemBean>>> getStorageOrderInfoList(long userId) {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         Map<String, String> data = new HashMap<>();
@@ -136,11 +153,31 @@ public class DispatchMangerController extends BaseControllerWithActivity {
             data.put("order_id", userId + "");
         }
         String signatrue = MSignUtils.getSign(data, token, timestamp);
-        return getUserOrderInfo(token, signatrue, timestamp, data);
+        return getStorageOrderInfoList(token, signatrue, timestamp, data);
     }
 
     /**
-     * 完成配送
+     * 分配完毕
+     *
+     * @param deliverJson
+     * @return
+     */
+    public Observable<MBaseBean<String>> dispatchOrder(long userId, String deliverJson) {
+        String token = mApplication.getToken();
+        String timestamp = System.currentTimeMillis() + "";
+        Map<String, String> data = new HashMap<>();
+        if (userId != 0) {
+            data.put("order_id", userId + "");
+        }
+        if (!TextUtils.isEmpty(deliverJson)) {
+            data.put("deliverJson", deliverJson);
+        }
+        String signatrue = MSignUtils.getSign(data, token, timestamp);
+        return dispatchOrder(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 发车
      *
      * @param deliverJson
      * @return

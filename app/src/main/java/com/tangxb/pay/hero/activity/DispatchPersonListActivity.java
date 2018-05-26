@@ -15,7 +15,7 @@ import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.DeliverPersonBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.controller.DispatchMangerController;
+import com.tangxb.pay.hero.controller.DispatchGoodsMangerController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
 import com.tangxb.pay.hero.util.DateUtils;
 import com.tangxb.pay.hero.util.ToastUtils;
@@ -42,7 +42,7 @@ public class DispatchPersonListActivity extends BaseActivityWithSearch {
 
     List<DeliverPersonBean> dataList = new ArrayList<>();
     RecyclerAdapterWithHF mAdapter;
-    DispatchMangerController controller;
+    DispatchGoodsMangerController controller;
 
     @Override
     public void clickLeftBtn() {
@@ -63,7 +63,7 @@ public class DispatchPersonListActivity extends BaseActivityWithSearch {
         // 输入法不改变布局
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        controller = new DispatchMangerController(this);
+        controller = new DispatchGoodsMangerController(this);
         TypedArray typedArray = mActivity.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
         final Drawable divider = typedArray.getDrawable(0);
         typedArray.recycle();

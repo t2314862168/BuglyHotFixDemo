@@ -1,6 +1,7 @@
 package com.tangxb.pay.hero.util;
 
 import com.tangxb.pay.hero.bean.PermissionBean;
+import com.tangxb.pay.hero.bean.RoleBean;
 
 /**
  * Created by Taxngb on 2017/12/25.
@@ -104,4 +105,36 @@ public class ConstUtils {
      * 管理所有订单权限
      */
     public static final PermissionBean PM_801 = new PermissionBean(801, "管理所有订单", 800);
+    /**
+     * 客户
+     */
+    public static final RoleBean RB_1000 = new RoleBean(1000, "客户");
+    /**
+     * 业务员
+     */
+    public static final RoleBean RB_600 = new RoleBean(600, "业务员");
+    /**
+     * 销售经理
+     */
+    public static final RoleBean RB_500 = new RoleBean(500, "销售经理");
+    /**
+     * 库管
+     */
+    public static final RoleBean RB_400 = new RoleBean(400, "库管");
+    /**
+     * 300
+     */
+    public static final RoleBean RB_300 = new RoleBean(300, "300");
+    /**
+     * 总经理
+     */
+    public static final RoleBean RB_200 = new RoleBean(200, "总经理");
+    /**
+     * 董事长
+     */
+    public static final RoleBean RB_100 = new RoleBean(100, "董事长");
+    /**
+     * 待审核
+     */
+    public static final RoleBean RB_0 = new RoleBean(0, "待审核");
 }
