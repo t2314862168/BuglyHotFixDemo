@@ -33,7 +33,7 @@ public class WarehouseBean implements Parcelable {
     @SerializedName("address")
     private String address;
     @Expose
-    @SerializedName("status")
+    @SerializedName("status_")
     private int status;
     @Expose
     @SerializedName("distance")

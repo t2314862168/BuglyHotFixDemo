@@ -16,6 +16,9 @@ public class WarehouseAllInOneBean {
      * request_num : 0
      * wait_num : 0
      * num : 100
+     * wait_num 是待收货
+     * order_num 是待配送
+     * num 是库存
      */
     @Expose
     @SerializedName("product_name")
@@ -27,8 +30,8 @@ public class WarehouseAllInOneBean {
     @SerializedName("unit")
     private String unit;
     @Expose
-    @SerializedName("request_num")
-    private int request_num;
+    @SerializedName("order_num")
+    private int order_num;
     @Expose
     @SerializedName("wait_num")
     private int wait_num;
@@ -60,12 +63,12 @@ public class WarehouseAllInOneBean {
         this.unit = unit;
     }
 
-    public int getRequest_num() {
-        return request_num;
+    public int getOrder_num() {
+        return order_num;
     }
 
-    public void setRequest_num(int request_num) {
-        this.request_num = request_num;
+    public void setOrder_num(int order_num) {
+        this.order_num = order_num;
     }
 
     public int getWait_num() {

@@ -150,6 +150,7 @@ public class WarehouseEditorActivity extends BaseActivityWithTitleOnly {
     private void showDataUi() {
         if (warehouseBean == null) return;
         et_goods_name.setText(warehouseBean.getName());
+        status = warehouseBean.getStatus();
         if (warehouseBean.getStatus() == 0) {
             tv_on_sale.setText(R.string.un_normal);
             tv_on_sale.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.border_red));

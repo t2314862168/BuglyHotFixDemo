@@ -38,7 +38,7 @@ public class UserBean implements Parcelable {
     @SerializedName("sex")
     private int sex;
     @Expose
-    @SerializedName("status")
+    @SerializedName("status_")
     private int status;
     @Expose
     @SerializedName("parent_id")

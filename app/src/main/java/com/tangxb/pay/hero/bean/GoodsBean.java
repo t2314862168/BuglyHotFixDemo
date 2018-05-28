@@ -70,7 +70,7 @@ public class GoodsBean implements Parcelable {
     @SerializedName("stock")
     private int stock;
     @Expose
-    @SerializedName("status")
+    @SerializedName("status_")
     private int status;
     @Expose
     @SerializedName("category_id")

@@ -68,7 +68,7 @@ public interface WarehouseRxAPI {
      * @param timestamp
      * @return
      */
-    @GET("storage/getStorageOrderAllInOne")
+    @GET("storage/getStorageAllInOne")
     Observable<MBaseBean<List<WarehouseAllInOneBean>>> getStorageOrderAllInOne(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp);
 

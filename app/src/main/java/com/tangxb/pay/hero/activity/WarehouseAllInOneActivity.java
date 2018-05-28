@@ -60,7 +60,7 @@ public class WarehouseAllInOneActivity extends BaseActivityWithTitleOnly {
                 ImageView imageView = viewHolder.getView(R.id.iv_network);
                 mApplication.getImageLoaderFactory().loadCommonImgByUrl(mActivity, item.getProduct_image(), imageView);
                 viewHolder.setText(R.id.tv_name, item.getProduct_name());
-                viewHolder.setText(R.id.tv_buy_num, item.getRequest_num() + "/" + item.getWait_num() + item.getUnit());
+                viewHolder.setText(R.id.tv_buy_num, item.getWait_num() + "/" + item.getOrder_num() + item.getUnit());
                 viewHolder.setText(R.id.tv_storage_num, item.getNum() + "");
             }
         };
