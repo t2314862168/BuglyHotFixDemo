@@ -1,20 +1,24 @@
 package com.tangxb.pay.hero.activity;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
+import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.bean.WarehouseAllInOneBean;
-import com.tangxb.pay.hero.controller.SupplyWareHouseController;
+import com.tangxb.pay.hero.bean.WarehouseBean;
+import com.tangxb.pay.hero.controller.DispatchGoodsMangerController;
+import com.tangxb.pay.hero.controller.WarehouseController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
 import com.tangxb.pay.hero.util.MDialogUtils;
 import com.tangxb.pay.hero.util.ToastUtils;
@@ -33,57 +37,59 @@ import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 /**
- * 补仓界面<br>
- * Created by zll on 2018/5/26.
+ * 发货界面->仓库列表界面->仓库订单列表界面<br>
+ * Created by tangxuebing on 2018/5/23.
  */
 
-public class SupplyWareHouseActivity extends BaseActivityWithTitleOnly {
+public class SendGoodsWarehouseOrderListActivity extends BaseActivityWithTitleOnly {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.ll_bottom)
-    View mBottomLL;
-    @BindView(R.id.btn_item)
-    Button mItemBtn;
     @BindView(R.id.ll_head)
     LinearLayout mHeadLL;
+    @BindView(R.id.btn_item)
+    Button mItemBtn1;
 
-    List<WarehouseAllInOneBean> dataList = new ArrayList<>();
+    List<DeliverPersonOrderBean> dataList = new ArrayList<>();
     RecyclerAdapterWithHF mAdapter;
-    SupplyWareHouseController controller;
+    WarehouseController controller;
+    long id;
+    WarehouseBean warehouseBean;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_supply_warehouse;
+        return R.layout.activity_send_goods_warehouse_order_list;
+    }
+
+    @Override
+    protected void receivePassDataIfNeed(Intent intent) {
+        warehouseBean = intent.getParcelableExtra("warehouseBean");
+        if (warehouseBean != null) {
+            id = warehouseBean.getId();
+        }
     }
 
     @Override
     protected void initData() {
         handleTitle();
-        setMiddleText("补仓");
-        mItemBtn.setText("发送订单");
-
-        controller = new SupplyWareHouseController(this);
+        mItemBtn1.setText("完成配送");
+        setMiddleText("开始配送");
+        // 输入法不改变布局
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        controller = new WarehouseController(this);
         TypedArray typedArray = mActivity.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
         final Drawable divider = typedArray.getDrawable(0);
         typedArray.recycle();
         mHeadLL.setDividerDrawable(divider);
-        CommonAdapter commonAdapter = new CommonAdapter<WarehouseAllInOneBean>(mActivity, R.layout.item_supply_warehouse, dataList) {
+        CommonAdapter commonAdapter = new CommonAdapter<DeliverPersonOrderBean>(mActivity, R.layout.item_send_goods_warehouse_order_list, dataList) {
             @Override
-            protected void convert(ViewHolder viewHolder, WarehouseAllInOneBean item, final int position) {
+            protected void convert(ViewHolder viewHolder, DeliverPersonOrderBean item, final int position) {
                 LinearLayout itemLL = viewHolder.getView(R.id.ll_item);
                 itemLL.setDividerDrawable(divider);
-
                 ImageView imageView = viewHolder.getView(R.id.iv_network);
                 mApplication.getImageLoaderFactory().loadCommonImgByUrl(mActivity, item.getProduct_image(), imageView);
                 viewHolder.setText(R.id.tv_name, item.getProduct_name());
-                // 剩余
-                int leaveNum = item.getNum() - item.getOrder_num();
-                // 待收
-                int waitNum = item.getWait_num();
-                // 补仓
-                int requestNum = item.getRequest_num();
-                viewHolder.setText(R.id.tv_buy_num, leaveNum + "/" + waitNum + item.getUnit());
-                viewHolder.setText(R.id.tv_storage_num, requestNum + "");
+                viewHolder.setText(R.id.tv_buy_num, item.getBuy_num() + item.getProduct_unit());
+                viewHolder.setText(R.id.tv_storage_num, item.getGive_num() + item.getProduct_unit());
                 viewHolder.setOnClickListener(R.id.tv_storage_num, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -99,40 +105,81 @@ public class SupplyWareHouseActivity extends BaseActivityWithTitleOnly {
         getNeedData();
     }
 
+
     /**
      * 网络获取数据
      */
     private void getNeedData() {
-        addSubscription(controller.getStorageInfoList(), new Consumer<MBaseBean<List<WarehouseAllInOneBean>>>() {
+        addSubscription(controller.getStorageOrderInfo(id), new Consumer<MBaseBean<List<DeliverPersonOrderBean>>>() {
             @Override
-            public void accept(MBaseBean<List<WarehouseAllInOneBean>> baseBean) throws Exception {
-                if (baseBean.getData() != null) {
+            public void accept(MBaseBean<List<DeliverPersonOrderBean>> baseBean) throws Exception {
+                dataList.clear();
+                if (baseBean.getData() != null && baseBean.getData().size() > 0) {
                     dataList.addAll(baseBean.getData());
-                    mAdapter.notifyDataSetChangedHF();
                 }
+                mAdapter.notifyDataSetChanged();
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                System.out.println();
+                ToastUtils.t(mApplication, throwable.getMessage());
             }
         });
     }
 
+
+    /**
+     * 点击item
+     */
+    private void handleItemClick(final int position) {
+        int orginalNum = dataList.get(position).getBuy_num();
+        int minNum = 0;
+        int maxNum = dataList.get(position).getBuy_num();
+        MDialogUtils.showNumberDialog(mActivity, "实际配送数量", orginalNum, minNum, maxNum, true, new MDialogUtils.OnSureListener() {
+            @Override
+            public void onSure(int number, int offset, AlertDialog dialog) {
+                dialog.dismiss();
+                dataList.get(position).setGive_num(number);
+                mAdapter.notifyItemChanged(position);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        MDialogUtils.showMessage(mActivity, "保存配送信息", "确定", "取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                item11Click(null);
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+    /**
+     * 配送完成
+     *
+     * @param view
+     */
     @OnClick(R.id.btn_item)
     public void item11Click(View view) {
         JSONArray jsonArray = new JSONArray();
         try {
-            for (WarehouseAllInOneBean bean : dataList) {
+            for (DeliverPersonOrderBean bean : dataList) {
                 JSONObject json = new JSONObject();
-                json.put("product_id", bean.getProduct_id());
-                json.put("num", bean.getRequest_num());
+                json.put("product_id", bean.getProductId());
+                json.put("buy_num", bean.getBuy_num());
+                json.put("deliver_num", bean.getGive_num());
                 jsonArray.put(json);
             }
         } catch (JSONException e) {
         }
         showAlertDialog();
-        addSubscription(controller.dispatchOrder(jsonArray.toString()), new Consumer<MBaseBean<String>>() {
+        addSubscription(controller.dispatchOrderProductOk(id, jsonArray.toString()), new Consumer<MBaseBean<String>>() {
             @Override
             public void accept(MBaseBean<String> baseBean) throws Exception {
                 ToastUtils.t(mApplication, baseBean.getMessage());
@@ -144,24 +191,6 @@ public class SupplyWareHouseActivity extends BaseActivityWithTitleOnly {
             public void accept(Throwable throwable) throws Exception {
                 ToastUtils.t(mApplication, throwable.getMessage());
                 hideAlertDialog();
-            }
-        });
-    }
-
-    /**
-     * 点击item
-     */
-    private void handleItemClick(final int position) {
-        String productName = dataList.get(position).getProduct_name();
-        int orginalNum = dataList.get(position).getRequest_num();
-        int minNum = 0;
-        int maxNum = Integer.MAX_VALUE;
-        MDialogUtils.showNumberDialog(mActivity, productName, orginalNum, minNum, maxNum, true, new MDialogUtils.OnSureListener() {
-            @Override
-            public void onSure(int number, int offset, AlertDialog dialog) {
-                dialog.dismiss();
-                dataList.get(position).setRequest_num(number);
-                mAdapter.notifyItemChanged(position);
             }
         });
     }

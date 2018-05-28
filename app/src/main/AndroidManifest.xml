@@ -71,6 +71,8 @@
         <activity android:name=".activity.WarehouseMangerActivity" />
         <activity android:name=".activity.WarehouseEditorActivity" />
         <activity android:name=".activity.WarehouseAllInOneActivity" />
+        <activity android:name=".activity.SendGoodsWarehouseActivity" />
+        <activity android:name=".activity.SendGoodsWarehouseOrderListActivity" />
         <!-- 相机和安装包权限都需要改配置 -->
         <provider
             android:name="android.support.v4.content.FileProvider"

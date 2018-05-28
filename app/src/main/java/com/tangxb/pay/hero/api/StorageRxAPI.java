@@ -1,6 +1,7 @@
 package com.tangxb.pay.hero.api;
 
 import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.SendsGoodsBean;
 import com.tangxb.pay.hero.bean.StorageOrderBean;
 import com.tangxb.pay.hero.bean.StorageOrderItemBean;
 
@@ -22,15 +23,15 @@ import retrofit2.http.QueryMap;
 
 public interface StorageRxAPI {
     /**
-     * 获取各地库房订单列表
+     * 获取订单列表
      *
      * @param token
      * @param signatrue
      * @param timestamp
      * @return
      */
-    @GET("storage/getStorageOrderList")
-    Observable<MBaseBean<List<StorageOrderBean>>> getStorageOrderList(@Header("token") String token, @Header("signatrue") String signatrue
+    @GET("storage/getStorageOrderAllInOne")
+    Observable<MBaseBean<List<SendsGoodsBean>>> getStorageOrderAllInOne(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp);
 
     /**

@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
@@ -25,11 +24,11 @@ import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
 /**
- * 仓库管理界面<br>
+ * 发货界面->仓库列表界面<br>
  * Created by zll on 2018/5/26.
  */
 
-public class WarehouseMangerActivity extends BaseActivityWithTitle {
+public class SendGoodsWarehouseActivity extends BaseActivityWithTitle {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.ll_head)
@@ -53,7 +52,7 @@ public class WarehouseMangerActivity extends BaseActivityWithTitle {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_warehouse_manger;
+        return R.layout.activity_send_goods_warehouse;
     }
 
     @Override
@@ -68,7 +67,7 @@ public class WarehouseMangerActivity extends BaseActivityWithTitle {
         final Drawable divider = typedArray.getDrawable(0);
         typedArray.recycle();
         mHeadLL.setDividerDrawable(divider);
-        CommonAdapter commonAdapter = new CommonAdapter<WarehouseBean>(mActivity, R.layout.item_warehouse_manger, dataList) {
+        CommonAdapter commonAdapter = new CommonAdapter<WarehouseBean>(mActivity, R.layout.item_send_goods_warehouse, dataList) {
             @Override
             protected void convert(ViewHolder viewHolder, WarehouseBean item, final int position) {
                 LinearLayout itemLL = viewHolder.getView(R.id.ll_item);
@@ -76,19 +75,18 @@ public class WarehouseMangerActivity extends BaseActivityWithTitle {
 
                 viewHolder.setText(R.id.tv_name, item.getName());
                 viewHolder.setText(R.id.tv_address, item.getCity() + item.getAddress());
-                viewHolder.setText(R.id.tv_operate, "操作");
-                viewHolder.setOnClickListener(R.id.tv_operate, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        handleItem(position);
-                    }
-                });
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerView.addItemDecoration(new MDividerItemDecoration(mActivity, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new RecyclerAdapterWithHF.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerAdapterWithHF adapter, RecyclerView.ViewHolder vh, int position) {
+                handleItem(position);
+            }
+        });
     }
 
     @Override
@@ -128,7 +126,7 @@ public class WarehouseMangerActivity extends BaseActivityWithTitle {
      * @param position
      */
     private void handleItem(int position) {
-        Intent intent = getIntentWithPublicParams(WarehouseEditorActivity.class);
+        Intent intent = getIntentWithPublicParams(SendGoodsWarehouseOrderListActivity.class);
         intent.putExtra("warehouseBean", dataList.get(position));
         startActivity(intent);
     }

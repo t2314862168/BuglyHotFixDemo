@@ -6,6 +6,7 @@ import com.tangxb.pay.hero.RetrofitRxClient;
 import com.tangxb.pay.hero.activity.BaseActivity;
 import com.tangxb.pay.hero.api.StorageRxAPI;
 import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.SendsGoodsBean;
 import com.tangxb.pay.hero.bean.StorageOrderBean;
 import com.tangxb.pay.hero.bean.StorageOrderItemBean;
 import com.tangxb.pay.hero.encrypt.MSignUtils;
@@ -27,19 +28,19 @@ public class SendGoodsMangerController extends BaseControllerWithActivity {
     }
 
     /**
-     * 获取各地库房订单列表
+     * 获取订单列表
      *
      * @param token
      * @param signatrue
      * @param timestamp
      * @return
      */
-    Observable<MBaseBean<List<StorageOrderBean>>> getStorageOrderList(String token, String signatrue
+    Observable<MBaseBean<List<SendsGoodsBean>>> getStorageOrderAllInOne(String token, String signatrue
             , String timestamp) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
                 .create(StorageRxAPI.class)
-                .getStorageOrderList(token, signatrue, timestamp);
+                .getStorageOrderAllInOne(token, signatrue, timestamp);
     }
 
     /**
@@ -115,11 +116,11 @@ public class SendGoodsMangerController extends BaseControllerWithActivity {
      *
      * @return
      */
-    public Observable<MBaseBean<List<StorageOrderBean>>> getStorageOrderList() {
+    public Observable<MBaseBean<List<SendsGoodsBean>>> getStorageOrderAllInOne() {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         String signatrue = MSignUtils.getSign(null, token, timestamp);
-        return getStorageOrderList(token, signatrue, timestamp);
+        return getStorageOrderAllInOne(token, signatrue, timestamp);
     }
 
     /**

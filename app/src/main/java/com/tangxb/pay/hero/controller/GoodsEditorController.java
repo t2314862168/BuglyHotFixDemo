@@ -119,6 +119,6 @@ public class GoodsEditorController extends BaseControllerWithActivity {
         data.put("status", status + "");
         String timestamp = System.currentTimeMillis() + "";
         String signatrue = MSignUtils.getSign(data, token, timestamp);
-        return uploadGoods(token, signatrue, timestamp, data);
+        return changeStatus(token, signatrue, timestamp, data);
     }
 }

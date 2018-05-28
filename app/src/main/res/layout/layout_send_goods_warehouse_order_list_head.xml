@@ -44,7 +44,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="已发数量"
+            android:text="实际配送"
             android:textColor="@color/black" />
     </LinearLayout>
 

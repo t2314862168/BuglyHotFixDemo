@@ -1,8 +1,7 @@
 package com.tangxb.pay.hero.api;
 
 import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.bean.StorageOrderBean;
-import com.tangxb.pay.hero.bean.StorageOrderItemBean;
+import com.tangxb.pay.hero.bean.WarehouseAllInOneBean;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.QueryMap;
 
 /**
  * Created by zll on 2018/5/26.
@@ -21,44 +19,19 @@ import retrofit2.http.QueryMap;
 
 public interface SupplyWareHouseRxAPI {
     /**
-     * 获取各地库房订单列表
+     * 获取补仓数据
      *
      * @param token
      * @param signatrue
      * @param timestamp
      * @return
      */
-    @GET("storage/getStorageOrderList")
-    Observable<MBaseBean<List<StorageOrderBean>>> getStorageOrderList(@Header("token") String token, @Header("signatrue") String signatrue
+    @GET("deliver/getStorageInfo")
+    Observable<MBaseBean<List<WarehouseAllInOneBean>>> getStorageInfoList(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp);
 
     /**
-     * 获取新订单
-     *
-     * @param token
-     * @param signatrue
-     * @param timestamp
-     * @return
-     */
-    @GET("storage/getNewStorageOrder")
-    Observable<MBaseBean<List<StorageOrderBean>>> getNewStorageOrderList(@Header("token") String token, @Header("signatrue") String signatrue
-            , @Header("timestamp") String timestamp);
-
-    /**
-     * 获取单个库房详细订单
-     *
-     * @param token
-     * @param signatrue
-     * @param timestamp
-     * @param data
-     * @return
-     */
-    @GET("storage/getStorageOrderInfo")
-    Observable<MBaseBean<List<StorageOrderItemBean>>> getStorageOrderInfoList(@Header("token") String token, @Header("signatrue") String signatrue
-            , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
-
-    /**
-     * 分配完毕
+     * 发送补仓数据
      *
      * @param token
      * @param signatrue
@@ -67,21 +40,8 @@ public interface SupplyWareHouseRxAPI {
      * @return
      */
     @FormUrlEncoded
-    @POST("storage/dispatchOrder")
+    @POST("deliver/sendStorageOrder")
     Observable<MBaseBean<String>> dispatchOrder(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 
-    /**
-     * 发车
-     *
-     * @param token
-     * @param signatrue
-     * @param timestamp
-     * @param data
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("storage/deliverOk")
-    Observable<MBaseBean<String>> deliverOk(@Header("token") String token, @Header("signatrue") String signatrue
-            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 }

@@ -1,5 +1,6 @@
 package com.tangxb.pay.hero.api;
 
+import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.UserBean;
 import com.tangxb.pay.hero.bean.WarehouseAllInOneBean;
@@ -84,4 +85,44 @@ public interface WarehouseRxAPI {
     @POST("storage/updateStorageStatus")
     Observable<MBaseBean<String>> updateStorageStatus(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
+
+    /**
+     * 获取单个库房订单列表
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    @GET("storage/getStorageOrderInfo")
+    Observable<MBaseBean<List<DeliverPersonOrderBean>>> getStorageOrderInfo(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
+
+    /**
+     * 分配完毕
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("storage/dispatchOrderProductOk")
+    Observable<MBaseBean<String>> dispatchOrderProductOk(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
+
+
+    /**
+     * 发车
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("storage/sendOutCart")
+    Observable<MBaseBean<String>> sendOutCart(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
+
 }

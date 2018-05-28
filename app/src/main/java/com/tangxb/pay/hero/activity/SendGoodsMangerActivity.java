@@ -1,16 +1,19 @@
 package com.tangxb.pay.hero.activity;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.SendsGoodsBean;
 import com.tangxb.pay.hero.bean.StorageOrderBean;
 import com.tangxb.pay.hero.controller.SendGoodsMangerController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
@@ -29,7 +32,7 @@ import io.reactivex.functions.Consumer;
  * Created by tangxuebing on 2018/5/23.
  */
 
-public class SendGoodsMangerActivity extends BaseActivityWithTitle {
+public class SendGoodsMangerActivity extends BaseActivityWithTitleOnly {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.ll_bottom)
@@ -39,19 +42,9 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitle {
     @BindView(R.id.ll_head)
     LinearLayout mHeadLL;
 
-    List<StorageOrderBean> dataList = new ArrayList<>();
+    List<SendsGoodsBean> dataList = new ArrayList<>();
     RecyclerAdapterWithHF mAdapter;
     SendGoodsMangerController controller;
-
-    @Override
-    public void clickLeftBtn() {
-
-    }
-
-    @Override
-    public void clickRightBtn() {
-
-    }
 
     @Override
     protected int getLayoutResId() {
@@ -61,26 +54,25 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitle {
     @Override
     protected void initData() {
         handleTitle();
-        setLeftText("获取新订单");
         setMiddleText(R.string.deliver_goods_manger);
-        setRightText("收货");
-        setRightVisibility(false);
         mItemBtn.setText("开始分配");
 
-        dataList.add(new StorageOrderBean());
-        dataList.add(new StorageOrderBean());
-        dataList.add(new StorageOrderBean());
-
+        controller = new SendGoodsMangerController(this);
         TypedArray typedArray = mActivity.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
         final Drawable divider = typedArray.getDrawable(0);
         typedArray.recycle();
         mHeadLL.setDividerDrawable(divider);
-        CommonAdapter commonAdapter = new CommonAdapter<StorageOrderBean>(mActivity, R.layout.item_dispatch_manger, dataList) {
+        CommonAdapter commonAdapter = new CommonAdapter<SendsGoodsBean>(mActivity, R.layout.item_dispatch_manger, dataList) {
             @Override
-            protected void convert(ViewHolder viewHolder, StorageOrderBean item, int position) {
+            protected void convert(ViewHolder viewHolder, SendsGoodsBean item, final int position) {
                 LinearLayout itemLL = viewHolder.getView(R.id.ll_item);
                 itemLL.setDividerDrawable(divider);
 
+                ImageView imageView = viewHolder.getView(R.id.iv_network);
+                mApplication.getImageLoaderFactory().loadCommonImgByUrl(mActivity, item.getProductImage(), imageView);
+                viewHolder.setText(R.id.tv_name, item.getProductName());
+//                viewHolder.setText(R.id.tv_buy_num, leaveNum + "/" + waitNum + item.getUnit());
+//                viewHolder.setText(R.id.tv_storage_num, requestNum + "");
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);
@@ -93,23 +85,30 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitle {
                 handleItemClick(position);
             }
         });
+        getNeedData();
     }
 
     /**
      * 网络获取数据
      */
     private void getNeedData() {
-        addSubscription(controller.getStorageOrderList(), new Consumer<MBaseBean<List<StorageOrderBean>>>() {
+        addSubscription(controller.getStorageOrderAllInOne(), new Consumer<MBaseBean<List<SendsGoodsBean>>>() {
             @Override
-            public void accept(MBaseBean<List<StorageOrderBean>> baseBean) throws Exception {
-
+            public void accept(MBaseBean<List<SendsGoodsBean>> baseBean) throws Exception {
+                System.out.println();
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                System.out.println();
             }
         });
     }
 
     @OnClick(R.id.btn_item)
     public void item11Click(View view) {
-
+        Intent intent = getIntentWithPublicParams(SendGoodsWarehouseActivity.class);
+        startActivity(intent);
     }
 
     /**

@@ -57,7 +57,7 @@ public interface RoleRxAPI {
      * @return
      */
     @FormUrlEncoded
-    @POST("user/updateState")
+    @POST("user/updateStatus")
     Observable<MBaseBean<String>> updateUserState(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 

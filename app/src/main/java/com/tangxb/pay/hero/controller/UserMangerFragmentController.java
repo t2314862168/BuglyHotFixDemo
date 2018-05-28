@@ -62,7 +62,7 @@ public class UserMangerFragmentController extends BaseControllerWithActivity {
         if (!TextUtils.isEmpty(key)) {
             data.put("key", key);
         }
-        data.put("enable", enable + "");
+//        data.put("enable", enable + "");
         String signatrue = MSignUtils.getSign(data, token, timestamp);
         return getUserListByRoleId(token, signatrue, timestamp, data);
     }

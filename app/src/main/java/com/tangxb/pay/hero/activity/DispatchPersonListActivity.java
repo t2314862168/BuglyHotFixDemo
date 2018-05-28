@@ -86,7 +86,7 @@ public class DispatchPersonListActivity extends BaseActivityWithSearch {
                 viewHolder.setOnClickListener(R.id.iv_mobile, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        dataList.get(position).ge
+//                        dataList.get(position).get
                         String mobile = "18782963990";
                         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
                         startActivity(intent);

@@ -21,6 +21,9 @@ public class WarehouseAllInOneBean {
      * num 是库存
      */
     @Expose
+    @SerializedName("product_id")
+    private long product_id;
+    @Expose
     @SerializedName("product_name")
     private String product_name;
     @Expose
@@ -38,6 +41,25 @@ public class WarehouseAllInOneBean {
     @Expose
     @SerializedName("num")
     private int num;
+    @Expose
+    @SerializedName("request_num")
+    private int request_num;
+
+    public long getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(long product_id) {
+        this.product_id = product_id;
+    }
+
+    public int getRequest_num() {
+        return request_num;
+    }
+
+    public void setRequest_num(int request_num) {
+        this.request_num = request_num;
+    }
 
     public String getProduct_name() {
         return product_name;
