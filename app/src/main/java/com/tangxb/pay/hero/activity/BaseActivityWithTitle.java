@@ -79,4 +79,8 @@ public abstract class BaseActivityWithTitle extends BaseActivity {
     public void setRightText(String text) {
         mRightTv.setText(text);
     }
+
+    public void setRightVisibility(boolean visible) {
+        mRightTv.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+    }
 }

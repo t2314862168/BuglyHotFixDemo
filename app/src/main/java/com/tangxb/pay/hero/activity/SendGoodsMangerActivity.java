@@ -64,6 +64,7 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitle {
         setLeftText("获取新订单");
         setMiddleText(R.string.deliver_goods_manger);
         setRightText("收货");
+        setRightVisibility(false);
         mItemBtn.setText("开始分配");
 
         dataList.add(new StorageOrderBean());
