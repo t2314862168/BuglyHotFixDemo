@@ -1,9 +1,18 @@
 package com.tangxb.pay.hero.activity;
 
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 
-import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.tangxb.pay.hero.R;
+import com.tangxb.pay.hero.fragment.DataStatisticsBySalesManFragment;
+import com.tangxb.pay.hero.fragment.DataStatisticsByTimeFragment;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 数据统计界面<br>
@@ -11,6 +20,19 @@ import com.tangxb.pay.hero.R;
  */
 
 public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
+    @BindView(R.id.fl_container)
+    FrameLayout mContainerFl;
+    @BindView(R.id.btn_item_1)
+    Button mItemBtn1;
+    @BindView(R.id.btn_item_2)
+    Button mItemBtn2;
+
+    FragmentManager fragmentManager;
+    DataStatisticsByTimeFragment timeFragment;
+    DataStatisticsBySalesManFragment salesManFragment;
+    String timeFragmentTag = DataStatisticsByTimeFragment.class.getSimpleName();
+    String salesManFragmentTag = DataStatisticsBySalesManFragment.class.getSimpleName();
+
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_data_statistics;
@@ -21,13 +43,58 @@ public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
         handleTitle();
         setMiddleText(R.string.data_statistics);
 
-        MaterialSpinner spinner = (MaterialSpinner) findViewById(R.id.spinner);
-        spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
-        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+        mItemBtn1.setText("按时间统计");
+        mItemBtn2.setText("按业务员统计");
 
-            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
-            }
-        });
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment fragmentByTag = fragmentManager.findFragmentByTag(timeFragmentTag);
+        Fragment fragmentByTag2 = fragmentManager.findFragmentByTag(salesManFragmentTag);
+        if (fragmentByTag2 != null) {
+            salesManFragment = (DataStatisticsBySalesManFragment) fragmentByTag2;
+            transaction.remove(salesManFragment);
+        }
+        if (fragmentByTag == null) {
+            timeFragment = DataStatisticsByTimeFragment.getInstance();
+            transaction.add(R.id.fl_container, timeFragment, timeFragmentTag);
+        } else {
+            timeFragment = (DataStatisticsByTimeFragment) fragmentByTag;
+        }
+        transaction.show(timeFragment);
+        transaction.commit();
+    }
+
+    @OnClick(R.id.btn_item_1)
+    public void itemBtn1Click(View view) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment fragmentByTag = fragmentManager.findFragmentByTag(timeFragmentTag);
+        if (fragmentByTag == null) {
+            timeFragment = DataStatisticsByTimeFragment.getInstance();
+            transaction.add(R.id.fl_container, timeFragment, timeFragmentTag);
+        } else {
+            timeFragment = (DataStatisticsByTimeFragment) fragmentByTag;
+        }
+        if (salesManFragment != null) {
+            transaction.hide(salesManFragment);
+        }
+        transaction.show(timeFragment);
+        transaction.commit();
+    }
+
+    @OnClick(R.id.btn_item_2)
+    public void itemBtn2Click(View view) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment fragmentByTag = fragmentManager.findFragmentByTag(salesManFragmentTag);
+        if (fragmentByTag == null) {
+            salesManFragment = DataStatisticsBySalesManFragment.getInstance();
+            transaction.add(R.id.fl_container, salesManFragment, salesManFragmentTag);
+        } else {
+            salesManFragment = (DataStatisticsBySalesManFragment) fragmentByTag;
+        }
+        if (timeFragment != null) {
+            transaction.hide(timeFragment);
+        }
+        transaction.show(salesManFragment);
+        transaction.commit();
     }
 }

@@ -3,8 +3,8 @@ package com.tangxb.pay.hero.controller;
 import com.tangxb.pay.hero.RetrofitRxClient;
 import com.tangxb.pay.hero.activity.BaseActivity;
 import com.tangxb.pay.hero.api.WarehouseRxAPI;
-import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.SendsGoodsBean;
 import com.tangxb.pay.hero.bean.UserBean;
 import com.tangxb.pay.hero.bean.WarehouseAllInOneBean;
 import com.tangxb.pay.hero.bean.WarehouseBean;
@@ -24,6 +24,22 @@ import io.reactivex.Observable;
 public class WarehouseController extends BaseControllerWithActivity {
     public WarehouseController(BaseActivity baseActivity) {
         super(baseActivity);
+    }
+
+    /**
+     * 获取有订单的库房列表
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    Observable<MBaseBean<List<WarehouseBean>>> getStorageListHasOrder(String token, String signatrue
+            , String timestamp) {
+        return RetrofitRxClient.INSTANCE
+                .getRetrofit()
+                .create(WarehouseRxAPI.class)
+                .getStorageListHasOrder(token, signatrue, timestamp);
     }
 
     /**
@@ -117,12 +133,44 @@ public class WarehouseController extends BaseControllerWithActivity {
      * @param timestamp
      * @return
      */
-    Observable<MBaseBean<List<DeliverPersonOrderBean>>> getStorageOrderInfo(String token, String signatrue
+    Observable<MBaseBean<List<SendsGoodsBean>>> getOrderSingleStorage(String token, String signatrue
             , String timestamp, Map<String, String> data) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
                 .create(WarehouseRxAPI.class)
-                .getStorageOrderInfo(token, signatrue, timestamp, data);
+                .getOrderSingleStorage(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 获取单个商品 的库房订单
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    Observable<MBaseBean<List<SendsGoodsBean>>> getOrderSingleProduct(String token, String signatrue
+            , String timestamp, Map<String, String> data) {
+        return RetrofitRxClient.INSTANCE
+                .getRetrofit()
+                .create(WarehouseRxAPI.class)
+                .getOrderSingleProduct(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 保存分配 （单个商品分配  和  通过库房分配 使用同一个接口）
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    Observable<MBaseBean<String>> saveProductDispatch(String token, String signatrue
+            , String timestamp, Map<String, String> data) {
+        return RetrofitRxClient.INSTANCE
+                .getRetrofit()
+                .create(WarehouseRxAPI.class)
+                .saveProductDispatch(token, signatrue, timestamp, data);
     }
 
     /**
@@ -155,7 +203,19 @@ public class WarehouseController extends BaseControllerWithActivity {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
                 .create(WarehouseRxAPI.class)
-                .dispatchOrderProductOk(token, signatrue, timestamp, data);
+                .sendOutCart(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 获取有订单的库房列表
+     *
+     * @return
+     */
+    public Observable<MBaseBean<List<WarehouseBean>>> getStorageListHasOrder() {
+        String token = mApplication.getToken();
+        String timestamp = System.currentTimeMillis() + "";
+        String signatrue = MSignUtils.getSign(null, token, timestamp);
+        return getStorageListHasOrder(token, signatrue, timestamp);
     }
 
     /**
@@ -239,13 +299,41 @@ public class WarehouseController extends BaseControllerWithActivity {
      *
      * @return
      */
-    public Observable<MBaseBean<List<DeliverPersonOrderBean>>> getStorageOrderInfo(long id) {
+    public Observable<MBaseBean<List<SendsGoodsBean>>> getOrderSingleStorage(long id) {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         Map<String, String> data = new HashMap<>();
         data.put("storage_id", id + "");
         String signatrue = MSignUtils.getSign(data, token, timestamp);
-        return getStorageOrderInfo(token, signatrue, timestamp, data);
+        return getOrderSingleStorage(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 获取单个商品 的库房订单
+     *
+     * @return
+     */
+    public Observable<MBaseBean<List<SendsGoodsBean>>> getOrderSingleProduct(long id) {
+        String token = mApplication.getToken();
+        String timestamp = System.currentTimeMillis() + "";
+        Map<String, String> data = new HashMap<>();
+        data.put("product_id", id + "");
+        String signatrue = MSignUtils.getSign(data, token, timestamp);
+        return getOrderSingleProduct(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 保存分配 （单个商品分配  和  通过库房分配 使用同一个接口）
+     *
+     * @return
+     */
+    public Observable<MBaseBean<String>> saveProductDispatch(String dataJson) {
+        String token = mApplication.getToken();
+        String timestamp = System.currentTimeMillis() + "";
+        Map<String, String> data = new HashMap<>();
+        data.put("productJson", dataJson);
+        String signatrue = MSignUtils.getSign(data, token, timestamp);
+        return saveProductDispatch(token, signatrue, timestamp, data);
     }
 
     /**
@@ -268,11 +356,12 @@ public class WarehouseController extends BaseControllerWithActivity {
      *
      * @return
      */
-    public Observable<MBaseBean<String>> sendOutCart(long id) {
+    public Observable<MBaseBean<String>> sendOutCart(long id, String cartNo) {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         Map<String, String> data = new HashMap<>();
         data.put("storage_id", id + "");
+        data.put("cartNo", cartNo);
         String signatrue = MSignUtils.getSign(data, token, timestamp);
         return sendOutCart(token, signatrue, timestamp, data);
     }

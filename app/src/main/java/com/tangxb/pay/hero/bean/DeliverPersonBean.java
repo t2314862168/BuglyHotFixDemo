@@ -21,6 +21,9 @@ public class DeliverPersonBean {
     @SerializedName("address")
     private String address;
     @Expose
+    @SerializedName("mobile")
+    private String mobile;
+    @Expose
     @SerializedName("create_time")
     private long create_time;
     @Expose
@@ -73,5 +76,13 @@ public class DeliverPersonBean {
 
     public void setUpdate_time(long update_time) {
         this.update_time = update_time;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

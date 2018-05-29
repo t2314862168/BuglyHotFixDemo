@@ -12,20 +12,29 @@ public class SendsGoodsBean {
     @SerializedName("product_id")
     private long productId;
     @Expose
+    @SerializedName("order_id")
+    private long order_id;
+    @Expose
     @SerializedName("product_name")
     private String productName;
     @Expose
     @SerializedName("product_image")
     private String productImage;
     @Expose
-    @SerializedName("product_unit")
+    @SerializedName("unit")
     private String productUnit;
+    /**
+     * 订货数
+     */
     @Expose
     @SerializedName("request_num")
     private int request_num;
+    /**
+     * 发货数
+     */
     @Expose
-    @SerializedName("num")
-    private int num;
+    @SerializedName("wait_num")
+    private int wait_num;
 
     public long getProductId() {
         return productId;
@@ -67,11 +76,19 @@ public class SendsGoodsBean {
         this.request_num = request_num;
     }
 
-    public int getNum() {
-        return num;
+    public int getWait_num() {
+        return wait_num;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setWait_num(int wait_num) {
+        this.wait_num = wait_num;
+    }
+
+    public long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(long order_id) {
+        this.order_id = order_id;
     }
 }

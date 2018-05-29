@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="发车时间"
+            android:text="下单时间"
             android:textColor="@color/black" />
 
         <TextView

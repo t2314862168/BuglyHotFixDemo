@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -50,7 +51,9 @@ public class DispatchPersonOrderListActivity extends BaseActivityWithTitleOnly {
     List<DeliverPersonOrderBean> dataList = new ArrayList<>();
     RecyclerAdapterWithHF mAdapter;
     DispatchGoodsMangerController controller;
-    long userId;
+    long orderId;
+    int status;
+    boolean canOperate;
 
     @Override
     protected int getLayoutResId() {
@@ -59,13 +62,20 @@ public class DispatchPersonOrderListActivity extends BaseActivityWithTitleOnly {
 
     @Override
     protected void receivePassDataIfNeed(Intent intent) {
-        userId = intent.getLongExtra("userId", 0);
+        orderId = intent.getLongExtra("orderId", 0);
+        status = intent.getIntExtra("status", 0);
+        if (status == 1) {
+            canOperate = true;
+        }
     }
 
     @Override
     protected void initData() {
         handleTitle();
         mItemBtn1.setText("完成配送");
+        if (!canOperate) {
+            findView(R.id.ll_bottom).setVisibility(View.GONE);
+        }
         setMiddleText("开始配送");
         // 输入法不改变布局
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -82,8 +92,12 @@ public class DispatchPersonOrderListActivity extends BaseActivityWithTitleOnly {
                 ImageView imageView = viewHolder.getView(R.id.iv_network);
                 mApplication.getImageLoaderFactory().loadCommonImgByUrl(mActivity, item.getProduct_image(), imageView);
                 viewHolder.setText(R.id.tv_name, item.getProduct_name());
-                viewHolder.setText(R.id.tv_buy_num, item.getBuy_num() + item.getProduct_unit());
-                viewHolder.setText(R.id.tv_storage_num, item.getGive_num() + item.getProduct_unit());
+                viewHolder.setText(R.id.tv_buy_num, item.getSend_num() + item.getProduct_unit());
+                if (item.getReceive_num() == null) {
+                    viewHolder.setText(R.id.tv_storage_num, "");
+                } else {
+                    viewHolder.setText(R.id.tv_storage_num, item.getReceive_num() + item.getProduct_unit());
+                }
                 viewHolder.setOnClickListener(R.id.tv_storage_num, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -104,7 +118,7 @@ public class DispatchPersonOrderListActivity extends BaseActivityWithTitleOnly {
      * 网络获取数据
      */
     private void getNeedData() {
-        addSubscription(controller.getUserOrderInfo(userId), new Consumer<MBaseBean<List<DeliverPersonOrderBean>>>() {
+        addSubscription(controller.getReceiveOrderInfo(orderId), new Consumer<MBaseBean<List<DeliverPersonOrderBean>>>() {
             @Override
             public void accept(MBaseBean<List<DeliverPersonOrderBean>> baseBean) throws Exception {
                 dataList.clear();
@@ -121,19 +135,22 @@ public class DispatchPersonOrderListActivity extends BaseActivityWithTitleOnly {
         });
     }
 
-
     /**
      * 点击item
      */
     private void handleItemClick(final int position) {
-        int orginalNum = dataList.get(position).getBuy_num();
+        if (!canOperate) return;
+        int orginalNum = 0;
+        if (dataList.get(position).getReceive_num() != null) {
+            orginalNum = dataList.get(position).getReceive_num().intValue();
+        }
         int minNum = 0;
-        int maxNum = dataList.get(position).getBuy_num();
-        MDialogUtils.showNumberDialog(mActivity, "实际配送数量", orginalNum, minNum, maxNum, true, new MDialogUtils.OnSureListener() {
+        int maxNum = dataList.get(position).getSend_num();
+        MDialogUtils.showNumberDialog(mActivity, "实际收到数量", orginalNum, minNum, maxNum, true, new MDialogUtils.OnSureListener() {
             @Override
             public void onSure(int number, int offset, AlertDialog dialog) {
                 dialog.dismiss();
-                dataList.get(position).setGive_num(number);
+                dataList.get(position).setReceive_num(number);
                 mAdapter.notifyItemChanged(position);
             }
         });
@@ -141,6 +158,10 @@ public class DispatchPersonOrderListActivity extends BaseActivityWithTitleOnly {
 
     @Override
     public void onBackPressed() {
+        if (!canOperate) {
+            finish();
+            return;
+        }
         MDialogUtils.showMessage(mActivity, "保存配送信息", "确定", "取消", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,19 +182,51 @@ public class DispatchPersonOrderListActivity extends BaseActivityWithTitleOnly {
      */
     @OnClick(R.id.btn_item)
     public void item11Click(View view) {
+        if (!canOperate) return;
+        boolean flag = false;
+        for (DeliverPersonOrderBean bean : dataList) {
+            if (bean.getReceive_num() == null) {
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {
+            ToastUtils.t(mApplication, "请填写所有实际收到的数量,然后再提交数据");
+            return;
+        }
+        boolean needLog = false;
+        // 如果收货数量不等于发货数量需要说明
+        for (DeliverPersonOrderBean bean : dataList) {
+            if (bean.getReceive_num() != bean.getSend_num()) {
+                needLog = true;
+                break;
+            }
+        }
+        if (needLog) {
+            showLogDialog();
+        } else {
+            doOperate(null);
+        }
+    }
+
+    /**
+     * 上传数据
+     *
+     * @param log
+     */
+    private void doOperate(String log) {
         JSONArray jsonArray = new JSONArray();
         try {
             for (DeliverPersonOrderBean bean : dataList) {
                 JSONObject json = new JSONObject();
-                json.put("product_id", bean.getProductId());
-                json.put("buy_num", bean.getBuy_num());
-                json.put("deliver_num", bean.getGive_num());
+                json.put("product_id", bean.getProduct_id());
+                json.put("num", bean.getReceive_num());
                 jsonArray.put(json);
             }
         } catch (JSONException e) {
         }
         showAlertDialog();
-        addSubscription(controller.deliverOk(userId, jsonArray.toString()), new Consumer<MBaseBean<String>>() {
+        addSubscription(controller.confirmReceive(orderId, jsonArray.toString(), log), new Consumer<MBaseBean<String>>() {
             @Override
             public void accept(MBaseBean<String> baseBean) throws Exception {
                 ToastUtils.t(mApplication, baseBean.getMessage());
@@ -185,6 +238,23 @@ public class DispatchPersonOrderListActivity extends BaseActivityWithTitleOnly {
             public void accept(Throwable throwable) throws Exception {
                 ToastUtils.t(mApplication, throwable.getMessage());
                 hideAlertDialog();
+            }
+        });
+    }
+
+    /**
+     * 弹出输入说明弹窗
+     */
+    private void showLogDialog() {
+        MDialogUtils.showEditTextDialog(mActivity, "请输入说明", "", new MDialogUtils.OnSureTextListener() {
+            @Override
+            public void onSure(String text, AlertDialog dialog) {
+                if (TextUtils.isEmpty(text.trim())) {
+                    ToastUtils.t(mApplication, "请输入有效说明");
+                    return;
+                }
+                dialog.dismiss();
+                doOperate(text);
             }
         });
     }

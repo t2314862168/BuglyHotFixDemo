@@ -14,9 +14,9 @@ import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.SendsGoodsBean;
-import com.tangxb.pay.hero.bean.StorageOrderBean;
 import com.tangxb.pay.hero.controller.SendGoodsMangerController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
+import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -55,7 +55,7 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitleOnly {
     protected void initData() {
         handleTitle();
         setMiddleText(R.string.deliver_goods_manger);
-        mItemBtn.setText("开始分配");
+        mItemBtn.setText("发车");
 
         controller = new SendGoodsMangerController(this);
         TypedArray typedArray = mActivity.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
@@ -71,8 +71,8 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitleOnly {
                 ImageView imageView = viewHolder.getView(R.id.iv_network);
                 mApplication.getImageLoaderFactory().loadCommonImgByUrl(mActivity, item.getProductImage(), imageView);
                 viewHolder.setText(R.id.tv_name, item.getProductName());
-//                viewHolder.setText(R.id.tv_buy_num, leaveNum + "/" + waitNum + item.getUnit());
-//                viewHolder.setText(R.id.tv_storage_num, requestNum + "");
+                viewHolder.setText(R.id.tv_buy_num, item.getRequest_num() + item.getProductUnit());
+                viewHolder.setText(R.id.tv_storage_num, item.getWait_num() + item.getProductUnit());
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);
@@ -85,6 +85,11 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitleOnly {
                 handleItemClick(position);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getNeedData();
     }
 
@@ -95,7 +100,15 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitleOnly {
         addSubscription(controller.getStorageOrderAllInOne(), new Consumer<MBaseBean<List<SendsGoodsBean>>>() {
             @Override
             public void accept(MBaseBean<List<SendsGoodsBean>> baseBean) throws Exception {
-                System.out.println();
+                if (baseBean.getCode() != 1) {
+                    ToastUtils.t(mApplication, baseBean.getMessage());
+                    return;
+                }
+                dataList.clear();
+                if (baseBean.getData() != null) {
+                    dataList.addAll(baseBean.getData());
+                }
+                mAdapter.notifyDataSetChanged();
             }
         }, new Consumer<Throwable>() {
             @Override
@@ -115,7 +128,11 @@ public class SendGoodsMangerActivity extends BaseActivityWithTitleOnly {
      * 点击item
      */
     private void handleItemClick(int position) {
-
+        Intent intent = getIntentWithPublicParams(SendGoodsSingleProductActivity.class);
+        intent.putExtra("product_id", dataList.get(position).getProductId());
+        intent.putExtra("order_id", dataList.get(position).getOrder_id());
+        intent.putExtra("product_name", dataList.get(position).getProductName());
+        startActivity(intent);
     }
 
 }

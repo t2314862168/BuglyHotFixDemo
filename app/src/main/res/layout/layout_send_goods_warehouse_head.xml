@@ -29,6 +29,14 @@
             android:gravity="center"
             android:text="库房地址"
             android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="发车"
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <include layout="@layout/layout_common_head_bottom_divider" />

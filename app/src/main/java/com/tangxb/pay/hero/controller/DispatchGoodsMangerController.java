@@ -9,6 +9,7 @@ import com.tangxb.pay.hero.bean.DeliverPersonBean;
 import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
 import com.tangxb.pay.hero.bean.DeliverProductBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.ReceiveGoodsBean;
 import com.tangxb.pay.hero.encrypt.MSignUtils;
 
 import java.util.HashMap;
@@ -95,6 +96,57 @@ public class DispatchGoodsMangerController extends BaseControllerWithActivity {
     }
 
     /**
+     * 获取收货列表
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    Observable<MBaseBean<List<ReceiveGoodsBean>>> receiveList(String token, String signatrue
+            , String timestamp, Map<String, String> data) {
+        return RetrofitRxClient.INSTANCE
+                .getRetrofit()
+                .create(DispatchRxAPI.class)
+                .receiveList(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 收货： 收货详情
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    Observable<MBaseBean<List<DeliverPersonOrderBean>>> getReceiveOrderInfo(String token, String signatrue
+            , String timestamp, Map<String, String> data) {
+        return RetrofitRxClient.INSTANCE
+                .getRetrofit()
+                .create(DispatchRxAPI.class)
+                .getReceiveOrderInfo(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 收货详情  点击确认
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    Observable<MBaseBean<String>> confirmReceive(String token, String signatrue
+            , String timestamp, Map<String, String> data) {
+        return RetrofitRxClient.INSTANCE
+                .getRetrofit()
+                .create(DispatchRxAPI.class)
+                .confirmReceive(token, signatrue, timestamp, data);
+    }
+
+    /**
      * 获取配送产品列表
      *
      * @return
@@ -141,6 +193,23 @@ public class DispatchGoodsMangerController extends BaseControllerWithActivity {
     }
 
     /**
+     * 获取配送订单详情
+     *
+     * @param userId
+     * @return
+     */
+    public Observable<MBaseBean<List<DeliverPersonOrderBean>>> getUserOrderInfo02(long userId) {
+        String token = mApplication.getToken();
+        String timestamp = System.currentTimeMillis() + "";
+        Map<String, String> data = new HashMap<>();
+        if (userId != 0) {
+            data.put("order_id", userId + "");
+        }
+        String signatrue = MSignUtils.getSign(data, token, timestamp);
+        return getUserOrderInfo(token, signatrue, timestamp, data);
+    }
+
+    /**
      * 完成配送
      *
      * @param deliverJson
@@ -158,5 +227,61 @@ public class DispatchGoodsMangerController extends BaseControllerWithActivity {
         }
         String signatrue = MSignUtils.getSign(data, token, timestamp);
         return deliverOk(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 获取收货列表
+     *
+     * @return
+     */
+    public Observable<MBaseBean<List<ReceiveGoodsBean>>> receiveList(int page, int rows, String keyword) {
+        String token = mApplication.getToken();
+        String timestamp = System.currentTimeMillis() + "";
+        Map<String, String> data = new HashMap<>();
+        data.put("page", page + "");
+        data.put("rows", rows + "");
+        if (!TextUtils.isEmpty(keyword)) {
+            data.put("key", keyword);
+        }
+        String signatrue = MSignUtils.getSign(data, token, timestamp);
+        return receiveList(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 收货： 收货详情
+     *
+     * @param userId
+     * @return
+     */
+    public Observable<MBaseBean<List<DeliverPersonOrderBean>>> getReceiveOrderInfo(long userId) {
+        String token = mApplication.getToken();
+        String timestamp = System.currentTimeMillis() + "";
+        Map<String, String> data = new HashMap<>();
+        if (userId != 0) {
+            data.put("order_id", userId + "");
+        }
+        String signatrue = MSignUtils.getSign(data, token, timestamp);
+        return getReceiveOrderInfo(token, signatrue, timestamp, data);
+    }
+
+    /**
+     * 收货详情  点击确认
+     *
+     * @param deliverJson
+     * @return
+     */
+    public Observable<MBaseBean<String>> confirmReceive(long orderId, String deliverJson, String log) {
+        String token = mApplication.getToken();
+        String timestamp = System.currentTimeMillis() + "";
+        Map<String, String> data = new HashMap<>();
+        data.put("order_id", orderId + "");
+        if (!TextUtils.isEmpty(deliverJson)) {
+            data.put("dataJson", deliverJson);
+        }
+        if (!TextUtils.isEmpty(log)) {
+            data.put("log", log);
+        }
+        String signatrue = MSignUtils.getSign(data, token, timestamp);
+        return confirmReceive(token, signatrue, timestamp, data);
     }
 }

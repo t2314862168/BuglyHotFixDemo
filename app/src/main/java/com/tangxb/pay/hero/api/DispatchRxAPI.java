@@ -4,7 +4,7 @@ import com.tangxb.pay.hero.bean.DeliverPersonBean;
 import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
 import com.tangxb.pay.hero.bean.DeliverProductBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.bean.UserBean;
+import com.tangxb.pay.hero.bean.ReceiveGoodsBean;
 
 import java.util.List;
 import java.util.Map;
@@ -74,5 +74,43 @@ public interface DispatchRxAPI {
     Observable<MBaseBean<String>> deliverOk(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 
+    /**
+     * 获取收货列表
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    @GET("deliver/getReceiveList")
+    Observable<MBaseBean<List<ReceiveGoodsBean>>> receiveList(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
 
+    /**
+     * 收货： 收货详情
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    @GET("deliver/getReceiveOrderInfo")
+    Observable<MBaseBean<List<DeliverPersonOrderBean>>> getReceiveOrderInfo(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
+
+    /**
+     * 收货详情  点击确认
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @param data
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("deliver/confirmReceive")
+    Observable<MBaseBean<String>> confirmReceive(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 }

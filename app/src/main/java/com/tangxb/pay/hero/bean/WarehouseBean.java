@@ -24,6 +24,9 @@ public class WarehouseBean implements Parcelable {
     @SerializedName("id")
     private long id;
     @Expose
+    @SerializedName("order_id")
+    private long order_id;
+    @Expose
     @SerializedName("name")
     private String name;
     @Expose
@@ -87,6 +90,14 @@ public class WarehouseBean implements Parcelable {
         this.distance = distance;
     }
 
+    public long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(long order_id) {
+        this.order_id = order_id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -95,6 +106,7 @@ public class WarehouseBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
+        dest.writeLong(this.order_id);
         dest.writeString(this.name);
         dest.writeString(this.city);
         dest.writeString(this.address);
@@ -107,6 +119,7 @@ public class WarehouseBean implements Parcelable {
 
     protected WarehouseBean(Parcel in) {
         this.id = in.readLong();
+        this.order_id = in.readLong();
         this.name = in.readString();
         this.city = in.readString();
         this.address = in.readString();

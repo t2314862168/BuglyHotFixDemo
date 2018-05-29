@@ -3,8 +3,11 @@ package com.tangxb.pay.hero.activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
@@ -13,6 +16,7 @@ import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.WarehouseBean;
 import com.tangxb.pay.hero.controller.WarehouseController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
+import com.tangxb.pay.hero.util.MDialogUtils;
 import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -28,7 +32,7 @@ import io.reactivex.functions.Consumer;
  * Created by zll on 2018/5/26.
  */
 
-public class SendGoodsWarehouseActivity extends BaseActivityWithTitle {
+public class SendGoodsWarehouseActivity extends BaseActivityWithTitleOnly {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.ll_head)
@@ -39,18 +43,6 @@ public class SendGoodsWarehouseActivity extends BaseActivityWithTitle {
     WarehouseController controller;
 
     @Override
-    public void clickLeftBtn() {
-        Intent intent = getIntentWithPublicParams(WarehouseAllInOneActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void clickRightBtn() {
-        Intent intent = getIntentWithPublicParams(WarehouseEditorActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
     protected int getLayoutResId() {
         return R.layout.activity_send_goods_warehouse;
     }
@@ -58,9 +50,7 @@ public class SendGoodsWarehouseActivity extends BaseActivityWithTitle {
     @Override
     protected void initData() {
         handleTitle();
-        setLeftText("总览库存");
-        setMiddleText("仓库管理");
-        setRightText("创建库房");
+        setMiddleText("各地库房订单");
 
         controller = new WarehouseController(this);
         TypedArray typedArray = mActivity.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
@@ -75,6 +65,12 @@ public class SendGoodsWarehouseActivity extends BaseActivityWithTitle {
 
                 viewHolder.setText(R.id.tv_name, item.getName());
                 viewHolder.setText(R.id.tv_address, item.getCity() + item.getAddress());
+                viewHolder.setOnClickListener(R.id.tv_open_car, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        handleItemOpenCar(position);
+                    }
+                });
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);
@@ -99,7 +95,7 @@ public class SendGoodsWarehouseActivity extends BaseActivityWithTitle {
      * 网络获取数据
      */
     private void getNeedData() {
-        addSubscription(controller.getStorageList(), new Consumer<MBaseBean<List<WarehouseBean>>>() {
+        addSubscription(controller.getStorageListHasOrder(), new Consumer<MBaseBean<List<WarehouseBean>>>() {
             @Override
             public void accept(MBaseBean<List<WarehouseBean>> baseBean) throws Exception {
                 if (baseBean.getCode() != 1) {
@@ -129,5 +125,48 @@ public class SendGoodsWarehouseActivity extends BaseActivityWithTitle {
         Intent intent = getIntentWithPublicParams(SendGoodsWarehouseOrderListActivity.class);
         intent.putExtra("warehouseBean", dataList.get(position));
         startActivity(intent);
+    }
+
+    /**
+     * 点击item,发车
+     *
+     * @param position
+     */
+    private void handleItemOpenCar(final int position) {
+        MDialogUtils.showEditTextDialog(mActivity, "请输入车牌号码", "", new MDialogUtils.OnSureTextListener() {
+            @Override
+            public void onSure(String text, AlertDialog dialog) {
+                if (TextUtils.isEmpty(text.trim())) {
+                    ToastUtils.t(mApplication, "请输入正确的车牌号码");
+                    return;
+                }
+                dialog.dismiss();
+                doOpenCar(position, text);
+            }
+        });
+    }
+
+    /**
+     * 发车
+     *
+     * @param position
+     * @param carNum
+     */
+    private void doOpenCar(int position, String carNum) {
+        showAlertDialog();
+        addSubscription(controller.sendOutCart(dataList.get(position).getId(), carNum), new Consumer<MBaseBean<String>>() {
+            @Override
+            public void accept(MBaseBean<String> baseBean) throws Exception {
+                ToastUtils.t(mApplication, baseBean.getMessage());
+                hideAlertDialog();
+                finish();
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                ToastUtils.t(mApplication, throwable.getMessage());
+                hideAlertDialog();
+            }
+        });
     }
 }

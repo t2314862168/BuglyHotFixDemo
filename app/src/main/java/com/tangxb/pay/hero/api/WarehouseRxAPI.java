@@ -2,6 +2,7 @@ package com.tangxb.pay.hero.api;
 
 import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
+import com.tangxb.pay.hero.bean.SendsGoodsBean;
 import com.tangxb.pay.hero.bean.UserBean;
 import com.tangxb.pay.hero.bean.WarehouseAllInOneBean;
 import com.tangxb.pay.hero.bean.WarehouseBean;
@@ -22,6 +23,18 @@ import retrofit2.http.QueryMap;
  */
 
 public interface WarehouseRxAPI {
+    /**
+     * 获取有订单的库房列表
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    @GET("storage/getStorageListHasOrder")
+    Observable<MBaseBean<List<WarehouseBean>>> getStorageListHasOrder(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp);
+
     /**
      * 获取库房列表
      *
@@ -94,9 +107,34 @@ public interface WarehouseRxAPI {
      * @param timestamp
      * @return
      */
-    @GET("storage/getStorageOrderInfo")
-    Observable<MBaseBean<List<DeliverPersonOrderBean>>> getStorageOrderInfo(@Header("token") String token, @Header("signatrue") String signatrue
+    @GET("storage/getOrderSingleStorage")
+    Observable<MBaseBean<List<SendsGoodsBean>>> getOrderSingleStorage(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
+
+    /**
+     * 获取单个商品 的库房订单
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    @GET("storage/getOrderSingleProduct")
+    Observable<MBaseBean<List<SendsGoodsBean>>> getOrderSingleProduct(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
+
+    /**
+     * 保存分配 （单个商品分配  和  通过库房分配 使用同一个接口）
+     *
+     * @param token
+     * @param signatrue
+     * @param timestamp
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("storage/saveProductDispatch")
+    Observable<MBaseBean<String>> saveProductDispatch(@Header("token") String token, @Header("signatrue") String signatrue
+            , @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 
     /**
      * 分配完毕

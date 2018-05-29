@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="订购数量"
+            android:text="发货数量"
             android:textColor="@color/black" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="实际配送"
+            android:text="实际收到"
             android:textColor="@color/black" />
     </LinearLayout>
 
