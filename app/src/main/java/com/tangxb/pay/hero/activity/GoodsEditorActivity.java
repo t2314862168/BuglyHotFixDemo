@@ -184,8 +184,8 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
         } else {
             subImageList.add(subImages);
         }
+        subImageList.add("");
         if (subImageList.size() < 6) {
-            subImageList.add("");
         }
         gridLayout2.setUrlList(subImageList);
         if (TextUtils.isEmpty(detailImages)) return;
@@ -197,8 +197,8 @@ public class GoodsEditorActivity extends BaseActivityWithTitleRight {
         } else {
             detailImageList.add(detailImages);
         }
+        detailImageList.add("");
         if (detailImageList.size() < 9) {
-            detailImageList.add("");
         }
         gridLayout3.setUrlList(detailImageList);
     }
