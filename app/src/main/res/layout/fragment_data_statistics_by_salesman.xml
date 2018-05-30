@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="业务员" />
+                android:text="产品" />
 
             <com.jaredrummler.materialspinner.MaterialSpinner
                 android:id="@+id/spinner"
@@ -80,9 +80,44 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <include layout="@layout/layout_common_head_bottom_divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tv_choose_year"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="所有库房"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_big" />
+
+        <CheckBox
+            android:id="@+id/cb_freight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/cb_jian_shu"
+            android:text="加入运费" />
+
+        <CheckBox
+            android:id="@+id/cb_jian_shu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="统计件数" />
+    </RelativeLayout>
+
+    <include layout="@layout/layout_common_head_bottom_divider" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/test_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -4,85 +4,67 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/ll_end_time"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinner_salesman"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinner_goods"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <include layout="@layout/layout_common_head_bottom_divider" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="8dp">
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@android:color/white">
 
-        <LinearLayout
-            android:id="@+id/ll_start_time"
+        <TextView
+            android:id="@+id/tv_choose_year"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:text="所有年份"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_big" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="开始时间" />
-
-            <TextView
-                android:id="@+id/tv_start_time"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/ms__selector"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="开始时间" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_end_time"
+        <CheckBox
+            android:id="@+id/cb_freight"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/ll_start_time"
-            android:orientation="vertical">
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/cb_jian_shu"
+            android:text="加入运费" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="结束时间" />
-
-            <TextView
-                android:id="@+id/tv_end_time"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/ms__selector"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="结束时间" />
-        </LinearLayout>
-
-        <LinearLayout
+        <CheckBox
+            android:id="@+id/cb_jian_shu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="产品名" />
-
-            <com.jaredrummler.materialspinner.MaterialSpinner
-                android:id="@+id/spinner"
-                android:layout_width="110dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp" />
-        </LinearLayout>
+            android:text="统计件数" />
     </RelativeLayout>
+
+    <include layout="@layout/layout_common_head_bottom_divider" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/test_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

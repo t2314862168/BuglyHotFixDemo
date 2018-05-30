@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * Created by zll on 2018/5/26.
  */
 
-public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
+public class DataStatisticsActivity extends BaseActivity {
     @BindView(R.id.fl_container)
     FrameLayout mContainerFl;
     @BindView(R.id.btn_item_1)
@@ -40,10 +40,10 @@ public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
 
     @Override
     protected void initData() {
-        handleTitle();
-        setMiddleText(R.string.data_statistics);
+//        handleTitle();
+//        setMiddleText(R.string.data_statistics);
 
-        mItemBtn1.setText("按产品统计");
+        mItemBtn1.setText("按时间统计");
         mItemBtn2.setText("按业务统计");
 
         fragmentManager = getSupportFragmentManager();
@@ -96,5 +96,19 @@ public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
         }
         transaction.show(salesManFragment);
         transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (timeFragment.isVisible()) {
+            if (timeFragment.hasLevel()) {
+                return;
+            }
+        } else {
+            if (salesManFragment.hasLevel()) {
+                return;
+            }
+        }
+        super.onBackPressed();
     }
 }
