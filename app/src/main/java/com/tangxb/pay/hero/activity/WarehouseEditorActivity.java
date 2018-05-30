@@ -109,7 +109,7 @@ public class WarehouseEditorActivity extends BaseActivityWithTitleOnly {
                 itemLL.setDividerDrawable(divider);
 
                 viewHolder.setText(R.id.tv_name, item.getRealName());
-                viewHolder.setOnClickListener(R.id.iv_mobile, new View.OnClickListener() {
+                viewHolder.setOnClickListener(R.id.tv_buy_num, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         handleItemClick(position);
@@ -250,9 +250,9 @@ public class WarehouseEditorActivity extends BaseActivityWithTitleOnly {
             @Override
             public void onSure(int which, AlertDialog dialog) {
                 dialog.dismiss();
-                int size1 = dataList.size();
                 dataList.add(data.get(which));
-                mAdapter.notifyItemInsertedHF(size1);
+                int size1 = dataList.size();
+                mAdapter.notifyItemInserted(size1);
             }
         });
     }

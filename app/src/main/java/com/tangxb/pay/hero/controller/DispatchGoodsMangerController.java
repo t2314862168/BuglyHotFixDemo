@@ -10,6 +10,7 @@ import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
 import com.tangxb.pay.hero.bean.DeliverProductBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.ReceiveGoodsBean;
+import com.tangxb.pay.hero.bean.ReceiveOrderBean;
 import com.tangxb.pay.hero.encrypt.MSignUtils;
 
 import java.util.HashMap;
@@ -121,7 +122,7 @@ public class DispatchGoodsMangerController extends BaseControllerWithActivity {
      * @param data
      * @return
      */
-    Observable<MBaseBean<List<DeliverPersonOrderBean>>> getReceiveOrderInfo(String token, String signatrue
+    Observable<MBaseBean<List<ReceiveOrderBean>>> getReceiveOrderInfo(String token, String signatrue
             , String timestamp, Map<String, String> data) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
@@ -193,23 +194,6 @@ public class DispatchGoodsMangerController extends BaseControllerWithActivity {
     }
 
     /**
-     * 获取配送订单详情
-     *
-     * @param userId
-     * @return
-     */
-    public Observable<MBaseBean<List<DeliverPersonOrderBean>>> getUserOrderInfo02(long userId) {
-        String token = mApplication.getToken();
-        String timestamp = System.currentTimeMillis() + "";
-        Map<String, String> data = new HashMap<>();
-        if (userId != 0) {
-            data.put("order_id", userId + "");
-        }
-        String signatrue = MSignUtils.getSign(data, token, timestamp);
-        return getUserOrderInfo(token, signatrue, timestamp, data);
-    }
-
-    /**
      * 完成配送
      *
      * @param deliverJson
@@ -253,7 +237,7 @@ public class DispatchGoodsMangerController extends BaseControllerWithActivity {
      * @param userId
      * @return
      */
-    public Observable<MBaseBean<List<DeliverPersonOrderBean>>> getReceiveOrderInfo(long userId) {
+    public Observable<MBaseBean<List<ReceiveOrderBean>>> getReceiveOrderInfo(long userId) {
         String token = mApplication.getToken();
         String timestamp = System.currentTimeMillis() + "";
         Map<String, String> data = new HashMap<>();

@@ -11,6 +11,7 @@ import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.UserBean;
 import com.tangxb.pay.hero.controller.CopyBeanController;
 import com.tangxb.pay.hero.decoration.MDividerGridItemDecoration;
+import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -38,6 +39,7 @@ public class HomeActivity extends BaseActivity {
     private List<String> mData = new ArrayList<>();
     private RecyclerAdapterWithHF mAdapter;
     int PERSON_CENTER = 444;
+    long firstTime;
 
     @Override
     protected int getLayoutResId() {
@@ -105,5 +107,16 @@ public class HomeActivity extends BaseActivity {
             UserBean tempBean = data.getParcelableExtra("userBean");
             CopyBeanController.copyUserBean(tempBean, mApplication.getUserLoginResultBean().getUser());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        long secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000L) {
+            ToastUtils.t(mApplication, "再按一次退出程序");
+            firstTime = secondTime;
+            return;
+        }
+        super.onBackPressed();
     }
 }

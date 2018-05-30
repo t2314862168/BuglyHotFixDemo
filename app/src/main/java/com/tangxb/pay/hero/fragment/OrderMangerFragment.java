@@ -91,7 +91,7 @@ public class OrderMangerFragment extends BaseFragment {
             protected void convert(ViewHolder viewHolder, OrderBean item, int position) {
                 viewHolder.setText(R.id.tv_name, item.getRealname());
                 viewHolder.setText(R.id.tv_time, item.getCreateTime());
-                viewHolder.setText(R.id.tv_total_freight, "¥" + item.getProductTotalPrice() + "¥" + item.getTotalFreight());
+                viewHolder.setText(R.id.tv_total_freight, "¥" + item.getProductTotalPrice() + " + ¥" + item.getTotalFreight());
                 viewHolder.setText(R.id.tv_buy_num, item.getBuyNum() + "");
             }
         };

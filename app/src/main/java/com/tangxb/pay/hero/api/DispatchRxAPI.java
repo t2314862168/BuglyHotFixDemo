@@ -5,6 +5,7 @@ import com.tangxb.pay.hero.bean.DeliverPersonOrderBean;
 import com.tangxb.pay.hero.bean.DeliverProductBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.ReceiveGoodsBean;
+import com.tangxb.pay.hero.bean.ReceiveOrderBean;
 
 import java.util.List;
 import java.util.Map;
@@ -97,7 +98,7 @@ public interface DispatchRxAPI {
      * @return
      */
     @GET("deliver/getReceiveOrderInfo")
-    Observable<MBaseBean<List<DeliverPersonOrderBean>>> getReceiveOrderInfo(@Header("token") String token, @Header("signatrue") String signatrue
+    Observable<MBaseBean<List<ReceiveOrderBean>>> getReceiveOrderInfo(@Header("token") String token, @Header("signatrue") String signatrue
             , @Header("timestamp") String timestamp, @QueryMap Map<String, String> data);
 
     /**

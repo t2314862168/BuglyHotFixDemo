@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_item"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="40dp"
     android:orientation="horizontal"
     android:showDividers="middle">
 
@@ -21,20 +21,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="100/箱"
-        android:textColor="@color/black" />
-
-    <FrameLayout
-        android:id="@+id/iv_mobile"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_mobile"
-            android:scaleType="centerInside" />
-    </FrameLayout>
+        android:text="删除"
+        android:textColor="@color/color_red" />
 </LinearLayout>

@@ -12,12 +12,11 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.jaredrummler.materialspinner.MaterialSpinnerAdapter;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.activity.BaseActivity;
+import com.tangxb.pay.hero.bean.GoodsCategoryBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.bean.UserBean;
-import com.tangxb.pay.hero.controller.DataStatisticsBySalesManFragmentController;
-import com.tangxb.pay.hero.controller.UserMangerFragmentController;
+import com.tangxb.pay.hero.controller.DataStatisticsByCategoryFragmentController;
+import com.tangxb.pay.hero.controller.GoodsCategoryController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
-import com.tangxb.pay.hero.util.ConstUtils;
 import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -31,11 +30,11 @@ import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 /**
- * 按业务员统计界面<br>
+ * 按产品统计界面<br>
  * Created by tangxuebing on 2018/5/29.
  */
 
-public class DataStatisticsBySalesManFragment extends BaseFragment {
+public class DataStatisticsByCategoryFragment extends BaseFragment {
     @BindView(R.id.tv_start_time)
     TextView mStartTimeTv;
     @BindView(R.id.tv_end_time)
@@ -44,33 +43,32 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
     MaterialSpinner materialSpinner;
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
-
-    DataStatisticsBySalesManFragmentController controller;
-    UserMangerFragmentController userMangerFragmentController;
+    DataStatisticsByCategoryFragmentController controller;
+    GoodsCategoryController categoryController;
+    /**
+     * 产品分类集合
+     */
+    List<GoodsCategoryBean> categoryBeanList = new ArrayList<>();
     int yearStart, monthStart, dayOfMonthStart;
     int yearEnd, monthEnd, dayOfMonthEnd;
     int yearCurrent, monthCurrent, dayOfMonthCurrent;
-    /**
-     * 业务员集合
-     */
-    List<UserBean> userBeanList = new ArrayList<>();
     List<String> dataList = new ArrayList<>();
     private RecyclerAdapterWithHF mAdapter;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.fragment_data_statistics_by_salesman;
+        return R.layout.fragment_data_statistics_by_category;
     }
 
-    public static DataStatisticsBySalesManFragment getInstance() {
-        DataStatisticsBySalesManFragment fragment = new DataStatisticsBySalesManFragment();
+    public static DataStatisticsByCategoryFragment getInstance() {
+        DataStatisticsByCategoryFragment fragment = new DataStatisticsByCategoryFragment();
         return fragment;
     }
 
     @Override
     protected void initData() {
-        controller = new DataStatisticsBySalesManFragmentController((BaseActivity) mActivity);
-        userMangerFragmentController = new UserMangerFragmentController((BaseActivity) mActivity);
+        controller = new DataStatisticsByCategoryFragmentController((BaseActivity) mActivity);
+        categoryController = new GoodsCategoryController((BaseActivity) mActivity);
         getCurrentDate();
         String str = yearStart + "年" + (monthStart + 1) + "月" + dayOfMonthStart + "日";
         mStartTimeTv.setText(str);
@@ -103,7 +101,7 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
                 ToastUtils.t(mApplication, "position===" + position);
             }
         });
-        getNeedSalesManData();
+        getGoodsCategoryData();
     }
 
     /**
@@ -129,24 +127,23 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
     }
 
     /**
-     * 获取业务员数据
+     * 获取产品分类数据
      */
-    private void getNeedSalesManData() {
-        addSubscription(userMangerFragmentController.getUserListByRoleId(1, 500, ConstUtils.RB_600.getId(), null, 1), new Consumer<MBaseBean<List<UserBean>>>() {
+    private void getGoodsCategoryData() {
+        addSubscription(categoryController.getCategoryList(1), new Consumer<MBaseBean<List<GoodsCategoryBean>>>() {
             @Override
-            public void accept(MBaseBean<List<UserBean>> baseBean) throws Exception {
+            public void accept(MBaseBean<List<GoodsCategoryBean>> baseBean) throws Exception {
                 if (baseBean.getData() == null) return;
-                userBeanList.addAll(baseBean.getData());
+                categoryBeanList.addAll(baseBean.getData());
                 List<String> items = new ArrayList<>();
-                for (UserBean bean : baseBean.getData()) {
-                    items.add(bean.getRealName());
+                for (GoodsCategoryBean bean : baseBean.getData()) {
+                    items.add(bean.getName());
                 }
                 materialSpinner.setAdapter(new MaterialSpinnerAdapter<>(mActivity, items));
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                System.out.println();
             }
         });
     }

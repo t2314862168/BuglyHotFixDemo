@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class DeliverPersonBean {
     @Expose
-    @SerializedName("id")
+    @SerializedName("order_id")
     private long id;
     @Expose
     @SerializedName("name")

@@ -14,7 +14,6 @@ import com.chanven.lib.cptr.PtrFrameLayoutEx;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
-import com.tangxb.pay.hero.bean.DeliverPersonBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.ReceiveGoodsBean;
 import com.tangxb.pay.hero.controller.DispatchGoodsMangerController;
@@ -58,7 +57,7 @@ public class ReceiveGoodsActivity extends BaseActivityWithTitleOnly {
     @Override
     protected void initData() {
         handleTitle();
-        setMiddleText("开始配送");
+        setMiddleText("收货列表");
         // 输入法不改变布局
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -184,7 +183,7 @@ public class ReceiveGoodsActivity extends BaseActivityWithTitleOnly {
      * 点击item
      */
     private void handleItemClick(int position) {
-        Intent intent = getIntentWithPublicParams(DispatchPersonOrderListActivity.class);
+        Intent intent = getIntentWithPublicParams(ReceiveOrderInfoActivity.class);
         intent.putExtra("orderId", dataList.get(position).getId());
         intent.putExtra("status", dataList.get(position).getStatus());
         startActivity(intent);

@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.tangxb.pay.hero.R;
+import com.tangxb.pay.hero.fragment.DataStatisticsByCategoryFragment;
 import com.tangxb.pay.hero.fragment.DataStatisticsBySalesManFragment;
-import com.tangxb.pay.hero.fragment.DataStatisticsByTimeFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -28,9 +28,9 @@ public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
     Button mItemBtn2;
 
     FragmentManager fragmentManager;
-    DataStatisticsByTimeFragment timeFragment;
+    DataStatisticsByCategoryFragment timeFragment;
     DataStatisticsBySalesManFragment salesManFragment;
-    String timeFragmentTag = DataStatisticsByTimeFragment.class.getSimpleName();
+    String timeFragmentTag = DataStatisticsByCategoryFragment.class.getSimpleName();
     String salesManFragmentTag = DataStatisticsBySalesManFragment.class.getSimpleName();
 
     @Override
@@ -43,8 +43,8 @@ public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
         handleTitle();
         setMiddleText(R.string.data_statistics);
 
-        mItemBtn1.setText("按时间统计");
-        mItemBtn2.setText("按业务员统计");
+        mItemBtn1.setText("按产品统计");
+        mItemBtn2.setText("按业务统计");
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -55,10 +55,10 @@ public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
             transaction.remove(salesManFragment);
         }
         if (fragmentByTag == null) {
-            timeFragment = DataStatisticsByTimeFragment.getInstance();
+            timeFragment = DataStatisticsByCategoryFragment.getInstance();
             transaction.add(R.id.fl_container, timeFragment, timeFragmentTag);
         } else {
-            timeFragment = (DataStatisticsByTimeFragment) fragmentByTag;
+            timeFragment = (DataStatisticsByCategoryFragment) fragmentByTag;
         }
         transaction.show(timeFragment);
         transaction.commit();
@@ -69,10 +69,10 @@ public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment fragmentByTag = fragmentManager.findFragmentByTag(timeFragmentTag);
         if (fragmentByTag == null) {
-            timeFragment = DataStatisticsByTimeFragment.getInstance();
+            timeFragment = DataStatisticsByCategoryFragment.getInstance();
             transaction.add(R.id.fl_container, timeFragment, timeFragmentTag);
         } else {
-            timeFragment = (DataStatisticsByTimeFragment) fragmentByTag;
+            timeFragment = (DataStatisticsByCategoryFragment) fragmentByTag;
         }
         if (salesManFragment != null) {
             transaction.hide(salesManFragment);

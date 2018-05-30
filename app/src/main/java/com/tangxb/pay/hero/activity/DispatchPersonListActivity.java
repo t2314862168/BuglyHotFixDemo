@@ -59,7 +59,7 @@ public class DispatchPersonListActivity extends BaseActivityWithSearch {
     protected void initData() {
         handleSearchTitle();
         setLeftBtnTextVisible(false);
-        setMiddleText("开始配送");
+        setMiddleText("配送人列表");
         // 输入法不改变布局
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -148,7 +148,9 @@ public class DispatchPersonListActivity extends BaseActivityWithSearch {
      */
     private void handleItemClick(int position) {
         Intent intent = getIntentWithPublicParams(DispatchPersonOrderListActivity.class);
-        intent.putExtra("userId", dataList.get(position).getId());
+        intent.putExtra("orderId", dataList.get(position).getId());
+        intent.putExtra("status", 1);
+        intent.putExtra("titleName", dataList.get(position).getName());
         startActivity(intent);
     }
 }
