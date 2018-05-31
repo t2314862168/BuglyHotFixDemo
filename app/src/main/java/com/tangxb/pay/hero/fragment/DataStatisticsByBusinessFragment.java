@@ -131,6 +131,7 @@ public class DataStatisticsByBusinessFragment extends BaseFragment {
                 } else {
                     product_id = categoryBeanList.get(position - 1).getId() + "";
                 }
+                ((BaseActivity) mActivity).showProgressDialog();
                 getNeedData();
             }
         });
@@ -148,6 +149,7 @@ public class DataStatisticsByBusinessFragment extends BaseFragment {
         mStack.push(new DataStatisticsStackBean(level, id));
         level += 1;
         id = dataList.get(position).getId() + "";
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
     }
 
@@ -182,6 +184,7 @@ public class DataStatisticsByBusinessFragment extends BaseFragment {
                 }
                 calculateMaxData();
                 mAdapter.notifyDataSetChanged();
+                ((BaseActivity) mActivity).hideProgressDialog();
             }
         }, new Consumer<Throwable>() {
             @Override
@@ -254,6 +257,7 @@ public class DataStatisticsByBusinessFragment extends BaseFragment {
         dayOfMonthStart = dayOfMonth;
         String str = yearStart + "年" + (monthStart + 1) + "月" + dayOfMonthStart + "日";
         mStartTimeTv.setText(str);
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
     }
 
@@ -270,6 +274,7 @@ public class DataStatisticsByBusinessFragment extends BaseFragment {
         dayOfMonthEnd = dayOfMonth;
         String str = yearEnd + "年" + (monthEnd + 1) + "月" + dayOfMonthEnd + "日";
         mEndTimeTv.setText(str);
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
     }
 
@@ -327,6 +332,7 @@ public class DataStatisticsByBusinessFragment extends BaseFragment {
         DataStatisticsStackBean bean = mStack.pop();
         level = bean.getLevel();
         id = bean.getId();
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
         return true;
     }
@@ -334,24 +340,28 @@ public class DataStatisticsByBusinessFragment extends BaseFragment {
     @OnCheckedChanged(R.id.cb_freight)
     public void freightOnChecked(boolean checked) {
         if (!checked) {
+            ((BaseActivity) mActivity).showProgressDialog();
             getNeedData();
             return;
         }
         if (mCheckBox2.isChecked()) {
             mCheckBox2.setChecked(false);
         }
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
     }
 
     @OnCheckedChanged(R.id.cb_jian_shu)
     public void jianShuOnChecked(boolean checked) {
         if (!checked) {
+            ((BaseActivity) mActivity).showProgressDialog();
             getNeedData();
             return;
         }
         if (mCheckBox1.isChecked()) {
             mCheckBox1.setChecked(false);
         }
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
     }
 }

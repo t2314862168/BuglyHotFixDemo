@@ -127,6 +127,7 @@ public class DataStatisticsByTimeFragment extends BaseFragment {
                 } else {
                     product_id = categoryBeanList.get(position - 1).getId() + "";
                 }
+                ((BaseActivity) mActivity).showProgressDialog();
                 getNeedData();
             }
         });
@@ -138,6 +139,7 @@ public class DataStatisticsByTimeFragment extends BaseFragment {
                 } else {
                     proxy_id = userBeanList.get(position - 1).getId() + "";
                 }
+                ((BaseActivity) mActivity).showProgressDialog();
                 getNeedData();
             }
         });
@@ -156,6 +158,7 @@ public class DataStatisticsByTimeFragment extends BaseFragment {
         mStack.push(new DataStatisticsStackBean(level, id));
         level += 1;
         id = dataList.get(position).getId() + "";
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
     }
 
@@ -169,6 +172,7 @@ public class DataStatisticsByTimeFragment extends BaseFragment {
         DataStatisticsStackBean bean = mStack.pop();
         level = bean.getLevel();
         id = bean.getId();
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
         return true;
     }
@@ -188,6 +192,7 @@ public class DataStatisticsByTimeFragment extends BaseFragment {
                 }
                 calculateMaxData();
                 mAdapter.notifyDataSetChanged();
+                ((BaseActivity) mActivity).hideProgressDialog();
             }
         }, new Consumer<Throwable>() {
             @Override
@@ -279,24 +284,28 @@ public class DataStatisticsByTimeFragment extends BaseFragment {
     @OnCheckedChanged(R.id.cb_freight)
     public void freightOnChecked(boolean checked) {
         if (!checked) {
+            ((BaseActivity) mActivity).showProgressDialog();
             getNeedData();
             return;
         }
         if (mCheckBox2.isChecked()) {
             mCheckBox2.setChecked(false);
         }
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
     }
 
     @OnCheckedChanged(R.id.cb_jian_shu)
     public void jianShuOnChecked(boolean checked) {
         if (!checked) {
+            ((BaseActivity) mActivity).showProgressDialog();
             getNeedData();
             return;
         }
         if (mCheckBox1.isChecked()) {
             mCheckBox1.setChecked(false);
         }
+        ((BaseActivity) mActivity).showProgressDialog();
         getNeedData();
     }
 }

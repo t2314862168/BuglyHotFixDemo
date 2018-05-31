@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -242,6 +244,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     AlertDialog mAlertDialog;
+    AlertDialog mProgressDialog;
 
     /**
      * 显示进度框
@@ -279,6 +282,37 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void hideAlertDialog() {
         if (mAlertDialog != null) {
             mAlertDialog.dismiss();
+        }
+    }
+
+    /**
+     * 显示进度框
+     */
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new AlertProgressDialog.Builder(mActivity)
+                    .setView(R.layout.layout_progressbar_dialog)
+                    .setCancelable(true)
+                    .setMessage(R.string.get_data_ing)
+                    .show();
+            // 将对话框的大小按屏幕大小的百分比设置
+            WindowManager windowManager = getWindowManager();
+            DisplayMetrics outMetrics = new DisplayMetrics();
+            windowManager.getDefaultDisplay().getMetrics(outMetrics);
+            WindowManager.LayoutParams lp = mProgressDialog.getWindow().getAttributes();
+            lp.width = (int) (outMetrics.widthPixels * 0.55f);
+            mProgressDialog.getWindow().setAttributes(lp);
+        } else {
+            mProgressDialog.show();
+        }
+    }
+
+    /**
+     * 隐藏进度框
+     */
+    public void hideProgressDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
         }
     }
 }
