@@ -1,11 +1,14 @@
 package com.tangxb.pay.hero.fragment;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
@@ -17,7 +20,7 @@ import com.tangxb.pay.hero.bean.DataStatisticsBean;
 import com.tangxb.pay.hero.bean.DataStatisticsStackBean;
 import com.tangxb.pay.hero.bean.GoodsCategoryBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
-import com.tangxb.pay.hero.controller.DataStatisticsBySalesManFragmentController;
+import com.tangxb.pay.hero.controller.DataStatisticsByBusinessFragmentController;
 import com.tangxb.pay.hero.controller.GoodsCategoryController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
 import com.tangxb.pay.hero.util.ToastUtils;
@@ -35,11 +38,11 @@ import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 /**
- * 按业务员统计界面<br>
+ * 按业务统计界面<br>
  * Created by tangxuebing on 2018/5/29.
  */
 
-public class DataStatisticsBySalesManFragment extends BaseFragment {
+public class DataStatisticsByBusinessFragment extends BaseFragment {
     @BindView(R.id.tv_start_time)
     TextView mStartTimeTv;
     @BindView(R.id.tv_end_time)
@@ -53,7 +56,7 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
 
-    DataStatisticsBySalesManFragmentController controller;
+    DataStatisticsByBusinessFragmentController controller;
     int yearStart, monthStart, dayOfMonthStart;
     int yearEnd, monthEnd, dayOfMonthEnd;
     int yearCurrent, monthCurrent, dayOfMonthCurrent;
@@ -67,22 +70,21 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
     int level = 0;
     String id;
     String product_id;
-    float maxData;
     Stack<DataStatisticsStackBean> mStack = new Stack<>();
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.fragment_data_statistics_by_salesman;
+        return R.layout.fragment_data_statistics_by_business;
     }
 
-    public static DataStatisticsBySalesManFragment getInstance() {
-        DataStatisticsBySalesManFragment fragment = new DataStatisticsBySalesManFragment();
+    public static DataStatisticsByBusinessFragment getInstance() {
+        DataStatisticsByBusinessFragment fragment = new DataStatisticsByBusinessFragment();
         return fragment;
     }
 
     @Override
     protected void initData() {
-        controller = new DataStatisticsBySalesManFragmentController((BaseActivity) mActivity);
+        controller = new DataStatisticsByBusinessFragmentController((BaseActivity) mActivity);
         categoryController = new GoodsCategoryController((BaseActivity) mActivity);
         getCurrentDate();
         String str = yearStart + "年" + (monthStart + 1) + "月" + dayOfMonthStart + "日";
@@ -90,11 +92,21 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
         String str2 = yearEnd + "年" + (monthEnd + 1) + "月" + dayOfMonthEnd + "日";
         mEndTimeTv.setText(str2);
 
-        CommonAdapter commonAdapter = new CommonAdapter<DataStatisticsBean>(mActivity, R.layout.item_data_statistics, dataList) {
+        CommonAdapter commonAdapter = new CommonAdapter<DataStatisticsBean>(mActivity, R.layout.item_data_statistics_business, dataList) {
             @Override
             protected void convert(ViewHolder viewHolder, DataStatisticsBean item, int position) {
                 viewHolder.setText(R.id.tv_title, item.getTitle());
-                viewHolder.setText(R.id.tv_data, item.getData());
+                String unit = item.getUnit();
+                if (TextUtils.isEmpty(unit)) {
+                    unit = "元";
+                }
+                viewHolder.setText(R.id.tv_data, item.getData() + unit);
+                ProgressBar progressBar = viewHolder.getView(R.id.pb);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    progressBar.setProgress(item.getProgress(), true);
+                } else {
+                    progressBar.setProgress(item.getProgress());
+                }
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);
@@ -150,6 +162,7 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
         yearStart = yearEnd = yearCurrent;
         monthStart = monthEnd = monthCurrent;
         dayOfMonthStart = dayOfMonthEnd = dayOfMonthCurrent;
+        dayOfMonthStart = 1;
     }
 
     /**
@@ -167,7 +180,7 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
                 if (baseBean.getData() != null) {
                     dataList.addAll(baseBean.getData());
                 }
-                cacuclateMaxData();
+                calculateMaxData();
                 mAdapter.notifyDataSetChanged();
             }
         }, new Consumer<Throwable>() {
@@ -181,7 +194,8 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
     /**
      * 计算最大值
      */
-    private void cacuclateMaxData() {
+    private void calculateMaxData() {
+        float maxData = 0f;
         for (DataStatisticsBean bean : dataList) {
             String data = bean.getData();
             try {
@@ -189,6 +203,16 @@ public class DataStatisticsBySalesManFragment extends BaseFragment {
                 if (v > maxData) {
                     maxData = v;
                 }
+            } catch (NumberFormatException e) {
+            }
+        }
+        if (maxData == 0f) return;
+        for (DataStatisticsBean bean : dataList) {
+            String data = bean.getData();
+            try {
+                float v = Float.valueOf(data);
+                int progress = (int) ((v / maxData) * 100);
+                bean.setProgress(progress);
             } catch (NumberFormatException e) {
             }
         }

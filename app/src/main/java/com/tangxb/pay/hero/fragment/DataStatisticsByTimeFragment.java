@@ -1,8 +1,11 @@
 package com.tangxb.pay.hero.fragment;
 
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
@@ -15,7 +18,7 @@ import com.tangxb.pay.hero.bean.DataStatisticsStackBean;
 import com.tangxb.pay.hero.bean.GoodsCategoryBean;
 import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.bean.UserBean;
-import com.tangxb.pay.hero.controller.DataStatisticsByCategoryFragmentController;
+import com.tangxb.pay.hero.controller.DataStatisticsByTimeFragmentController;
 import com.tangxb.pay.hero.controller.GoodsCategoryController;
 import com.tangxb.pay.hero.controller.UserMangerFragmentController;
 import com.tangxb.pay.hero.decoration.MDividerItemDecoration;
@@ -33,11 +36,11 @@ import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 /**
- * 按产品统计界面<br>
+ * 按时间统计界面<br>
  * Created by tangxuebing on 2018/5/29.
  */
 
-public class DataStatisticsByCategoryFragment extends BaseFragment {
+public class DataStatisticsByTimeFragment extends BaseFragment {
     @BindView(R.id.tv_choose_year)
     TextView mChooseYearTv;
     @BindView(R.id.spinner_salesman)
@@ -51,7 +54,7 @@ public class DataStatisticsByCategoryFragment extends BaseFragment {
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
 
-    DataStatisticsByCategoryFragmentController controller;
+    DataStatisticsByTimeFragmentController controller;
     UserMangerFragmentController userMangerFragmentController;
     GoodsCategoryController categoryController;
     /**
@@ -68,29 +71,38 @@ public class DataStatisticsByCategoryFragment extends BaseFragment {
     String id;
     String proxy_id;
     String product_id;
-    float maxData;
     Stack<DataStatisticsStackBean> mStack = new Stack<>();
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.fragment_data_statistics_by_category;
+        return R.layout.fragment_data_statistics_by_time;
     }
 
-    public static DataStatisticsByCategoryFragment getInstance() {
-        DataStatisticsByCategoryFragment fragment = new DataStatisticsByCategoryFragment();
+    public static DataStatisticsByTimeFragment getInstance() {
+        DataStatisticsByTimeFragment fragment = new DataStatisticsByTimeFragment();
         return fragment;
     }
 
     @Override
     protected void initData() {
-        controller = new DataStatisticsByCategoryFragmentController((BaseActivity) mActivity);
+        controller = new DataStatisticsByTimeFragmentController((BaseActivity) mActivity);
         categoryController = new GoodsCategoryController((BaseActivity) mActivity);
         userMangerFragmentController = new UserMangerFragmentController((BaseActivity) mActivity);
         CommonAdapter commonAdapter = new CommonAdapter<DataStatisticsBean>(mActivity, R.layout.item_data_statistics, dataList) {
             @Override
             protected void convert(ViewHolder viewHolder, DataStatisticsBean item, int position) {
                 viewHolder.setText(R.id.tv_title, item.getTitle());
-                viewHolder.setText(R.id.tv_data, item.getData());
+                String unit = item.getUnit();
+                if (TextUtils.isEmpty(unit)) {
+                    unit = "元";
+                }
+                viewHolder.setText(R.id.tv_data, item.getData() + unit);
+                ProgressBar progressBar = viewHolder.getView(R.id.pb);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    progressBar.setProgress(item.getProgress(), true);
+                } else {
+                    progressBar.setProgress(item.getProgress());
+                }
             }
         };
         mAdapter = new RecyclerAdapterWithHF(commonAdapter);
@@ -174,7 +186,7 @@ public class DataStatisticsByCategoryFragment extends BaseFragment {
                 if (baseBean.getData() != null) {
                     dataList.addAll(baseBean.getData());
                 }
-                cacuclateMaxData();
+                calculateMaxData();
                 mAdapter.notifyDataSetChanged();
             }
         }, new Consumer<Throwable>() {
@@ -188,7 +200,8 @@ public class DataStatisticsByCategoryFragment extends BaseFragment {
     /**
      * 计算最大值
      */
-    private void cacuclateMaxData() {
+    private void calculateMaxData() {
+        float maxData = 0f;
         for (DataStatisticsBean bean : dataList) {
             String data = bean.getData();
             try {
@@ -196,6 +209,16 @@ public class DataStatisticsByCategoryFragment extends BaseFragment {
                 if (v > maxData) {
                     maxData = v;
                 }
+            } catch (NumberFormatException e) {
+            }
+        }
+        if (maxData == 0f) return;
+        for (DataStatisticsBean bean : dataList) {
+            String data = bean.getData();
+            try {
+                float v = Float.valueOf(data);
+                int progress = (int) ((v / maxData) * 100);
+                bean.setProgress(progress);
             } catch (NumberFormatException e) {
             }
         }

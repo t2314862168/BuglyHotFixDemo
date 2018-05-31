@@ -19,13 +19,13 @@ import io.reactivex.Observable;
  * Created by tangxuebing on 2018/5/30.
  */
 
-public class DataStatisticsBySalesManFragmentController extends BaseControllerWithActivity {
-    public DataStatisticsBySalesManFragmentController(BaseActivity baseActivity) {
+public class DataStatisticsByTimeFragmentController extends BaseControllerWithActivity {
+    public DataStatisticsByTimeFragmentController(BaseActivity baseActivity) {
         super(baseActivity);
     }
 
     /**
-     * 按业务统计获取列表数据
+     * 按时间统计获取列表数据
      *
      * @param token
      * @param signatrue
@@ -33,32 +33,33 @@ public class DataStatisticsBySalesManFragmentController extends BaseControllerWi
      * @param data
      * @return
      */
-    Observable<MBaseBean<List<DataStatisticsBean>>> getBusinessData(String token, String signatrue
+    Observable<MBaseBean<List<DataStatisticsBean>>> getTimeData(String token, String signatrue
             , String timestamp, Map<String, String> data) {
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
                 .create(DataStatisticsRxAPI.class)
-                .getBusinessData(token, signatrue, timestamp, data);
+                .getTimeData(token, signatrue, timestamp, data);
     }
 
     /**
-     * 按业务统计获取列表数据
+     * 按时间统计获取列表数据
      *
      * @return
      */
-    public Observable<MBaseBean<List<DataStatisticsBean>>> getBusinessData(int level, String id, String product_id, String startTime
-            , String endTime, boolean isFright, boolean isUnit) {
+    public Observable<MBaseBean<List<DataStatisticsBean>>> getTimeData(int level, String id, String proxy_id, String product_id
+            , boolean isFright, boolean isUnit) {
         String token = mApplication.getToken();
         Map<String, String> data = new HashMap<>();
         data.put("level", level + "");
         if (!TextUtils.isEmpty(id)) {
             data.put("id", id);
         }
+        if (!TextUtils.isEmpty(proxy_id)) {
+            data.put("proxy_id", proxy_id);
+        }
         if (!TextUtils.isEmpty(product_id)) {
             data.put("product_id", product_id);
         }
-        data.put("startTime", startTime);
-        data.put("endTime", endTime);
         if (isFright) {
             data.put("isFright", isFright + "");
         }
@@ -67,6 +68,6 @@ public class DataStatisticsBySalesManFragmentController extends BaseControllerWi
         }
         String timestamp = System.currentTimeMillis() + "";
         String signatrue = MSignUtils.getSign(data, token, timestamp);
-        return getBusinessData(token, signatrue, timestamp, data);
+        return getTimeData(token, signatrue, timestamp, data);
     }
 }

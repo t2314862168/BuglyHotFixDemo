@@ -1,5 +1,7 @@
 package com.tangxb.pay.hero.controller;
 
+import android.text.TextUtils;
+
 import com.tangxb.pay.hero.RetrofitRxClient;
 import com.tangxb.pay.hero.activity.BaseActivity;
 import com.tangxb.pay.hero.api.WarehouseRxAPI;
@@ -247,7 +249,9 @@ public class WarehouseController extends BaseControllerWithActivity {
         data.put("city", city);
         data.put("address", address);
         data.put("distance", distance);
-        data.put("proxy_ids", proxy_ids);
+        if (!TextUtils.isEmpty(proxy_ids)) {
+            data.put("proxy_ids", proxy_ids);
+        }
         String signatrue = MSignUtils.getSign(data, token, timestamp);
         return updateStorage(token, signatrue, timestamp, data);
     }

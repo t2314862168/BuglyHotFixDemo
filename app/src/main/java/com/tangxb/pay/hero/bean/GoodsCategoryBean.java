@@ -21,7 +21,7 @@ public class GoodsCategoryBean {
     @SerializedName("code")
     private String code;
     @Expose
-    @SerializedName("status")
+    @SerializedName("status_")
     private int status;
 
     public long getId() {

@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.tangxb.pay.hero.R;
-import com.tangxb.pay.hero.fragment.DataStatisticsByCategoryFragment;
-import com.tangxb.pay.hero.fragment.DataStatisticsBySalesManFragment;
+import com.tangxb.pay.hero.fragment.DataStatisticsByBusinessFragment;
+import com.tangxb.pay.hero.fragment.DataStatisticsByTimeFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -28,10 +28,10 @@ public class DataStatisticsActivity extends BaseActivity {
     Button mItemBtn2;
 
     FragmentManager fragmentManager;
-    DataStatisticsByCategoryFragment timeFragment;
-    DataStatisticsBySalesManFragment salesManFragment;
-    String timeFragmentTag = DataStatisticsByCategoryFragment.class.getSimpleName();
-    String salesManFragmentTag = DataStatisticsBySalesManFragment.class.getSimpleName();
+    DataStatisticsByTimeFragment timeFragment;
+    DataStatisticsByBusinessFragment businessFragment;
+    String timeFragmentTag = DataStatisticsByTimeFragment.class.getSimpleName();
+    String businessFragmentTag = DataStatisticsByBusinessFragment.class.getSimpleName();
 
     @Override
     protected int getLayoutResId() {
@@ -49,16 +49,16 @@ public class DataStatisticsActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment fragmentByTag = fragmentManager.findFragmentByTag(timeFragmentTag);
-        Fragment fragmentByTag2 = fragmentManager.findFragmentByTag(salesManFragmentTag);
+        Fragment fragmentByTag2 = fragmentManager.findFragmentByTag(businessFragmentTag);
         if (fragmentByTag2 != null) {
-            salesManFragment = (DataStatisticsBySalesManFragment) fragmentByTag2;
-            transaction.remove(salesManFragment);
+            businessFragment = (DataStatisticsByBusinessFragment) fragmentByTag2;
+            transaction.remove(businessFragment);
         }
         if (fragmentByTag == null) {
-            timeFragment = DataStatisticsByCategoryFragment.getInstance();
+            timeFragment = DataStatisticsByTimeFragment.getInstance();
             transaction.add(R.id.fl_container, timeFragment, timeFragmentTag);
         } else {
-            timeFragment = (DataStatisticsByCategoryFragment) fragmentByTag;
+            timeFragment = (DataStatisticsByTimeFragment) fragmentByTag;
         }
         transaction.show(timeFragment);
         transaction.commit();
@@ -69,13 +69,13 @@ public class DataStatisticsActivity extends BaseActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment fragmentByTag = fragmentManager.findFragmentByTag(timeFragmentTag);
         if (fragmentByTag == null) {
-            timeFragment = DataStatisticsByCategoryFragment.getInstance();
+            timeFragment = DataStatisticsByTimeFragment.getInstance();
             transaction.add(R.id.fl_container, timeFragment, timeFragmentTag);
         } else {
-            timeFragment = (DataStatisticsByCategoryFragment) fragmentByTag;
+            timeFragment = (DataStatisticsByTimeFragment) fragmentByTag;
         }
-        if (salesManFragment != null) {
-            transaction.hide(salesManFragment);
+        if (businessFragment != null) {
+            transaction.hide(businessFragment);
         }
         transaction.show(timeFragment);
         transaction.commit();
@@ -84,17 +84,17 @@ public class DataStatisticsActivity extends BaseActivity {
     @OnClick(R.id.btn_item_2)
     public void itemBtn2Click(View view) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Fragment fragmentByTag = fragmentManager.findFragmentByTag(salesManFragmentTag);
+        Fragment fragmentByTag = fragmentManager.findFragmentByTag(businessFragmentTag);
         if (fragmentByTag == null) {
-            salesManFragment = DataStatisticsBySalesManFragment.getInstance();
-            transaction.add(R.id.fl_container, salesManFragment, salesManFragmentTag);
+            businessFragment = DataStatisticsByBusinessFragment.getInstance();
+            transaction.add(R.id.fl_container, businessFragment, businessFragmentTag);
         } else {
-            salesManFragment = (DataStatisticsBySalesManFragment) fragmentByTag;
+            businessFragment = (DataStatisticsByBusinessFragment) fragmentByTag;
         }
         if (timeFragment != null) {
             transaction.hide(timeFragment);
         }
-        transaction.show(salesManFragment);
+        transaction.show(businessFragment);
         transaction.commit();
     }
 
@@ -105,7 +105,7 @@ public class DataStatisticsActivity extends BaseActivity {
                 return;
             }
         } else {
-            if (salesManFragment.hasLevel()) {
+            if (businessFragment.hasLevel()) {
                 return;
             }
         }

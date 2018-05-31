@@ -37,7 +37,7 @@ public class OrderBean implements Parcelable {
     @SerializedName("id")
     private long id;
     @Expose
-    @SerializedName("status")
+    @SerializedName("status_")
     private int status;
     @Expose
     @SerializedName("realname")

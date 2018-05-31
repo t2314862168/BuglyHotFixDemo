@@ -20,6 +20,10 @@ public class DataStatisticsBean {
     @Expose
     @SerializedName("unit")
     private String unit;
+    /**
+     * 不需要序列化
+     */
+    private transient int progress;
 
     public Long getId() {
         return id;
@@ -51,5 +55,13 @@ public class DataStatisticsBean {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 }
