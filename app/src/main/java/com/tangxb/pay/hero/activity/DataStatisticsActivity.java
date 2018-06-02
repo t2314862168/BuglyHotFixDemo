@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * Created by zll on 2018/5/26.
  */
 
-public class DataStatisticsActivity extends BaseActivity {
+public class DataStatisticsActivity extends BaseActivityWithTitleOnly {
     @BindView(R.id.fl_container)
     FrameLayout mContainerFl;
     @BindView(R.id.btn_item_1)
@@ -40,8 +40,8 @@ public class DataStatisticsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        handleTitle();
-//        setMiddleText(R.string.data_statistics);
+        handleTitle();
+        setMiddleText(R.string.data_statistics);
 
         mItemBtn1.setText("按时间统计");
         mItemBtn2.setText("按业务统计");

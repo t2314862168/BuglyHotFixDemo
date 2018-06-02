@@ -35,7 +35,7 @@ import static com.tangxb.pay.hero.util.ConstUtils.PM_900;
  * Created by tangxuebing on 2018/5/8.
  */
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivityWithTitleOnly {
     @BindView(R.id.test_recycler_view_frame)
     PtrClassicFrameLayoutEx ptrClassicFrameLayout;
     @BindView(R.id.test_recycler_view)
@@ -62,6 +62,8 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        handleTitle();
+        setMiddleText(R.string.home_page);
         for (int i = 0; i < mPermissionIds.length; i++) {
             if (mApplication.hasPermission(mPermissionIds[i])) {
                 mData.add(mResources.getString(mDataResIds[i]));
