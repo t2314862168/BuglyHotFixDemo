@@ -21,6 +21,15 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.tangxb.pay.hero.util.ConstUtils.PM_100;
+import static com.tangxb.pay.hero.util.ConstUtils.PM_200;
+import static com.tangxb.pay.hero.util.ConstUtils.PM_300;
+import static com.tangxb.pay.hero.util.ConstUtils.PM_400;
+import static com.tangxb.pay.hero.util.ConstUtils.PM_500;
+import static com.tangxb.pay.hero.util.ConstUtils.PM_600;
+import static com.tangxb.pay.hero.util.ConstUtils.PM_800;
+import static com.tangxb.pay.hero.util.ConstUtils.PM_900;
+
 /**
  * 主页界面<br>
  * Created by tangxuebing on 2018/5/8.
@@ -36,6 +45,11 @@ public class HomeActivity extends BaseActivity {
             , R.string.goods_manger, R.string.data_statistics
             , R.string.warehouse_manger, R.string.deliver_goods_manger
             , R.string.person_warehouse, R.string.permission_manger, R.string.personal_center};
+    private int[] mPermissionIds = new int[]{PM_600.getId(), PM_800.getId()
+            , PM_100.getId(), PM_200.getId()
+            , PM_900.getId(), PM_300.getId()
+            , PM_400.getId(), PM_500.getId()
+    };
     private List<String> mData = new ArrayList<>();
     private RecyclerAdapterWithHF mAdapter;
     int PERSON_CENTER = 444;
@@ -48,9 +62,13 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        for (int i = 0; i < mDataResIds.length; i++) {
-            mData.add(mResources.getString(mDataResIds[i]));
+        for (int i = 0; i < mPermissionIds.length; i++) {
+            if (mApplication.hasPermission(mPermissionIds[i])) {
+                mData.add(mResources.getString(mDataResIds[i]));
+            }
         }
+        // 添加个人中心
+        mData.add(mResources.getString(mDataResIds[mDataResIds.length - 1]));
         CommonAdapter<String> commonAdapter = new CommonAdapter<String>(mActivity, R.layout.item_home, mData) {
             @Override
             protected void convert(ViewHolder holder, String s, int position) {

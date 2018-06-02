@@ -77,6 +77,19 @@ public class GoodsCategoryMangerController extends BaseControllerWithActivity {
     }
 
     /**
+     * 获取商品列表数据
+     *
+     * @return
+     */
+    public Observable<MBaseBean<List<GoodsCategoryBean>>> getCategoryList() {
+        String token = mApplication.getToken();
+        Map<String, String> data = new HashMap<>();
+        String timestamp = System.currentTimeMillis() + "";
+        String signatrue = MSignUtils.getSign(data, token, timestamp);
+        return getCategoryList(token, signatrue, timestamp, data);
+    }
+
+    /**
      * 更改种类显示状态
      *
      * @param status 1 显示  0 隐藏
@@ -106,6 +119,6 @@ public class GoodsCategoryMangerController extends BaseControllerWithActivity {
         data.put("name", name);
         String timestamp = System.currentTimeMillis() + "";
         String signatrue = MSignUtils.getSign(data, token, timestamp);
-        return updateCategoryStatus(token, signatrue, timestamp, data);
+        return addCategory(token, signatrue, timestamp, data);
     }
 }

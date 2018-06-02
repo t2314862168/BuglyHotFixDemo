@@ -42,7 +42,7 @@ public interface GoodsCategoryRxAPI {
      * @return
      */
     @FormUrlEncoded
-    @POST("user/updateCategoryStatus")
+    @POST("product/updateCategoryStatus")
     Observable<MBaseBean<String>> updateCategoryStatus(@Header("token") String token, @Header("signatrue") String signatrue,
                                                        @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 
@@ -56,7 +56,7 @@ public interface GoodsCategoryRxAPI {
      * @return
      */
     @FormUrlEncoded
-    @POST("user/addCategory")
+    @POST("product/addCategory")
     Observable<MBaseBean<String>> addCategory(@Header("token") String token, @Header("signatrue") String signatrue,
                                               @Header("timestamp") String timestamp, @FieldMap Map<String, String> data);
 

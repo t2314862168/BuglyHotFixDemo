@@ -106,6 +106,10 @@ public class ConstUtils {
      */
     public static final PermissionBean PM_801 = new PermissionBean(801, "管理所有订单", 800);
     /**
+     * 仓库管理权限
+     */
+    public static final PermissionBean PM_900 = new PermissionBean(900, "仓库管理");
+    /**
      * 客户
      */
     public static final RoleBean RB_1000 = new RoleBean(1000, "客户");

@@ -12,6 +12,7 @@ import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tangxb.pay.hero.activity.BaseActivity;
+import com.tangxb.pay.hero.bean.PermissionBean;
 import com.tangxb.pay.hero.bean.UserLoginResultBean;
 import com.tangxb.pay.hero.imageloader.GlideLoaderFactory;
 import com.tangxb.pay.hero.imageloader.ImageLoaderFactory;
@@ -24,6 +25,7 @@ import com.umeng.analytics.MobclickAgent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
@@ -55,6 +57,44 @@ public class MApplication extends TinkerApplication {
         currentLoginUserId = mUserLoginResultBean == null ? 0 : mUserLoginResultBean.getUser().getId();
         currentLoginRoleId = mUserLoginResultBean == null ? 0 : mUserLoginResultBean.getUser().getRoleId();
         currentLoginUserName = mUserLoginResultBean == null ? null : mUserLoginResultBean.getUser().getRealName();
+    }
+
+    /**
+     * 判断是否有权限
+     *
+     * @param permissionId
+     * @return
+     */
+    public boolean hasPermission(int permissionId) {
+        try {
+            List<PermissionBean> permissionBeanList = getUserLoginResultBean().getPermission();
+            for (PermissionBean bean : permissionBeanList) {
+                if (bean.getId() == permissionId) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否有权限
+     *
+     * @param name
+     * @return
+     */
+    public boolean hasPermission(String name) {
+        try {
+            List<PermissionBean> permissionBeanList = getUserLoginResultBean().getPermission();
+            for (PermissionBean bean : permissionBeanList) {
+                if (bean.getName().equals(name)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     public OSSClient getOssClient() {

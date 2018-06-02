@@ -68,7 +68,7 @@ public class GoodsCategoryMangerActivity extends BaseActivityWithTitleRight {
     }
 
     private void getDataByRefresh() {
-        addSubscription(categoryController.getCategoryList(1), new Consumer<MBaseBean<List<GoodsCategoryBean>>>() {
+        addSubscription(categoryController.getCategoryList(), new Consumer<MBaseBean<List<GoodsCategoryBean>>>() {
             @Override
             public void accept(MBaseBean<List<GoodsCategoryBean>> baseBean) throws Exception {
                 dataList.clear();

@@ -61,7 +61,7 @@ public class GoodsMangerController extends BaseControllerWithActivity {
             data.put("categoryId", categoryId + "");
         }
         if (!TextUtils.isEmpty(searchKeyword)) {
-            data.put("searchKeyword", searchKeyword);
+            data.put("keyword", searchKeyword);
         }
         data.put("status", status + "");
         if (promotion == ConstUtils.GOOD_PROMOTION) {
