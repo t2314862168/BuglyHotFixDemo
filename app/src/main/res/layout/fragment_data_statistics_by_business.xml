@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/ms__selector"
+                android:background="@drawable/bg_tv_time"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="开始时间" />
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/ms__selector"
+                android:background="@drawable/bg_tv_time"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="结束时间" />
@@ -80,7 +80,11 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <include layout="@layout/layout_common_head_bottom_divider" />
+    <include
+        layout="@layout/layout_common_head_bottom_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"

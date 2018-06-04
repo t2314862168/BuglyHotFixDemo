@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 
 import com.tangxb.pay.hero.RetrofitRxClient;
 import com.tangxb.pay.hero.activity.BaseActivity;
@@ -56,8 +57,7 @@ public class AppUpdateController {
     public Observable<AppUpdateBean> getAppUpdate() {
         String versionCode = MPackageUtils.getVersionCode(mActivity);
         String versionName = MPackageUtils.getVersionName(mActivity);
-        versionCode = "1";
-        versionName = "manger";
+        versionName = "lichuang";
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
                 .create(AppUpdateRxAPI.class)
@@ -71,10 +71,13 @@ public class AppUpdateController {
         mActivity.addSubscription(getAppUpdate(), new Consumer<AppUpdateBean>() {
             @Override
             public void accept(AppUpdateBean appUpdateBean) throws Exception {
+                if (appUpdateBean == null || TextUtils.isEmpty(appUpdateBean.getUrl())) {
+                    updateListener.notUpdate();
+                    return;
+                }
                 appUpdateBean.setUrl(mApkFileUrl);
                 appUpdateBean.setDescription("强制升级应用咯。。。。");
                 showAppUpdateTipDialog(appUpdateBean);
-//                updateListener.notUpdate();
             }
         }, new Consumer<Throwable>() {
             @Override

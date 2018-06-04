@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="120dp"
+    android:background="@color/color_6cbe4a">
 
     <TextView
         android:id="@+id/tv"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/font_middle"
-        android:text="1111111111111111"
-        android:textColor="@android:color/black" />
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="18dp"
+        android:drawablePadding="10dp"
+        android:drawableTop="@drawable/ic_user_manger"
+        android:text="@string/account"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_middle" />
 </FrameLayout>

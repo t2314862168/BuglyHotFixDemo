@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
-import com.chanven.lib.cptr.PtrClassicFrameLayoutEx;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.bean.UserBean;
 import com.tangxb.pay.hero.controller.CopyBeanController;
+import com.tangxb.pay.hero.controller.HomeController;
 import com.tangxb.pay.hero.decoration.MDividerGridItemDecoration;
 import com.tangxb.pay.hero.util.ToastUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -36,8 +37,6 @@ import static com.tangxb.pay.hero.util.ConstUtils.PM_900;
  */
 
 public class HomeActivity extends BaseActivityWithTitleOnly {
-    @BindView(R.id.test_recycler_view_frame)
-    PtrClassicFrameLayoutEx ptrClassicFrameLayout;
     @BindView(R.id.test_recycler_view)
     RecyclerView mRecyclerView;
 
@@ -54,6 +53,7 @@ public class HomeActivity extends BaseActivityWithTitleOnly {
     private RecyclerAdapterWithHF mAdapter;
     int PERSON_CENTER = 444;
     long firstTime;
+    HomeController controller;
 
     @Override
     protected int getLayoutResId() {
@@ -64,6 +64,7 @@ public class HomeActivity extends BaseActivityWithTitleOnly {
     protected void initData() {
         handleTitle();
         setMiddleText(R.string.home_page);
+        controller = new HomeController(this);
         for (int i = 0; i < mPermissionIds.length; i++) {
             if (mApplication.hasPermission(mPermissionIds[i])) {
                 mData.add(mResources.getString(mDataResIds[i]));
@@ -74,13 +75,16 @@ public class HomeActivity extends BaseActivityWithTitleOnly {
         CommonAdapter<String> commonAdapter = new CommonAdapter<String>(mActivity, R.layout.item_home, mData) {
             @Override
             protected void convert(ViewHolder holder, String s, int position) {
-                holder.setText(R.id.tv, s);
+                holder.getConvertView().setBackgroundColor(controller.getItemBackgroundColor(s));
+                TextView textView = holder.getView(R.id.tv);
+                textView.setText(s);
+                textView.setCompoundDrawables(null, controller.getItemDrawable(s), null, null);
             }
         };
         mAdapter = new RecyclerAdapterWithHF((MultiItemTypeAdapter) commonAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2));
         // 请去修改styles.xml里面注释掉的android:listDivider代码
-        mRecyclerView.addItemDecoration(new MDividerGridItemDecoration(mActivity));
+        mRecyclerView.addItemDecoration(new MDividerGridItemDecoration(mActivity, R.drawable.divider_bg_grid));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new RecyclerAdapterWithHF.OnItemClickListener() {
             @Override
@@ -88,7 +92,6 @@ public class HomeActivity extends BaseActivityWithTitleOnly {
                 handleItemClick(mData.get(position));
             }
         });
-        ptrClassicFrameLayout.setEnabled(false);
     }
 
     public void handleItemClick(String itemStr) {

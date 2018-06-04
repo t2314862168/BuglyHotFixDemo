@@ -148,6 +148,7 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
     @OnClick(R.id.btn_commit)
     public void clickCommit(View view) {
         final Map<String, String> map = checkData();
+        if (map == null) return;
         String code = mVerCodeEt.getText().toString();
         if (code.length() < 4) {
             ToastUtils.t(mApplication, "验证码不正确");
@@ -187,7 +188,10 @@ public class RegisterUserActivity extends BaseActivityWithTitleOnly {
         String address = mAddressEt.getText().toString();
         String nickName = mNameEt.getText().toString();
         String area = mCityTv.getText().toString();
-
+        if (nickName.trim().length() == 0) {
+            ToastUtils.t(mApplication, "请输入姓名");
+            return null;
+        }
         if (passNew.trim().length() == 0) {
             ToastUtils.t(mApplication, "请输入密码");
             return null;

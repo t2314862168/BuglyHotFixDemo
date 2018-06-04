@@ -56,9 +56,9 @@ public class MyApplicationLike extends DefaultApplicationLike {
     }
 
     public void initDebugSth() {
-        if (getApplication() instanceof MDebugApplication) {
-            Stetho.initializeWithDefaults(getApplication());
-        }
+//        if (getApplication() instanceof MDebugApplication) {
+//            Stetho.initializeWithDefaults(getApplication());
+//        }
     }
 
     private void init() {

@@ -27,7 +27,11 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <include layout="@layout/layout_common_head_bottom_divider" />
+    <include
+        layout="@layout/layout_common_head_bottom_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"

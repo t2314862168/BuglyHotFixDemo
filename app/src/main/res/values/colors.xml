@@ -16,4 +16,11 @@
     <color name="black">#000000</color>
     <color name="color_f0f0f0">#f0f0f0</color>
     <color name="color_gray">#777777</color>
+    <color name="color_6cbe4a">#6CBE4A</color>
+    <color name="color_6ac0ff">#6AC0FF</color>
+    <color name="color_d485f7">#D485F7</color>
+    <color name="color_f2b100">#F2B100</color>
+    <color name="color_fd7742">#FD7742</color>
+    <color name="color_1dbfb9">#1DBFB9</color>
+    <color name="color_7b5cde">#7B5CDE</color>
 </resources>

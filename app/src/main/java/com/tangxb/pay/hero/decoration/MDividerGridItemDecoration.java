@@ -5,12 +5,15 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.RecyclerView.State;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+
+import com.tangxb.pay.hero.util.DensityUtils;
 
 /**
  * @author zhy
@@ -19,11 +22,25 @@ public class MDividerGridItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private Drawable mDivider;
+    private int mDividerHeight;
+    private int mDividerWidth;
 
     public MDividerGridItemDecoration(Context context) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
         a.recycle();
+    }
+
+    public MDividerGridItemDecoration(Context context, int drawableResId) {
+        mDivider = ContextCompat.getDrawable(context, drawableResId);
+    }
+
+    public MDividerGridItemDecoration(Context context, float dpW, float dpH) {
+        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        mDivider = a.getDrawable(0);
+        a.recycle();
+        mDividerWidth = DensityUtils.dip2px(context, dpW);
+        mDividerHeight = DensityUtils.dip2px(context, dpH);
     }
 
     @Override
@@ -53,10 +70,16 @@ public class MDividerGridItemDecoration extends RecyclerView.ItemDecoration {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
                     .getLayoutParams();
             final int left = child.getLeft() - params.leftMargin;
-            final int right = child.getRight() + params.rightMargin
+            int right = child.getRight() + params.rightMargin
                     + mDivider.getIntrinsicWidth();
+            if (mDividerWidth > 0) {
+                right = child.getRight() + params.rightMargin + mDividerWidth;
+            }
             final int top = child.getBottom() + params.bottomMargin;
-            final int bottom = top + mDivider.getIntrinsicHeight();
+            int bottom = top + mDivider.getIntrinsicHeight();
+            if (mDividerHeight > 0) {
+                bottom = top + mDividerHeight;
+            }
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
@@ -72,8 +95,10 @@ public class MDividerGridItemDecoration extends RecyclerView.ItemDecoration {
             final int top = child.getTop() - params.topMargin;
             final int bottom = child.getBottom() + params.bottomMargin;
             final int left = child.getRight() + params.rightMargin;
-            final int right = left + mDivider.getIntrinsicWidth();
-
+            int right = left + mDivider.getIntrinsicWidth();
+            if (mDividerWidth > 0) {
+                right = left + mDividerWidth;
+            }
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
@@ -139,13 +164,24 @@ public class MDividerGridItemDecoration extends RecyclerView.ItemDecoration {
         int childCount = parent.getAdapter().getItemCount();
         if (isLastRaw(parent, itemPosition, spanCount, childCount))// 如果是最后一行，则不需要绘制底部
         {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+            if (mDividerWidth > 0) {
+                outRect.set(0, 0, mDividerWidth, 0);
+            } else {
+                outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+            }
         } else if (isLastColum(parent, itemPosition, spanCount, childCount))// 如果是最后一列，则不需要绘制右边
         {
-            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+            if (mDividerHeight > 0) {
+                outRect.set(0, 0, 0, mDividerHeight);
+            } else {
+                outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+            }
         } else {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(),
-                    mDivider.getIntrinsicHeight());
+            if (mDividerWidth > 0) {
+                outRect.set(0, 0, mDividerWidth, mDividerHeight);
+            } else {
+                outRect.set(0, 0, mDivider.getIntrinsicWidth(), mDivider.getIntrinsicHeight());
+            }
         }
     }
 }
