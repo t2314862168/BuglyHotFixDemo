@@ -1,6 +1,7 @@
 package com.tangxb.pay.hero.api;
 
 import com.tangxb.pay.hero.bean.AppUpdateBean;
+import com.tangxb.pay.hero.bean.MBaseBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -20,6 +21,6 @@ public interface AppUpdateRxAPI {
      * @return
      */
     @GET("common/checkVersion")
-    Observable<AppUpdateBean> getAppUpdate(@Query("code") String versionCode
+    Observable<MBaseBean<AppUpdateBean>> getAppUpdate(@Query("code") String versionCode
             , @Query("packageName") String packageName);
 }

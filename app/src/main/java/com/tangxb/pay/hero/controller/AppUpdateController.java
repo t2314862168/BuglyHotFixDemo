@@ -14,6 +14,7 @@ import com.tangxb.pay.hero.activity.BaseActivity;
 import com.tangxb.pay.hero.activity.LoginActivity;
 import com.tangxb.pay.hero.api.AppUpdateRxAPI;
 import com.tangxb.pay.hero.bean.AppUpdateBean;
+import com.tangxb.pay.hero.bean.MBaseBean;
 import com.tangxb.pay.hero.okhttp.OkHttpUtils;
 import com.tangxb.pay.hero.okhttp.callback.FileCallBack;
 import com.tangxb.pay.hero.util.FileProvider7;
@@ -54,10 +55,10 @@ public class AppUpdateController {
      *
      * @return
      */
-    public Observable<AppUpdateBean> getAppUpdate() {
+    public Observable<MBaseBean<AppUpdateBean>> getAppUpdate() {
         String versionCode = MPackageUtils.getVersionCode(mActivity);
         String versionName = MPackageUtils.getVersionName(mActivity);
-        versionName = "lichuang";
+        versionName = "manager";
         return RetrofitRxClient.INSTANCE
                 .getRetrofit()
                 .create(AppUpdateRxAPI.class)
@@ -68,16 +69,17 @@ public class AppUpdateController {
      * 检查更新
      */
     public void checkAppUpdate() {
-        mActivity.addSubscription(getAppUpdate(), new Consumer<AppUpdateBean>() {
+        mActivity.addSubscription(getAppUpdate(), new Consumer<MBaseBean<AppUpdateBean>>() {
             @Override
-            public void accept(AppUpdateBean appUpdateBean) throws Exception {
-                if (appUpdateBean == null || TextUtils.isEmpty(appUpdateBean.getUrl())) {
+            public void accept(MBaseBean<AppUpdateBean> baseBean) throws Exception {
+                if (baseBean.getData() == null || TextUtils.isEmpty(baseBean.getData().getUrl())) {
                     updateListener.notUpdate();
                     return;
                 }
-                appUpdateBean.setUrl(mApkFileUrl);
-                appUpdateBean.setDescription("强制升级应用咯。。。。");
-                showAppUpdateTipDialog(appUpdateBean);
+                mApkFileUrl = baseBean.getData().getUrl();
+//                appUpdateBean.setUrl(mApkFileUrl);
+//                appUpdateBean.setDescription("强制升级应用咯。。。。");
+                showAppUpdateTipDialog(baseBean.getData());
             }
         }, new Consumer<Throwable>() {
             @Override
@@ -102,7 +104,11 @@ public class AppUpdateController {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle(title);
         builder.setCancelable(false);
-        builder.setMessage(mUpdateBean.getDescription());
+        if (TextUtils.isEmpty(mUpdateBean.getDescription()) || mUpdateBean.getDescription().equals("null")) {
+            builder.setMessage("强制升级应用咯。。。。");
+        } else {
+            builder.setMessage(mUpdateBean.getDescription());
+        }
         builder.setPositiveButton(btnName, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
