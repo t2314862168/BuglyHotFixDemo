@@ -1,8 +1,10 @@
 package com.tangxb.pay.hero.activity;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -12,14 +14,16 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tangxb.pay.hero.R;
 import com.tangxb.pay.hero.controller.AppUpdateController;
 import com.tangxb.pay.hero.controller.LoginController;
+import com.tangxb.pay.hero.help.KeyboardWatcher;
 import com.tangxb.pay.hero.listener.SimpleResultErrorListener;
 import com.tangxb.pay.hero.listener.SimpleResultListener;
 import com.tangxb.pay.hero.util.ConstUtils;
@@ -40,13 +44,13 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Created by Taxngb on 2017/12/25.
  */
 
-public class LoginActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
+public class Login2Activity extends BaseActivity implements EasyPermissions.PermissionCallbacks, KeyboardWatcher.SoftKeyboardStateListener {
     @BindView(R.id.btn_login)
     Button btn_login;
-    @BindView(R.id.et_account)
-    EditText et_account;
-    @BindView(R.id.et_pwd)
-    EditText et_pwd;
+    @BindView(R.id.til_account)
+    TextInputLayout til_account;
+    @BindView(R.id.til_password)
+    TextInputLayout til_password;
     @BindView(R.id.tv_remember_password)
     TextView mRememberPwdTv;
     @BindView(R.id.tv_register_user)
@@ -57,9 +61,13 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
     ImageView clean_password;
     @BindView(R.id.iv_show_pwd)
     ImageView iv_show_pwd;
+    @BindView(R.id.card_view)
+    View cardView;
     private boolean mRememberPwdFlag;
     private int i = -1;
     private AlertDialog mAlertDialog;
+    private KeyboardWatcher keyboardWatcher;
+    private int screenHeight = 0;//屏幕高度
     /**
      * 是否显示密码
      */
@@ -79,23 +87,28 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
 
     @Override
     protected void initData() {
+//        StatusBarCompat.translucentStatusBar(mActivity);
         buildListener();
         boolean contains = SPUtils.contains(mApplication, ConstUtils.ACCOUNT_KEY);
         if (contains) {
             String username = (String) SPUtils.get(mApplication, ConstUtils.ACCOUNT_KEY, "");
             String password = (String) SPUtils.get(mApplication, ConstUtils.PASSWORD_KEY, "");
-            et_account.setText(username);
-            et_pwd.setText(password);
+            til_account.getEditText().setText(username);
+            til_password.getEditText().setText(password);
             mRememberPwdFlag = true;
-            int resId = mRememberPwdFlag ? R.drawable.ic_check_box_9ccb39_24dp : R.drawable.ic_check_box_outline_blank_grey_700_24dp;
+            int resId = mRememberPwdFlag ? R.drawable.ic_check_box_red_400_24dp : R.drawable.ic_check_box_outline_blank_grey_700_24dp;
             Drawable drawable = ContextCompat.getDrawable(mActivity, resId);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             mRememberPwdTv.setCompoundDrawables(drawable, null, null, null);
         }
 
-        String account = et_account.getText().toString();
+        screenHeight = this.getResources().getDisplayMetrics().heightPixels; //获取屏幕高度
+        keyboardWatcher = new KeyboardWatcher(findViewById(Window.ID_ANDROID_CONTENT));
+        keyboardWatcher.addSoftKeyboardStateListener(this);
+
+        String account = til_account.getEditText().getText().toString();
         if (!TextUtils.isEmpty(account)) {
-            et_account.setSelection(account.length());
+            til_account.getEditText().setSelection(account.length());
         }
         updateController = new AppUpdateController((BaseActivity) mActivity, new AppUpdateController.AppUpdateListener() {
             @Override
@@ -108,7 +121,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
     }
 
     public void buildListener() {
-        et_account.addTextChangedListener(new TextWatcher() {
+        til_account.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -128,7 +141,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
                 }
             }
         });
-        et_pwd.addTextChangedListener(new TextWatcher() {
+        til_password.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -152,7 +165,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
                     String temp = s.toString();
                     ToastUtils.t(mApplication, mResources.getString(R.string.please_input_limit_pwd));
                     s.delete(temp.length() - 1, temp.length());
-                    et_pwd.setSelection(s.length());
+                    til_password.getEditText().setSelection(s.length());
                 }
             }
         });
@@ -176,7 +189,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      */
     @OnClick(R.id.iv_clean_phone)
     public void clickCleanAccount(View view) {
-        et_account.setText("");
+        til_account.getEditText().setText("");
     }
 
     /**
@@ -186,7 +199,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      */
     @OnClick(R.id.clean_password)
     public void clickCleanPwd(View view) {
-        et_pwd.setText("");
+        til_password.getEditText().setText("");
     }
 
     /**
@@ -197,17 +210,17 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
     @OnClick(R.id.iv_show_pwd)
     public void clickShowPwd(View view) {
         if (flag == true) {
-            et_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            til_password.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
             iv_show_pwd.setImageResource(R.drawable.pass_gone);
             flag = false;
         } else {
-            et_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            til_password.getEditText().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             iv_show_pwd.setImageResource(R.drawable.pass_visuable);
             flag = true;
         }
-        String pwd = et_pwd.getText().toString();
+        String pwd = til_password.getEditText().getText().toString();
         if (!TextUtils.isEmpty(pwd)) {
-            et_pwd.setSelection(pwd.length());
+            til_password.getEditText().setSelection(pwd.length());
         }
     }
 
@@ -218,8 +231,10 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      */
     @OnClick(R.id.btn_login)
     public void clickLoginBtn(View view) {
-        String account = et_account.getText().toString();
-        String password = et_pwd.getText().toString();
+        String account = til_account.getEditText().getText().toString();
+        String password = til_password.getEditText().getText().toString();
+        til_account.setErrorEnabled(false);
+        til_password.setErrorEnabled(false);
         //验证用户名和密码
         if (validateAccount(account) && validatePassword(password)) {
             saveAccountLoginInfo(account, password);
@@ -239,8 +254,8 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      * 登录网络请求
      */
     private void doLogin() {
-        String account = et_account.getText().toString();
-        String password = et_pwd.getText().toString();
+        String account = til_account.getEditText().getText().toString();
+        String password = til_password.getEditText().getText().toString();
         controller.loginUser(account, password, new SimpleResultListener() {
             @Override
             public void doSuccess() {
@@ -320,7 +335,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      */
     private boolean validateAccount(String account) {
         if (TextUtils.isEmpty(account)) {
-            ToastUtils.t(mApplication, "用户名不能为空");
+            showError(til_account, "用户名不能为空");
             return false;
         }
         return true;
@@ -334,23 +349,65 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
      */
     private boolean validatePassword(String password) {
         if (TextUtils.isEmpty(password)) {
-            ToastUtils.t(mApplication, "密码不能为空");
+            showError(til_password, "密码不能为空");
             return false;
         }
         if (password.length() < 2 || password.length() > 18) {
-            ToastUtils.t(mApplication, "密码长度为2-18位");
+            showError(til_password, "密码长度为2-18位");
             return false;
         }
         return true;
     }
 
+    /**
+     * 显示错误提示，并获取焦点
+     *
+     * @param textInputLayout
+     * @param error
+     */
+    private void showError(TextInputLayout textInputLayout, String error) {
+        textInputLayout.setError(error);
+        textInputLayout.getEditText().setFocusable(true);
+        textInputLayout.getEditText().setFocusableInTouchMode(true);
+        textInputLayout.getEditText().requestFocus();
+    }
+
     @OnClick(R.id.tv_remember_password)
     public void clickRememberPwdTv(View view) {
         mRememberPwdFlag = !mRememberPwdFlag;
-        int resId = mRememberPwdFlag ? R.drawable.ic_check_box_9ccb39_24dp : R.drawable.ic_check_box_outline_blank_grey_700_24dp;
+        int resId = mRememberPwdFlag ? R.drawable.ic_check_box_red_400_24dp : R.drawable.ic_check_box_outline_blank_grey_700_24dp;
         Drawable drawable = ContextCompat.getDrawable(mActivity, resId);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         mRememberPwdTv.setCompoundDrawables(drawable, null, null, null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        keyboardWatcher.removeSoftKeyboardStateListener(this);
+    }
+
+    @Override
+    public void onSoftKeyboardOpened(int keyboardSize) {
+        int[] location = new int[2];
+        cardView.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        int bottom = screenHeight - (y + cardView.getHeight());
+        if (keyboardSize > bottom) {
+            ObjectAnimator mAnimatorTranslateY = ObjectAnimator.ofFloat(cardView, "translationY", 0.0f, -(keyboardSize - bottom));
+            mAnimatorTranslateY.setDuration(300);
+            mAnimatorTranslateY.setInterpolator(new AccelerateDecelerateInterpolator());
+            mAnimatorTranslateY.start();
+        }
+    }
+
+    @Override
+    public void onSoftKeyboardClosed() {
+        ObjectAnimator mAnimatorTranslateY = ObjectAnimator.ofFloat(cardView, "translationY", cardView.getTranslationY(), 0);
+        mAnimatorTranslateY.setDuration(300);
+        mAnimatorTranslateY.setInterpolator(new AccelerateDecelerateInterpolator());
+        mAnimatorTranslateY.start();
     }
 
     public boolean isHasPer() {
