@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BuglyDemo</string>
+    <string name="app_name">管理系统</string>
     <string name="remember_password">记住密码</string>
     <string name="login_ing">登录中...</string>
     <string name="commit_data_ing">提交数据中...</string>

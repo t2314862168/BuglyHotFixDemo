@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
 
     @Override
     protected void initData() {
-        StatusBarCompat.translucentStatusBar(mActivity);
+//        StatusBarCompat.translucentStatusBar(mActivity);
         buildListener();
         boolean contains = SPUtils.contains(mApplication, ConstUtils.ACCOUNT_KEY);
         if (contains) {
